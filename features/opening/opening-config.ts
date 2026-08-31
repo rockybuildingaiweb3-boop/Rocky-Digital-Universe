@@ -3,6 +3,9 @@ export type SceneType = "scene1" | "scene2" | "scene3" | "scene4";
 export interface CinematicSceneConfig {
   id: 1 | 2 | 3 | 4;
   type: SceneType;
+  actBadge: string;
+  actTitleEn: string;
+  actTitleZh: string;
   imageSrc: string;
   durationMs: number;
   lineEn: string;
@@ -16,21 +19,27 @@ export const CINEMA_SCENES: CinematicSceneConfig[] = [
   {
     id: 1,
     type: "scene1",
-    imageSrc: "/opening/scene1-rejection.jpg",
-    durationMs: 2600,
+    actBadge: "01 / 04",
+    actTitleEn: "REJECTION",
+    actTitleZh: "拒绝",
+    imageSrc: "/opening/hero-act-1.jpg",
+    durationMs: 3000,
     lineEn: "I questioned AI.",
-    lineZh: "我曾对 AI 抱有质疑。",
-    subEn: "Skeptical of shortcuts. Guarding human craft and boundaries.",
-    subZh: "警惕投机取巧，坚守人类独有的创造底线。",
+    lineZh: "我曾质疑 AI。",
+    subEn: "Skeptical of shortcuts. Guarding human craft and creative boundaries.",
+    subZh: "警惕投机取巧，坚守人类独有的创造底线与独立思考。",
     tone: "Hesitation · Cold Light",
   },
   {
     id: 2,
     type: "scene2",
-    imageSrc: "/opening/scene2-handshake.jpg",
-    durationMs: 2600,
+    actBadge: "02 / 04",
+    actTitleEn: "HANDSHAKE",
+    actTitleZh: "握手",
+    imageSrc: "/opening/hero-act-2.jpg",
+    durationMs: 3000,
     lineEn: "I learned to work with AI.",
-    lineZh: "我开始学会与 AI 并肩作战。",
+    lineZh: "我学会了与 AI 合作。",
     subEn: "Not as a replacement, but as an intellectual amplifier.",
     subZh: "它不是替代者，而是拓宽认知边界的心智放大器。",
     tone: "Alignment · Warm Dawn",
@@ -38,10 +47,13 @@ export const CINEMA_SCENES: CinematicSceneConfig[] = [
   {
     id: 3,
     type: "scene3",
-    imageSrc: "/opening/scene3-approval.jpg",
-    durationMs: 2400,
+    actBadge: "03 / 04",
+    actTitleEn: "APPROVAL",
+    actTitleZh: "点赞",
+    imageSrc: "/opening/hero-act-3.jpg",
+    durationMs: 2800,
     lineEn: "Together, we built more than either of us could alone.",
-    lineZh: "携手同行，我们创造出彼此独自无法企及的可能。",
+    lineZh: "我们共同创造了超越彼此的可能。",
     subEn: "Human intuition multiplied by machine precision.",
     subZh: "以人类直觉为罗盘，以机器极致精度为引擎。",
     tone: "Synergy · Golden Hour",
@@ -49,12 +61,15 @@ export const CINEMA_SCENES: CinematicSceneConfig[] = [
   {
     id: 4,
     type: "scene4",
-    imageSrc: "/opening/scene4-door.jpg",
-    durationMs: 4400,
+    actBadge: "04 / 04",
+    actTitleEn: "THE DOOR",
+    actTitleZh: "进入",
+    imageSrc: "/opening/hero-act-4-door-panorama.jpg",
+    durationMs: 5200,
     lineEn: "I began to see what we could become together.",
-    lineZh: "我看见了我们共同成为的一切。",
-    subEn: "Four knocks on the gateway. The portal unlocks.",
-    subZh: "四声轻叩，敲响新纪元大门。欢迎踏入我的数字宇宙。",
-    tone: "Threshold · Welcome Home",
+    lineZh: "我开始看到我们共同走向的未来。",
+    subEn: "The door unlocks. Welcome to RockyOS.",
+    subZh: "门扉轻启，极光破晓。欢迎来到 RockyOS。",
+    tone: "Threshold · Welcome to RockyOS",
   },
 ];

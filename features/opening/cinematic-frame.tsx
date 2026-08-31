@@ -8,13 +8,15 @@ export function CinematicFrame({
   scene,
   knockIndex = 0,
   isDoorOpen = false,
+  isZh = false,
 }: {
   scene: CinematicSceneConfig;
   knockIndex?: number;
   isDoorOpen?: boolean;
+  isZh?: boolean;
 }) {
   return (
-    <div className="relative w-full max-w-4xl aspect-[16/10] sm:aspect-[16/9] rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.9)] border border-white/10 select-none bg-slate-950">
+    <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-3xl overflow-hidden shadow-[0_0_90px_rgba(0,0,0,0.95)] border border-white/15 select-none bg-black">
       {/* -------------------------------------------------------------
           SCENE 1 ~ 3: CINEMATIC CANVASES (Ken Burns Smooth Camera Push)
           ------------------------------------------------------------- */}
@@ -25,59 +27,62 @@ export function CinematicFrame({
             alt={scene.lineEn}
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 896px"
+            sizes="(max-width: 1024px) 100vw, 1024px"
             className="object-cover object-center transform scale-100 hover:scale-105 transition-transform duration-3000 ease-out"
           />
-          {/* Subtle Film Grain & Vignette Overlay */}
-          <div className="absolute inset-0 bg-radial from-transparent via-black/20 to-black/70 pointer-events-none" />
+          {/* Subtle Cinematic Vignette */}
+          <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/60 pointer-events-none" />
         </div>
       )}
 
       {/* -------------------------------------------------------------
-          SCENE 4: PROGRESSIVE 4-DOOR KNOCK SEQUENCE
+          SCENE 4: PROGRESSIVE 4-PANEL DOOR SEQUENCE
           ------------------------------------------------------------- */}
       {scene.id === 4 && (
         <div className="relative w-full h-full animate-in fade-in duration-1000 overflow-hidden">
           <Image
-            src="/opening/scene4-door.jpg"
-            alt="The Gateway Door Sequence"
+            src="/opening/hero-act-4-door-panorama.jpg"
+            alt="The Door Sequence - Welcome to RockyOS"
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 896px"
+            sizes="(max-width: 1024px) 100vw, 1024px"
             className="object-cover object-center"
           />
 
           {/* Golden Volumetric Light Beam Spill from Door 4 */}
           <div
-            className={`absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/20 to-amber-200/40 mix-blend-screen transition-opacity duration-1000 pointer-events-none ${
+            className={`absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/25 to-amber-200/50 mix-blend-screen transition-opacity duration-1000 pointer-events-none ${
               isDoorOpen ? "opacity-100" : "opacity-0"
             }`}
           />
 
-          {/* Active Knock Spotlight Columns (1 to 4) */}
+          {/* Interactive Column Focus (Panels 1 to 4) */}
           <div className="absolute inset-0 grid grid-cols-4 pointer-events-none">
             {[1, 2, 3, 4].map((i) => {
-              const isActive = knockIndex >= i;
+              const isCurrentKnock = knockIndex === i;
+              const isPastKnock = knockIndex > i;
               return (
                 <div
                   key={i}
-                  className={`h-full border-r border-white/5 transition-all duration-500 ${
-                    isActive
-                      ? "bg-amber-400/10 shadow-[inset_0_0_40px_rgba(245,158,11,0.2)]"
-                      : "bg-black/30"
+                  className={`h-full border-r border-white/5 transition-all duration-700 ${
+                    isCurrentKnock
+                      ? "bg-amber-400/10 shadow-[inset_0_0_50px_rgba(245,158,11,0.25)]"
+                      : isPastKnock
+                      ? "bg-transparent"
+                      : "bg-black/40"
                   }`}
                 />
               );
             })}
           </div>
 
-          {/* Knock Pulse Indicators */}
-          <div className="absolute top-4 sm:top-6 inset-x-0 flex items-center justify-center gap-4 z-20">
+          {/* Door Knock Status Pills */}
+          <div className="absolute top-4 sm:top-6 inset-x-0 flex items-center justify-center gap-3 sm:gap-6 z-20">
             {[
-              { num: 1, label: "POSSIBILITIES AHEAD" },
-              { num: 2, label: "BETTER TOGETHER" },
-              { num: 3, label: "UNLIMITED FUTURE" },
-              { num: 4, label: "WELCOME HOME" },
+              { num: 1, label: isZh ? "轻叩一声" : "POSSIBILITIES AHEAD" },
+              { num: 2, label: isZh ? "轻叩两声" : "BETTER TOGETHER" },
+              { num: 3, label: isZh ? "轻叩三声" : "UNLIMITED FUTURE" },
+              { num: 4, label: isZh ? "门扉开启" : "WELCOME HOME" },
             ].map((door) => {
               const isKnocked = knockIndex >= door.num;
               return (
@@ -89,10 +94,10 @@ export function CinematicFrame({
                 >
                   <span
                     className={`w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full transition-colors ${
-                      isKnocked ? "bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)]" : "bg-slate-700"
+                      isKnocked ? "bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.9)]" : "bg-slate-700"
                     }`}
                   />
-                  <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-amber-200/80 hidden sm:inline">
+                  <span className="text-[8px] sm:text-[9px] font-mono tracking-widest text-amber-200/90 hidden sm:inline">
                     {door.label}
                   </span>
                 </div>
@@ -103,7 +108,7 @@ export function CinematicFrame({
       )}
 
       {/* Cinematic Frame Border Glow */}
-      <div className="absolute inset-0 rounded-3xl ring-1 ring-white/15 pointer-events-none" />
+      <div className="absolute inset-0 rounded-3xl ring-1 ring-white/20 pointer-events-none" />
     </div>
   );
 }
