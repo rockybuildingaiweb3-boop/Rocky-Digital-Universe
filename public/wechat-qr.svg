@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="qrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+  <!-- Background Card -->
+  <rect width="300" height="300" rx="16" fill="#ffffff" />
+  
+  <!-- Outer Finder Patterns -->
+  <rect x="25" y="25" width="60" height="60" rx="8" fill="#07090e" />
+  <rect x="35" y="35" width="40" height="40" rx="4" fill="#ffffff" />
+  <rect x="43" y="43" width="24" height="24" rx="2" fill="#07090e" />
+
+  <rect x="215" y="25" width="60" height="60" rx="8" fill="#07090e" />
+  <rect x="225" y="35" width="40" height="40" rx="4" fill="#ffffff" />
+  <rect x="233" y="43" width="24" height="24" rx="2" fill="#07090e" />
+
+  <rect x="25" y="215" width="60" height="60" rx="8" fill="#07090e" />
+  <rect x="35" y="225" width="40" height="40" rx="4" fill="#ffffff" />
+  <rect x="43" y="233" width="24" height="24" rx="2" fill="#07090e" />
+
+  <!-- Data Blocks -->
+  <rect x="100" y="30" width="15" height="15" fill="#07090e" />
+  <rect x="125" y="30" width="25" height="15" fill="#07090e" />
+  <rect x="160" y="30" width="15" height="15" fill="#07090e" />
+  <rect x="185" y="30" width="15" height="15" fill="#07090e" />
+
+  <rect x="100" y="55" width="35" height="15" fill="#07090e" />
+  <rect x="145" y="55" width="15" height="15" fill="#07090e" />
+  <rect x="175" y="55" width="25" height="15" fill="#07090e" />
+
+  <rect x="30" y="100" width="20" height="20" fill="#07090e" />
+  <rect x="60" y="100" width="25" height="15" fill="#07090e" />
+  <rect x="95" y="100" width="15" height="30" fill="#07090e" />
+  <rect x="120" y="100" width="20" height="15" fill="#07090e" />
+  <rect x="150" y="95" width="30" height="20" fill="#07090e" />
+  <rect x="190" y="100" width="20" height="15" fill="#07090e" />
+  <rect x="220" y="100" width="25" height="20" fill="#07090e" />
+  <rect x="255" y="100" width="15" height="25" fill="#07090e" />
+
+  <!-- Center Logo for WeChat / Rocky -->
+  <circle cx="150" cy="150" r="32" fill="url(#qrGrad)" />
+  <text x="150" y="157" font-family="-apple-system, sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">ROCKY</text>
+
+  <!-- Bottom Data Pattern -->
+  <rect x="100" y="190" width="20" height="20" fill="#07090e" />
+  <rect x="130" y="190" width="15" height="30" fill="#07090e" />
+  <rect x="155" y="190" width="25" height="15" fill="#07090e" />
+  <rect x="190" y="190" width="30" height="20" fill="#07090e" />
+  <rect x="230" y="190" width="20" height="15" fill="#07090e" />
+
+  <rect x="100" y="235" width="35" height="15" fill="#07090e" />
+  <rect x="145" y="225" width="20" height="25" fill="#07090e" />
+  <rect x="175" y="235" width="35" height="15" fill="#07090e" />
+  <rect x="220" y="225" width="15" height="35" fill="#07090e" />
+  <rect x="245" y="235" width="25" height="20" fill="#07090e" />
+</svg>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocky's Digital Universe // Personal Operating System</title>
+  <meta name="description" content="Rocky's Digital Universe: A living digital habitat to record growth, showcase capabilities, share knowledge, and connect with the world. My Personal Operating System.">
+  <link rel="icon" type="image/svg+xml" href="../public/favicon.svg">
+
+  <!-- Google Fonts: Space Grotesk & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Space Canvas & Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="cosmic-grid"></div>
+
+  <!-- Global OS Navigation Bar -->
+  <header class="os-header" id="header">
+    <div class="header-inner">
+      <a href="#hero" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 100 100" class="brand-svg">
+            <circle cx="50" cy="50" r="34" stroke="url(#brandGrad)" stroke-width="6" fill="none" stroke-dasharray="140 30" />
+            <circle cx="50" cy="50" r="14" fill="#06b6d4" />
+            <circle cx="74" cy="34" r="5" fill="#f8fafc" />
+            <defs>
+              <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06b6d4" />
+                <stop offset="100%" stop-color="#6366f1" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">ROCKY<span class="highlight">OS</span></span>
+          <span class="brand-tag">DIGITAL UNIVERSE</span>
+        </div>
+      </a>
+
+      <!-- Telemetry Status Beacon -->
+      <div class="telemetry-pill">
+        <span class="telemetry-beacon"></span>
+        <span class="telemetry-status" data-i18n="nav.status">SYSTEM: ONLINE</span>
+        <span class="telemetry-divider">/</span>
+        <span class="telemetry-time" id="system-time">00:00:00 UTC</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="os-nav">
+        <a href="#hero" class="nav-link" data-i18n="nav.vision">Vision</a>
+        <a href="#growth" class="nav-link" data-i18n="nav.growth">Growth Log</a>
+        <a href="#capabilities" class="nav-link" data-i18n="nav.capabilities">Capabilities</a>
+        <a href="#vault" class="nav-link" data-i18n="nav.vault">Knowledge Vault</a>
+        <a href="#nexus" class="nav-link" data-i18n="nav.nexus">Nexus Connect</a>
+      </nav>
+
+      <!-- Action Controls: Language Toggle & Theme Toggle -->
+      <div class="header-actions">
+        <!-- Language Switcher Pill -->
+        <div class="lang-switch-container" title="Switch Language / 切换语言">
+          <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
+          <span class="lang-divider">|</span>
+          <button class="lang-btn" id="btn-lang-zh" onclick="setLanguage('zh')">中文</button>
+        </div>
+
+        <!-- Theme Switcher -->
+        <button class="theme-btn" id="theme-toggle" aria-label="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- Quick Connect CTA -->
+        <a href="#nexus" class="btn-cta-small" data-i18n="nav.quickConnect">Connect</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- SECTION 00: HERO KERNEL -->
+    <section class="hero-section" id="hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span data-i18n="hero.badge">ROCKYOS v1.0 // PERSONAL OPERATING SYSTEM</span>
+      </div>
+
+      <h1 class="hero-title" data-i18n="hero.title">
+        Not a Portfolio.<br>
+        <span class="gradient-text">My Personal Operating System.</span>
+      </h1>
+
+      <p class="hero-mission" data-i18n="hero.mission">
+        This is my digital universe: a living space to document growth, showcase capabilities, share knowledge, and connect with the world. Not just displaying who I am today, but chronicling the next decade of personal evolution.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#capabilities" class="btn-primary" data-i18n="hero.ctaPrimary">
+          Explore Capabilities
+          <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="#nexus" class="btn-secondary" data-i18n="hero.ctaSecondary">
+          Initiate Connection
+        </a>
+        <button class="btn-wechat-highlight" onclick="openWeChatModal()">
+          <svg viewBox="0 0 24 24" class="wechat-icon" fill="currentColor">
+            <path d="M8.5 4.5C4.36 4.5 1 7.3 1 10.75c0 1.95 1.07 3.69 2.76 4.8-.15.54-.53 1.94-.61 2.23-.1.36.13.36.27.27.11-.07 1.48-.99 2.08-1.4.98.27 2.03.42 3.12.42.34 0 .68-.02 1.01-.05-.2-.59-.31-1.22-.31-1.87 0-3.45 3.36-6.25 7.5-6.25.13 0 .26 0 .38.01C16.32 6.43 12.72 4.5 8.5 4.5zm-2.25 3.75c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25zm5.5 0c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25zm4.87 4.15c-3.52 0-6.37 2.39-6.37 5.35s2.85 5.35 6.37 5.35c.87 0 1.7-.15 2.45-.4.49.33 1.58 1.04 1.66 1.09.11.08.3.08.22-.21-.06-.23-.37-1.34-.49-1.78 1.38-.9 2.26-2.31 2.26-3.87 0-2.96-2.85-5.53-6.37-5.53zm-1.87 3.15c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm4.25 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/>
+          </svg>
+          <span data-i18n="hero.wechatDirect">WeChat QR / 微信连接</span>
+        </button>
+      </div>
+
+      <!-- Live Telemetry Stat Row -->
+      <div class="telemetry-bar">
+        <div class="stat-card">
+          <div class="stat-number">10 YRS</div>
+          <div class="stat-label" data-i18n="stats.horizon">Long-Term Horizon</div>
+          <div class="stat-sub">2024 — 2034</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4 PILLARS</div>
+          <div class="stat-label" data-i18n="stats.architecture">OS Core Structure</div>
+          <div class="stat-sub" data-i18n="stats.architectureSub">Growth · Skills · Vault · Nexus</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label" data-i18n="stats.bilingual">Bilingual Native</div>
+          <div class="stat-sub">Global EN + Native 中文</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label" data-i18n="stats.delivery">Open Bridge</div>
+          <div class="stat-sub" data-i18n="stats.deliverySub">WeChat & Global Nexus</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 01: GROWTH LOG (记录成长) -->
+    <section class="os-section" id="growth">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="growth.tag">01 // RECORD GROWTH (记录成长)</div>
+        <h2 class="section-title" data-i18n="growth.title">The 10-Year Evolution Log</h2>
+        <p class="section-desc" data-i18n="growth.desc">
+          Chronicling milestones, structural upgrades, and engineering philosophies as they evolve over time.
+        </p>
+      </div>
+
+      <div class="timeline-container">
+        <!-- Milestone 1 -->
+        <div class="timeline-item active">
+          <div class="timeline-marker">
+            <div class="marker-core"></div>
+            <div class="marker-line"></div>
+          </div>
+          <div class="timeline-content glass-panel">
+            <div class="timeline-meta">
+              <span class="timeline-badge badge-active" data-i18n="growth.m1.badge">PHASE 1 / CURRENT</span>
+              <span class="timeline-date">2024 — 2026</span>
+            </div>
+            <h3 class="timeline-heading" data-i18n="growth.m1.title">Genesis: Rocky's Digital Universe Blueprint</h3>
+            <p class="timeline-body" data-i18n="growth.m1.body">
+              Architecting RockyOS — transitioning from traditional static portfolios to a self-evolving Personal Operating System. Established the 9-document specification suite, dual-language engine, and cosmic UI design system.
+            </p>
+            <div class="timeline-tags">
+              <span class="tag">#Vision</span>
+              <span class="tag">#Architecture</span>
+              <span class="tag">#RockyOS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-core"></div>
+            <div class="marker-line"></div>
+          </div>
+          <div class="timeline-content glass-panel">
+            <div class="timeline-meta">
+              <span class="timeline-badge" data-i18n="growth.m2.badge">PHASE 2 / EXPANSION</span>
+              <span class="timeline-date">2026 — 2028</span>
+            </div>
+            <h3 class="timeline-heading" data-i18n="growth.m2.title">Global Delivery & AI Automation Pipeline</h3>
+            <p class="timeline-body" data-i18n="growth.m2.body">
+              Scaling cross-border engineering solutions, integrating intelligent agent workflows, and expanding the Knowledge Vault with proprietary mental models and business architectures.
+            </p>
+            <div class="timeline-tags">
+              <span class="tag">#AIEngineering</span>
+              <span class="tag">#CrossBorder</span>
+              <span class="tag">#Automation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-core"></div>
+          </div>
+          <div class="timeline-content glass-panel">
+            <div class="timeline-meta">
+              <span class="timeline-badge badge-future" data-i18n="growth.m3.badge">PHASE 3 / HORIZON</span>
+              <span class="timeline-date">2029 — 2034</span>
+            </div>
+            <h3 class="timeline-heading" data-i18n="growth.m3.title">Autonomous Ecosystem & Long-Term Compounding</h3>
+            <p class="timeline-body" data-i18n="growth.m3.body">
+              A decade of accumulated engineering momentum: deploying autonomous multi-agent networks, mentoring builders, and maintaining an open knowledge commons for future innovators.
+            </p>
+            <div class="timeline-tags">
+              <span class="tag">#DecadeOfGrowth</span>
+              <span class="tag">#Ecosystem</span>
+              <span class="tag">#Compounding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 02: CAPABILITY MATRIX (展示能力) -->
+    <section class="os-section" id="capabilities">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="caps.tag">02 // SHOWCASE CAPABILITIES (展示能力)</div>
+        <h2 class="section-title" data-i18n="caps.title">Execution & Architectural Matrix</h2>
+        <p class="section-desc" data-i18n="caps.desc">
+          Real execution power. Building systems that bridge international technology standards with deep domestic execution.
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Bento Card 1: Large Span -->
+        <div class="bento-card bento-span-2 glass-panel">
+          <div class="card-icon-wrap">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <div class="card-badge" data-i18n="caps.c1.badge">SYSTEMS & WEB</div>
+          <h3 class="card-title" data-i18n="caps.c1.title">High-Performance Full-Stack Web Architecture</h3>
+          <p class="card-body" data-i18n="caps.c1.body">
+            Engineering ultra-fast, zero-bloat web applications and digital interfaces. Expert in modern semantic DOM, responsive CSS architectures, micro-animations, and sub-second Core Web Vitals.
+          </p>
+          <div class="tech-pills">
+            <span class="tech-pill">TypeScript</span>
+            <span class="tech-pill">Modern CSS</span>
+            <span class="tech-pill">Next.js / Node</span>
+            <span class="tech-pill">Web Vitals</span>
+            <span class="tech-pill">REST & GraphQL</span>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: AI Engineering -->
+        <div class="bento-card glass-panel">
+          <div class="card-icon-wrap">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+              <path d="M12 6a6 6 0 0 0-6 6h2a4 4 0 0 1 4-4z"/>
+            </svg>
+          </div>
+          <div class="card-badge" data-i18n="caps.c2.badge">INTELLIGENCE</div>
+          <h3 class="card-title" data-i18n="caps.c2.title">AI Studio & Agentic Automation</h3>
+          <p class="card-body" data-i18n="caps.c2.body">
+            Harnessing state-of-the-art LLMs, multi-agent workflows, and prompt engineering to automate complex operational and technical pipelines.
+          </p>
+          <div class="tech-pills">
+            <span class="tech-pill">Gemini & GPT</span>
+            <span class="tech-pill">Agentic Workflows</span>
+            <span class="tech-pill">Prompt Ops</span>
+          </div>
+        </div>
+
+        <!-- Bento Card 3: Cross-Border & Bilingual -->
+        <div class="bento-card glass-panel">
+          <div class="card-icon-wrap">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <div class="card-badge" data-i18n="caps.c3.badge">GLOBAL BRIDGE</div>
+          <h3 class="card-title" data-i18n="caps.c3.title">Bilingual Delivery & Cross-Border Strategy</h3>
+          <p class="card-body" data-i18n="caps.c3.body">
+            Bridging international standard expectations with native Chinese business requirements, facilitating frictionless cross-cultural technical delivery.
+          </p>
+          <div class="tech-pills">
+            <span class="tech-pill">Client Walkthrough</span>
+            <span class="tech-pill">Zero-Lag i18n</span>
+            <span class="tech-pill">WeChat Ecosystem</span>
+          </div>
+        </div>
+
+        <!-- Bento Card 4: Product Strategy & Leadership (Span 2) -->
+        <div class="bento-card bento-span-2 glass-panel">
+          <div class="card-icon-wrap">
+            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div class="card-badge" data-i18n="caps.c4.badge">STRATEGY</div>
+          <h3 class="card-title" data-i18n="caps.c4.title">Product Craftsmanship & Long-Term Thinking</h3>
+          <p class="card-body" data-i18n="caps.c4.body">
+            Engineering with a 10-year mindset: building architectures that don't need rewriting every 6 months. Clean domain boundaries, ergonomic user experience, and verifiable commercial impact.
+          </p>
+          <div class="tech-pills">
+            <span class="tech-pill">System Design</span>
+            <span class="tech-pill">Modular Code</span>
+            <span class="tech-pill">Scalable Architecture</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 03: KNOWLEDGE VAULT (分享知识) -->
+    <section class="os-section" id="vault">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="vault.tag">03 // SHARE KNOWLEDGE (分享知识)</div>
+        <h2 class="section-title" data-i18n="vault.title">The Thinking & Architecture Vault</h2>
+        <p class="section-desc" data-i18n="vault.desc">
+          Codified mental models, engineering standards, and principles discovered through real-world building.
+        </p>
+      </div>
+
+      <div class="vault-grid">
+        <!-- Article 1 -->
+        <article class="vault-card glass-panel">
+          <div class="vault-meta">
+            <span class="vault-category" data-i18n="vault.a1.cat">SYSTEM THINKING</span>
+            <span class="vault-read">5 MIN READ</span>
+          </div>
+          <h3 class="vault-title" data-i18n="vault.a1.title">Why Personal Operating Systems Outperform Static Resumes</h3>
+          <p class="vault-summary" data-i18n="vault.a1.summary">
+            Portfolios capture static past trophies. A Personal OS records momentum, living mental models, and a 10-year evolutionary trajectory that compounds with time.
+          </p>
+          <div class="vault-footer">
+            <span class="vault-date">2026 // KERNEL ESSAY</span>
+            <span class="vault-link" data-i18n="vault.readMore">Read Principle →</span>
+          </div>
+        </article>
+
+        <!-- Article 2 -->
+        <article class="vault-card glass-panel">
+          <div class="vault-meta">
+            <span class="vault-category" data-i18n="vault.a2.cat">ENGINEERING</span>
+            <span class="vault-read">7 MIN READ</span>
+          </div>
+          <h3 class="vault-title" data-i18n="vault.a2.title">The Zero-Bloat Web: Building High-Speed Bilingual Engines</h3>
+          <p class="vault-summary" data-i18n="vault.a2.summary">
+            How to deliver sub-16ms bilingual switches and 99+ Core Web Vitals using pure web standards without bloated dependencies or server lag.
+          </p>
+          <div class="vault-footer">
+            <span class="vault-date">2026 // ARCHITECTURE</span>
+            <span class="vault-link" data-i18n="vault.readMore">Read Principle →</span>
+          </div>
+        </article>
+
+        <!-- Article 3 -->
+        <article class="vault-card glass-panel">
+          <div class="vault-meta">
+            <span class="vault-category" data-i18n="vault.a3.cat">CROSS-CULTURAL</span>
+            <span class="vault-read">6 MIN READ</span>
+          </div>
+          <h3 class="vault-title" data-i18n="vault.a3.title">Bilingual Presentation: How to Pitch to Chinese & Global Clients</h3>
+          <p class="vault-summary" data-i18n="vault.a3.summary">
+            Bridging international engineering expectations with the communication rhythms of Chinese business partners (e.g. WeChat agility and trust-building).
+          </p>
+          <div class="vault-footer">
+            <span class="vault-date">2026 // FIELD NOTES</span>
+            <span class="vault-link" data-i18n="vault.readMore">Read Principle →</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 04: NEXUS CONNECT (连接他人) -->
+    <section class="os-section" id="nexus">
+      <div class="section-header">
+        <div class="section-tag" data-i18n="nexus.tag">04 // CONNECT WITH OTHERS (连接他人)</div>
+        <h2 class="section-title" data-i18n="nexus.title">Nexus Communications Hub</h2>
+        <p class="section-desc" data-i18n="nexus.desc">
+          Reach out for high-impact technical collaboration, advisory, or direct project delivery.
+        </p>
+      </div>
+
+      <div class="nexus-layout">
+        <!-- Direct Message Form -->
+        <div class="nexus-card glass-panel">
+          <h3 class="nexus-card-title" data-i18n="nexus.formTitle">Send a Direct Transmission</h3>
+          <form class="nexus-form" id="contact-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+              <label for="form-name" data-i18n="nexus.nameLabel">Your Name / Identity</label>
+              <input type="text" id="form-name" required placeholder="e.g. Alexander Chen" data-i18n="nexus.namePh">
+            </div>
+            <div class="form-group">
+              <label for="form-email" data-i18n="nexus.emailLabel">Email Address / WeChat</label>
+              <input type="text" id="form-email" required placeholder="name@company.com or WeChat ID" data-i18n="nexus.emailPh">
+            </div>
+            <div class="form-group">
+              <label for="form-message" data-i18n="nexus.msgLabel">Project Scope or Message</label>
+              <textarea id="form-message" rows="4" required placeholder="Tell me about your vision, technical requirements, or consultation..." data-i18n="nexus.msgPh"></textarea>
+            </div>
+            <button type="submit" class="btn-primary form-submit-btn" data-i18n="nexus.submitBtn">
+              Transmit Message
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+            <div id="form-feedback" class="form-feedback"></div>
+          </form>
+        </div>
+
+        <!-- Channels & WeChat Modal Trigger -->
+        <div class="nexus-card glass-panel channels-card">
+          <h3 class="nexus-card-title" data-i18n="nexus.channelsTitle">Direct Connectivity Channels</h3>
+          <p class="channels-desc" data-i18n="nexus.channelsDesc">
+            Connect immediately via your preferred network. For Chinese partners, scanning the WeChat QR code provides instant mobile chat.
+          </p>
+
+          <div class="channel-buttons">
+            <!-- WeChat Direct Button -->
+            <button class="channel-btn wechat-btn" onclick="openWeChatModal()">
+              <svg viewBox="0 0 24 24" class="channel-icon" fill="currentColor">
+                <path d="M8.5 4.5C4.36 4.5 1 7.3 1 10.75c0 1.95 1.07 3.69 2.76 4.8-.15.54-.53 1.94-.61 2.23-.1.36.13.36.27.27.11-.07 1.48-.99 2.08-1.4.98.27 2.03.42 3.12.42.34 0 .68-.02 1.01-.05-.2-.59-.31-1.22-.31-1.87 0-3.45 3.36-6.25 7.5-6.25.13 0 .26 0 .38.01C16.32 6.43 12.72 4.5 8.5 4.5zm-2.25 3.75c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25zm5.5 0c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25zm4.87 4.15c-3.52 0-6.37 2.39-6.37 5.35s2.85 5.35 6.37 5.35c.87 0 1.7-.15 2.45-.4.49.33 1.58 1.04 1.66 1.09.11.08.3.08.22-.21-.06-.23-.37-1.34-.49-1.78 1.38-.9 2.26-2.31 2.26-3.87 0-2.96-2.85-5.53-6.37-5.53zm-1.87 3.15c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm4.25 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/>
+              </svg>
+              <div class="channel-text">
+                <span class="channel-name" data-i18n="nexus.wechatBtn">WeChat QR Code</span>
+                <span class="channel-sub" data-i18n="nexus.wechatSub">Click to View QR & ID</span>
+              </div>
+              <span class="channel-arrow">→</span>
+            </button>
+
+            <!-- Direct Email -->
+            <button class="channel-btn" onclick="copyEmail()">
+              <svg viewBox="0 0 24 24" class="channel-icon" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <div class="channel-text">
+                <span class="channel-name" data-i18n="nexus.emailBtn">Direct Email</span>
+                <span class="channel-sub" id="email-address">rocky@digitaluniverse.dev</span>
+              </div>
+              <span class="channel-badge" id="copy-badge" data-i18n="nexus.clickCopy">Copy</span>
+            </button>
+
+            <!-- GitHub -->
+            <a href="https://github.com" target="_blank" rel="noopener" class="channel-btn">
+              <svg viewBox="0 0 24 24" class="channel-icon" fill="currentColor">
+                <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+              </svg>
+              <div class="channel-text">
+                <span class="channel-name">GitHub</span>
+                <span class="channel-sub" data-i18n="nexus.githubSub">Code Repositories & OSS</span>
+              </div>
+              <span class="channel-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- WECHAT INTERACTIVE MODAL -->
+  <div class="modal-overlay" id="wechat-modal" onclick="handleModalBackdrop(event)">
+    <div class="modal-card glass-panel">
+      <button class="modal-close" onclick="closeWeChatModal()" aria-label="Close Modal">✕</button>
+      <div class="modal-header">
+        <div class="modal-badge" data-i18n="modal.badge">WECHAT CONNECT // 微信连接</div>
+        <h3 class="modal-title" data-i18n="modal.title">Scan to Connect on WeChat</h3>
+        <p class="modal-desc" data-i18n="modal.desc">Use WeChat camera or QR scanner on mobile to connect directly with Rocky.</p>
+      </div>
+
+      <div class="qr-container">
+        <img src="../public/wechat-qr.svg" alt="Rocky's WeChat QR Code" class="qr-image">
+        <div class="qr-scan-line"></div>
+      </div>
+
+      <div class="wechat-id-box">
+        <span class="id-label" data-i18n="modal.idLabel">WeChat ID / 微信号:</span>
+        <span class="id-value" id="wechat-id">RockyUniverse_OS</span>
+        <button class="btn-copy-small" onclick="copyWeChatId()" id="btn-copy-wechat" data-i18n="modal.copyBtn">Copy ID</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM FOOTER -->
+  <footer class="os-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo-text">ROCKY<span class="highlight">OS</span> // DIGITAL UNIVERSE</div>
+        <p class="footer-quote" data-i18n="footer.quote">
+          "This is my digital universe: a space to document growth, showcase capabilities, share knowledge, and connect with the world."
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#hero" data-i18n="nav.vision">Vision</a>
+        <a href="#growth" data-i18n="nav.growth">Growth Log</a>
+        <a href="#capabilities" data-i18n="nav.capabilities">Capabilities</a>
+        <a href="#vault" data-i18n="nav.vault">Vault</a>
+        <a href="#nexus" data-i18n="nav.nexus">Connect</a>
+      </div>
+
+      <div class="footer-meta">
+        <div class="footer-copy">© 2024 — 2034 Rocky. All Systems Operational.</div>
+        <div class="footer-icp" data-i18n="footer.icp">ICP Record: 粤ICP备20260831号-1 (Placeholder)</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
