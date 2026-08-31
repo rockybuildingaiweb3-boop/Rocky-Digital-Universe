@@ -29,3 +29,6 @@ export interface TelemetryState {
   utcTime: string;
   activeLocale: Locale;
 }
+
+export * from "./content";
+export * from "./search";
