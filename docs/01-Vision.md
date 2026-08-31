@@ -1,103 +1,331 @@
-# 01. Product Vision: Rocky's Digital Universe
+# RockyOS — Product Vision
+**Version:** 1.0.0 (Foundation Edition)  
+**Status:** Approved  
+**Last Updated:** August 31, 2026
 
-> **"This is my digital universe: a space to document growth, showcase capabilities, share knowledge, and connect with the world."**  
-> *「这是我的数字世界，一个记录成长、展示能力、分享知识、连接他人的地方。」*
+> "This is my digital universe: a space to document growth, showcase capabilities,
+> share knowledge, connect with the world, and continuously evolve."
+
+> 「这是我的数字世界，一个记录成长、展示能力、分享知识、连接世界，并持续成长的平台。」
 
 ---
 
-## 1. Executive Summary
+# 1. Executive Summary
 
 | Attribute | Specification |
-| :--- | :--- |
-| **Project Name** | **Rocky's Digital Universe** (Primary) / *Rocky's Digital Home* (Alias) |
-| **System Codename** | **RockyOS** (`v1.0.0`) |
-| **Subtitle** | *Personal Operating System // 个人成长操作系统* |
-| **Target Audience** | Global partners, technology peers, international collaborators, and Chinese clients/friends |
-| **Language Strategy** | **English-First International** (Default) + **Instant Chinese Showcase Switch** (For client presentation & demonstration) |
+|-----------|---------------|
+| Product Name | **Rocky's Digital Universe** |
+| Internal Codename | **RockyOS** |
+| Product Type | Personal Operating System |
+| Subtitle | **The Operating System of My Digital Life** |
+| Vision Horizon | 2024 – 2034 (10-Year Evolution) |
+| Primary Language | English |
+| Secondary Language | Simplified Chinese |
+| Target Audience | Employers, collaborators, developers, founders, creators, friends, and future self |
 
 ---
 
-## 2. Core Philosophy: Why Not a Portfolio?
+# 2. Vision Statement
 
-Traditional portfolios are:
-- **Static**: Snapshots of past achievements frozen in time.
-- **Transactional**: Built solely to land a single job or client gig.
-- **Disconnected**: Separated from personal life, evolving thoughts, and daily momentum.
+RockyOS is not a portfolio.
 
-**Rocky's Digital Universe is fundamentally different: It is a Personal Operating System (Personal OS).**
+It is not a résumé.
 
-```
-+-----------------------------------------------------------------------------------+
-|                           ROCKY'S DIGITAL UNIVERSE                                |
-|                        [ Personal Operating System ]                              |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|      01. RECORD GROWTH          02. SHOWCASE CAPABILITIES                         |
-|      ( 记录成长 )                  ( 展示能力 )                                      |
-|      - 10-Year Timeline         - Real Execution & Architectures                  |
-|      - Life & Tech Changelog    - Measurable Business Impact                      |
-|                                                                                   |
-|      03. SHARE KNOWLEDGE        04. CONNECT WITH OTHERS                           |
-|      ( 分享知识 )                  ( 连接他人 )                                      |
-|      - Mental Models & Vault    - Global Network & Outreach                       |
-|      - System Principles        - WeChat (微信) & Global Bridge                   |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
-|               "Growing with life over the next decade (2024 - 2034)"              |
-+-----------------------------------------------------------------------------------+
-```
+It is not a personal blog.
+
+It is not a collection of projects.
+
+RockyOS is a living digital operating system that grows together with its creator.
+
+Its purpose is to preserve experiences, demonstrate capabilities, organize knowledge, inspire continuous learning, and create meaningful connections over decades.
+
+Every project, article, milestone, lesson, and experiment becomes part of an evolving digital identity.
+
+This website is designed to become the single source of truth for everything professionally and personally meaningful.
 
 ---
 
-## 3. Mission Statement
+# 3. Mission
 
-> **Not just showing who I am today.**  
-> **Recording the next decade of personal evolution.**  
-> **A digital organism that grows with life.**  
-> *不仅展示现在的自己，更记录未来十年成长的自己。网站应该随着人生一起成长。它不是一个 Portfolio，它应该是：My Personal Operating System。*
+RockyOS exists to:
 
-### Core Directives:
-1. **Long-Termism (长期主义)**: Designed with a 10-year architectural horizon (2024–2034). Every feature and log entry is built to be sustained, referenced, and built upon.
-2. **Authentic Capability (真实交付)**: Rejecting vanity metrics; focusing on systems built, problems solved, and tangible business/technical impact.
-3. **Open Architecture (开放连接)**: Creating an effortless bridge between global international markets and the Chinese ecosystem (seamless WeChat integration alongside international channels).
-4. **Bilingual Fluidity (双语自由)**: English provides global authority and international presentation; Chinese allows deep resonance, client walkthroughs, and domestic partnerships.
+• Build meaningful things.
 
----
+• Document continuous growth.
 
-## 4. The Four Pillars of RockyOS
+• Showcase authentic capabilities.
 
-### Pillar 1: Record Growth (记录成长) — `Growth Log`
-- **What it is**: An immutable, chronological life and engineering changelog.
-- **Function**: Documents milestones, pivots, lessons learned, and personal evolution over time.
-- **Value**: Demonstrates trajectory and momentum rather than just a static snapshot.
+• Share valuable knowledge.
 
-### Pillar 2: Showcase Capabilities (展示能力) — `Capability Matrix`
-- **What it is**: A high-density, bento-grid matrix of architectural skills, shipped products, and domain proficiencies.
-- **Function**: Shows real-world execution capacity, engineering standards, problem-solving methodologies, and end-to-end delivery.
-- **Value**: Gives prospective clients, partners, and employers immediate confidence in execution competence.
+• Connect with people across cultures.
 
-### Pillar 3: Share Knowledge (分享知识) — `Knowledge Vault`
-- **What it is**: A curated repository of mental models, technical guides, system architecture blueprints, and deep essays.
-- **Function**: Publicly organizes insights, codifies operational wisdom, and shares high-leverage frameworks.
-- **Value**: Establishes thought leadership, gives value before asking for anything, and attracts high-caliber minds.
+• Inspire lifelong learning.
 
-### Pillar 4: Connect with Others (连接他人) — `Nexus Connect`
-- **What it is**: A multi-channel outreach engine bridging Eastern and Western digital ecosystems.
-- **Function**: Provides seamless direct contact through international email/socials and an instant interactive WeChat (微信) QR code modal.
-- **Value**: Removes all friction between interest and direct conversation.
+The website should become more valuable every year rather than becoming outdated.
 
 ---
 
-## 5. Bilingual Experience Design
+# 4. Core Philosophy
 
-To satisfy the dual requirement of **global presentation** and **Chinese client demonstration**:
-- **Default State**: 100% fluent, international English with a sleek, tech-forward tone.
-- **One-Click Presentation Mode**: A persistent, elegant `[ EN | 简体中文 ]` toggle in the header.
-- **Zero-Friction Explanation**: During client calls or in-person meetings with Chinese clients, switching to Chinese renders native, professional Chinese phrasing, enabling Rocky to present every section, feature, and capability clearly.
+## Long-Term Thinking
+
+Every design decision should remain meaningful for the next ten years.
+
+This is a long-term digital asset instead of a short-term portfolio.
 
 ---
 
-## 6. Success Metrics for Phase 1
-- [x] Clear vision and philosophical alignment established.
-- [x] Full architectural documentation suite drafted and version-controlled.
-- [x] Zero ambiguity regarding the 10-year evolutionary purpose of RockyOS.
+## Authenticity Over Appearance
+
+Real projects.
+
+Real lessons.
+
+Real failures.
+
+Real growth.
+
+The website values genuine experience over polished marketing.
+
+---
+
+## Growth Never Ends
+
+RockyOS is never "finished."
+
+Every update becomes another chapter of the journey.
+
+The product evolves together with life.
+
+---
+
+## Content First
+
+Design exists to enhance understanding.
+
+Technology exists to support content.
+
+Beautiful interfaces should never overshadow meaningful ideas.
+
+---
+
+## Build in Public
+
+Knowledge becomes more valuable when shared.
+
+Documenting the journey is as important as reaching the destination.
+
+---
+
+## Global by Default
+
+English is the default language for international communication.
+
+Chinese provides native accessibility for domestic collaboration.
+
+Both experiences should feel first-class rather than translated.
+
+---
+
+# 5. The Six Core Systems
+
+RockyOS is composed of six interconnected systems.
+
+Together they define the complete digital identity.
+
+---
+
+## 01 — Identity System
+
+**Purpose**  
+Who I am.
+
+**Contents**  
+• Biography  
+• Personal Story  
+• Values  
+• Timeline  
+• Interests  
+• Life Journey  
+
+**Mission**  
+Allow anyone to understand the person behind the work.
+
+---
+
+## 02 — Capability System
+
+**Purpose**  
+What I can build.
+
+**Contents**  
+• Projects  
+• Skills  
+• Experience  
+• Resume  
+• Architecture  
+• GitHub  
+• Certifications  
+
+**Mission**  
+Demonstrate execution rather than self-description.
+
+---
+
+## 03 — Knowledge System
+
+**Purpose**  
+What I know and what I continue to learn.
+
+**Contents**  
+• Blog  
+• Technical Articles  
+• Learning Notes  
+• AI  
+• Programming  
+• Books  
+• Essays  
+
+**Mission**  
+Transform personal learning into public value.
+
+---
+
+## 04 — Laboratory System
+
+**Purpose**  
+Where ideas become experiments.
+
+**Contents**  
+• AI Demos  
+• Prompt Engineering  
+• Automation  
+• Interactive Tools  
+• Experiments  
+• Playground  
+
+**Mission**  
+Encourage creativity and continuous innovation.
+
+---
+
+## 05 — Connection System
+
+**Purpose**  
+Connect with people.
+
+**Contents**  
+• Email  
+• GitHub  
+• LinkedIn  
+• WeChat  
+• Social Media  
+• Contact Form  
+
+**Mission**  
+Remove friction between discovery and conversation.
+
+---
+
+## 06 — Growth System
+
+**Purpose**  
+Record the journey.
+
+**Contents**  
+• Changelog  
+• Weekly Notes  
+• Monthly Reviews  
+• Annual Reflection  
+• Milestones  
+• Roadmaps  
+
+**Mission**  
+Demonstrate momentum rather than static achievement.
+
+---
+
+# 6. Product Principles
+
+Every future feature must satisfy these principles.
+
+## Principle 01
+Build for the next decade.  
+Not the next interview.
+
+---
+
+## Principle 02
+Document reality.  
+Never fabricate achievements.
+
+---
+
+## Principle 03
+Every page should create value.  
+If a page teaches nothing, inspires nothing, or helps nobody, reconsider its existence.
+
+---
+
+## Principle 04
+Consistency beats complexity.  
+The experience should feel unified across every section.
+
+---
+
+## Principle 05
+Every update should make RockyOS better than yesterday.  
+Continuous evolution is the default state.
+
+---
+
+## Principle 06
+Technology is the tool.  
+People are the reason.  
+Every design decision should ultimately improve human understanding and connection.
+
+---
+
+# 7. Success Definition
+
+RockyOS succeeds when:
+
+- Someone understands who Rocky is within one minute.
+- An employer immediately trusts Rocky's capabilities.
+- A developer learns something useful.
+- A collaborator knows how to reach out.
+- Future Rocky can revisit memories and measure growth.
+- The website becomes increasingly valuable every year.
+
+---
+
+# 8. Future Vision
+
+RockyOS should eventually become a lifelong digital companion.
+
+It should preserve memories.  
+Organize knowledge.  
+Reflect personal evolution.  
+Accelerate learning.  
+Enable collaboration.  
+Inspire others.  
+
+Years from now, the website should tell not only what Rocky has accomplished, but who Rocky has become.
+
+---
+
+# 9. Closing Statement
+
+RockyOS is not a destination.
+
+It is a living system.
+
+It is a long-term digital home.
+
+It is the permanent record of curiosity, craftsmanship, knowledge, and growth.
+
+As life evolves, RockyOS evolves with it.
+
+This is not simply a website.
+
+**This is my digital universe.**
