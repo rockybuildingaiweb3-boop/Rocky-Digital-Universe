@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/providers/language-provider";
 import { CINEMA_SCENES, type CinematicSceneConfig } from "./opening-config";
-import { CinematicFullscreenCanvas } from "./cinematic-fullscreen-canvas";
+import { InteractiveOpeningStage } from "./interactive-opening-stage";
 import { cinematicAudio } from "@/lib/cinematic-audio";
 import {
   Volume2,
@@ -21,22 +21,25 @@ export function OpeningExperience() {
   const { locale } = useLanguage();
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [knockCount, setKnockCount] = useState<number>(0);
+  const [knockStage, setKnockStage] = useState<number>(0);
+  const [sunProgress, setSunProgress] = useState<number>(0);
+  const [isShattering, setIsShattering] = useState<boolean>(false);
+  const [isHandshakeShaking, setIsHandshakeShaking] = useState<boolean>(false);
   const [isDoorOpen, setIsDoorOpen] = useState<boolean>(false);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [hasInteracted, setHasInteracted] = useState<boolean>(false);
-  const [shakeTrigger, setShakeTrigger] = useState<number>(0);
+  const [isHoldingSun, setIsHoldingSun] = useState<boolean>(false);
 
+  const sunTimerRef = useRef<NodeJS.Timeout | null>(null);
   const currentScene: CinematicSceneConfig = CINEMA_SCENES[currentIndex];
   const isZh = locale === "zh";
 
-  // Audio mute state init
+  // Initialize audio mute state
   useEffect(() => {
     setIsMuted(cinematicAudio.getIsMuted());
   }, []);
 
-  // Enter RockyOS Universe Map
+  // Smooth transition to Universe Map
   const handleEnterHomepage = useCallback(() => {
     setIsTransitioning(true);
     cinematicAudio.stopAmbient();
@@ -49,7 +52,7 @@ export function OpeningExperience() {
     }, 900);
   }, [router]);
 
-  // Audio toggler
+  // Audio toggle
   const handleToggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
     const muted = cinematicAudio.toggleMute();
@@ -59,55 +62,119 @@ export function OpeningExperience() {
     }
   };
 
-  // User interactive advance engine (Click / Touch / Keyboard)
-  const handleUserAdvance = useCallback(() => {
-    // Start ambient on first interaction
-    if (!hasInteracted) {
-      setHasInteracted(true);
-      cinematicAudio.startAmbient();
-    }
+  // Scene 1 Action: Rejection Shatter
+  const triggerScene1 = useCallback(() => {
+    if (isShattering) return;
+    cinematicAudio.unlockAudio();
+    cinematicAudio.playRejectionShatter();
+    setIsShattering(true);
 
-    // Trigger visual micro vibration
-    setShakeTrigger((prev) => prev + 1);
-    setTimeout(() => setShakeTrigger(0), 160);
+    setTimeout(() => {
+      setIsShattering(false);
+      setCurrentIndex(1);
+    }, 700);
+  }, [isShattering]);
 
-    // Scene 1 ~ 3: Advance to next scene
-    if (currentScene.id < 4) {
-      cinematicAudio.playInteractPulse();
-      setCurrentIndex((prev) => prev + 1);
+  // Scene 2 Action: Handshake Clasp
+  const triggerScene2 = useCallback(() => {
+    if (isHandshakeShaking) return;
+    cinematicAudio.unlockAudio();
+    cinematicAudio.playHandshakeClasp();
+    setIsHandshakeShaking(true);
+
+    setTimeout(() => {
+      setIsHandshakeShaking(false);
+      setCurrentIndex(2);
+    }, 800);
+  }, [isHandshakeShaking]);
+
+  // Scene 3 Action: Sunrise holding loop
+  useEffect(() => {
+    if (currentIndex !== 2) {
+      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
+      setSunProgress(0);
+      setIsHoldingSun(false);
       return;
     }
 
-    // Scene 4: Door knocking sequence (Knock 1 -> 2 -> 3 -> 4)
-    if (currentScene.id === 4) {
-      if (knockCount < 3) {
-        const nextKnock = knockCount + 1;
-        setKnockCount(nextKnock);
-        cinematicAudio.playDoorKnock(nextKnock);
-      } else if (knockCount === 3) {
-        // Final knock: Door opens
-        setKnockCount(4);
-        setIsDoorOpen(true);
-        cinematicAudio.playDoorKnock(4);
-        cinematicAudio.playVaultOpenSwell();
-
-        // Automatically walk into Universe Map after dramatic swell
-        setTimeout(() => {
-          handleEnterHomepage();
-        }, 3200);
-      } else {
-        // Door already open -> Direct enter
-        handleEnterHomepage();
-      }
+    if (isHoldingSun) {
+      cinematicAudio.unlockAudio();
+      sunTimerRef.current = setInterval(() => {
+        setSunProgress((prev) => {
+          const next = Math.min(prev + 0.08, 1);
+          cinematicAudio.playSunRiseTone(next);
+          if (next >= 1) {
+            if (sunTimerRef.current) clearInterval(sunTimerRef.current);
+            setTimeout(() => {
+              setCurrentIndex(3);
+            }, 600);
+          }
+          return next;
+        });
+      }, 80);
+    } else {
+      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
     }
-  }, [hasInteracted, currentScene.id, knockCount, handleEnterHomepage]);
 
-  // Keyboard navigation support: Space / Enter / Esc / M / R
+    return () => {
+      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
+    };
+  }, [currentIndex, isHoldingSun]);
+
+  // Scene 4 Action: 3-Knock progression
+  const triggerDoorKnock = useCallback(() => {
+    cinematicAudio.unlockAudio();
+
+    if (knockStage === 0) {
+      // Knock 1: Robot alone (door locked)
+      setKnockStage(1);
+      cinematicAudio.playDoorKnock1_Robot();
+    } else if (knockStage === 1) {
+      // Knock 2: Human alone (door locked)
+      setKnockStage(2);
+      cinematicAudio.playDoorKnock2_Human();
+    } else if (knockStage === 2) {
+      // Knock 3: Together (door opens!)
+      setKnockStage(3);
+      setIsDoorOpen(true);
+      cinematicAudio.playDoorKnock3_Together();
+
+      // Automatically transition to Universe Map after swell
+      setTimeout(() => {
+        handleEnterHomepage();
+      }, 3400);
+    } else {
+      handleEnterHomepage();
+    }
+  }, [knockStage, handleEnterHomepage]);
+
+  // General user interaction handler on whole stage
+  const handleStageClick = () => {
+    cinematicAudio.unlockAudio();
+
+    if (currentScene.id === 1) {
+      triggerScene1();
+    } else if (currentScene.id === 2) {
+      triggerScene2();
+    } else if (currentScene.id === 3) {
+      // If clicked without holding in Scene 3, automatically perform full sunrise
+      setIsHoldingSun(true);
+    } else if (currentScene.id === 4) {
+      triggerDoorKnock();
+    }
+  };
+
+  // Keyboard navigation: Space/Enter/Esc/M/R
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
-        handleUserAdvance();
+        cinematicAudio.unlockAudio();
+
+        if (currentScene.id === 1) triggerScene1();
+        else if (currentScene.id === 2) triggerScene2();
+        else if (currentScene.id === 3) setIsHoldingSun(true);
+        else if (currentScene.id === 4) triggerDoorKnock();
       } else if (e.code === "Escape") {
         e.preventDefault();
         handleEnterHomepage();
@@ -118,65 +185,81 @@ export function OpeningExperience() {
       } else if (e.key === "r" || e.key === "R") {
         e.preventDefault();
         setCurrentIndex(0);
-        setKnockCount(0);
+        setKnockStage(0);
+        setSunProgress(0);
         setIsDoorOpen(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleUserAdvance, handleEnterHomepage]);
+  }, [
+    currentScene.id,
+    triggerScene1,
+    triggerScene2,
+    triggerDoorKnock,
+    handleEnterHomepage,
+  ]);
 
-  // Resolve dynamic texts for Scene 4 based on knock progression
-  const getScene4Text = () => {
-    if (knockCount <= 1) {
+  // Dynamic Scene 4 narrative resolution based on the 3 knocks
+  const getScene4State = () => {
+    if (knockStage <= 1) {
       return {
         lineEn: "I questioned AI.",
         lineZh: "我曾质疑 AI。",
-        badge: "KNOCK 1 / 4",
-        subEn: "Opportunities ahead. The journey begins with questioning.",
-        subZh: "心存敬畏与质疑，敲响通往未来的第一声序曲。",
-        ctaEn: "Tap to knock again (2/4)",
-        ctaZh: "点击大门 · 敲响第二声 (2/4)",
+        subEn: "Robot knocks alone. The gateway remains silent and sealed.",
+        subZh: "机器独行敲击，大门纹丝不动。需要人类的参与。",
+        ctaEn: "Human, tap to knock (2/3)",
+        ctaZh: "人类加入 · 敲击第二声 (2/3)",
       };
-    } else if (knockCount === 2) {
+    } else if (knockStage === 2) {
       return {
         lineEn: "I learned to work with AI.",
         lineZh: "我学会了与 AI 合作。",
-        badge: "KNOCK 2 / 4",
-        subEn: "Opportunities together. Shared purpose unlocks synergy.",
-        subZh: "放下偏见，与算力并肩探索心智的无尽可能。",
-        ctaEn: "Tap to knock again (3/4)",
-        ctaZh: "点击大门 · 敲响第三声 (3/4)",
-      };
-    } else if (knockCount === 3) {
-      return {
-        lineEn: "I began to see what we could become together.",
-        lineZh: "我开始看到我们共同走向的未来。",
-        badge: "KNOCK 3 / 4",
-        subEn: "Limitless horizon. The lock turns on the celestial threshold.",
-        subZh: "极光漫过门隙，星际引力场锁扣正在解开。",
-        ctaEn: "Final knock to open gateway (4/4)",
-        ctaZh: "最后轻叩 · 推开终章之门 (4/4)",
+        subEn: "Human knocks alone. The lock still resists without synergy.",
+        subZh: "人类独自敲击，大门依然锁死。唯有双方合力方能解锁。",
+        ctaEn: "Knock together to open portal (3/3)",
+        ctaZh: "双方合力 · 敲击开启大门 (3/3)",
       };
     } else {
       return {
         lineEn: "Welcome to RockyOS",
         lineZh: "欢迎来到 RockyOS",
-        badge: "PORTAL OPEN",
-        subEn: "A future beyond imagination. Step into the digital universe.",
-        subZh: "门扉大开，星辰浩瀚。欢迎踏入我的个人数字宇宙。",
+        subEn: "The gateway unlocks. Step into the personal digital universe.",
+        subZh: "极光漫灌，门扉大开。欢迎踏入我的个人数字宇宙。",
         ctaEn: "Enter Universe Map",
-        ctaZh: "立即进入星系主页",
+        ctaZh: "踏入星系主页",
       };
     }
   };
 
-  const scene4Resolved = getScene4Text();
+  const scene4Resolved = getScene4State();
+
+  const activeLineEn =
+    currentScene.id === 4 ? scene4Resolved.lineEn : currentScene.lineEn;
+  const activeLineZh =
+    currentScene.id === 4 ? scene4Resolved.lineZh : currentScene.lineZh;
+  const activeSub =
+    currentScene.id === 4
+      ? isZh
+        ? scene4Resolved.subZh
+        : scene4Resolved.subEn
+      : isZh
+      ? currentScene.subZh
+      : currentScene.subEn;
 
   return (
     <div
-      onClick={handleUserAdvance}
+      onClick={handleStageClick}
+      onPointerDown={() => {
+        cinematicAudio.unlockAudio();
+        if (currentScene.id === 3) setIsHoldingSun(true);
+      }}
+      onPointerUp={() => {
+        if (currentScene.id === 3 && sunProgress < 1) {
+          setIsHoldingSun(false);
+        }
+      }}
       className={`fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden select-none cursor-pointer transition-all duration-1000 ${
         isTransitioning
           ? "opacity-0 scale-105 filter blur-md"
@@ -184,18 +267,20 @@ export function OpeningExperience() {
       }`}
     >
       {/* -------------------------------------------------------------
-          BACKGROUND: FULLSCREEN CINEMATIC CANVAS (100vw x 100vh)
+          FULLSCREEN HIGH-DEFINITION STAGE (1920x1080 Native Render)
           ------------------------------------------------------------- */}
-      <CinematicFullscreenCanvas
+      <InteractiveOpeningStage
         scene={currentScene}
-        knockIndex={knockCount}
+        knockStage={knockStage}
+        sunProgress={sunProgress}
+        isShattering={isShattering}
+        isHandshakeShaking={isHandshakeShaking}
         isDoorOpen={isDoorOpen}
         isZh={isZh}
-        shakeTrigger={shakeTrigger}
       />
 
       {/* -------------------------------------------------------------
-          TOP BAR: ACT NUMBER, PROGRESSION PILLS, AUDIO, SKIP
+          TOP BAR: ACT NUMBER, SCENE INDICATORS, MUTE & SKIP
           ------------------------------------------------------------- */}
       <div
         className="absolute top-0 inset-x-0 p-6 sm:p-8 flex items-center justify-between z-30 pointer-events-none"
@@ -203,39 +288,39 @@ export function OpeningExperience() {
       >
         {/* Act Badge */}
         <div className="flex items-center gap-3">
-          <div className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-xs font-mono text-cyan-400 font-bold flex items-center gap-2">
+          <div className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-cyan-400 font-bold flex items-center gap-2 shadow-lg">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{currentScene.actBadge}</span>
-            <span className="text-white/40">·</span>
+            <span className="text-white/30">·</span>
             <span className="text-slate-200">
               {isZh ? currentScene.actTitleZh : currentScene.actTitleEn}
             </span>
           </div>
         </div>
 
-        {/* Scene Progress Indicators */}
+        {/* Scene Navigation Pills */}
         <div className="hidden sm:flex items-center gap-2">
           {CINEMA_SCENES.map((scene, idx) => (
             <div
               key={scene.id}
               className={`h-1.5 rounded-full transition-all duration-500 ${
                 idx === currentIndex
-                  ? "w-10 bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.9)]"
+                  ? "w-10 bg-amber-400 shadow-[0_0_14px_rgba(251,191,36,0.95)]"
                   : idx < currentIndex
-                  ? "w-4 bg-white/60"
+                  ? "w-4 bg-white/70"
                   : "w-2 bg-white/20"
               }`}
             />
           ))}
         </div>
 
-        {/* Action Controls: Audio + Skip */}
+        {/* Top Controls: Audio + Skip */}
         <div className="flex items-center gap-3 pointer-events-auto">
-          {/* Audio Mute/Unmute */}
+          {/* Mute/Unmute Toggle */}
           <button
             type="button"
             onClick={handleToggleMute}
-            className="p-2.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-slate-300 hover:text-white hover:border-white/30 transition-all active:scale-95"
+            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-slate-300 hover:text-white hover:border-white/40 transition-all active:scale-95 shadow-lg"
             title={isMuted ? "Unmute Audio" : "Mute Audio"}
             aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
           >
@@ -250,7 +335,7 @@ export function OpeningExperience() {
           <button
             type="button"
             onClick={handleEnterHomepage}
-            className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-xs font-mono text-slate-300 hover:text-white hover:border-white/30 transition-all flex items-center gap-2 active:scale-95"
+            className="px-4 py-2 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-slate-200 hover:text-white hover:border-white/40 transition-all flex items-center gap-2 active:scale-95 shadow-lg"
           >
             <span>{isZh ? "跳过 (SKIP)" : "SKIP"}</span>
             <FastForward className="w-3.5 h-3.5 text-cyan-400" />
@@ -259,44 +344,44 @@ export function OpeningExperience() {
       </div>
 
       {/* -------------------------------------------------------------
-          BOTTOM STAGE: DUAL-LANGUAGE SUBTITLES & INTERACTION PROMPT
+          BOTTOM STAGE: BILINGUAL SUBTITLES & PHYSICAL ACTION PILL
           ------------------------------------------------------------- */}
       <div className="absolute bottom-0 inset-x-0 p-6 sm:p-12 flex flex-col items-center text-center z-30 pointer-events-none">
         {/* Primary Narrative Title (English) */}
         <h1
-          key={`narrative-en-${currentIndex}-${knockCount}`}
-          className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-2 font-display drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-4xl"
+          key={`title-en-${currentIndex}-${knockStage}`}
+          className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-2 font-display drop-shadow-[0_4px_30px_rgba(0,0,0,1)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-4xl"
         >
-          {currentScene.id === 4 ? scene4Resolved.lineEn : currentScene.lineEn}
+          {activeLineEn}
         </h1>
 
-        {/* Secondary Subtitle (Chinese) */}
+        {/* Secondary Native Subtitle (Chinese) */}
         <p
-          key={`narrative-zh-${currentIndex}-${knockCount}`}
-          className="text-lg sm:text-2xl text-slate-200 font-sans font-medium mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-3xl"
+          key={`title-zh-${currentIndex}-${knockStage}`}
+          className="text-lg sm:text-2xl text-slate-100 font-sans font-semibold mb-3 drop-shadow-[0_2px_16px_rgba(0,0,0,1)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-3xl"
         >
-          {currentScene.id === 4 ? scene4Resolved.lineZh : currentScene.lineZh}
+          {activeLineZh}
         </p>
 
-        {/* Philosophical Context Note */}
-        <p className="text-xs sm:text-sm text-slate-400 max-w-xl font-sans mb-6 hidden sm:block drop-shadow-md">
-          {currentScene.id === 4 ? (isZh ? scene4Resolved.subZh : scene4Resolved.subEn) : isZh ? currentScene.subZh : currentScene.subEn}
+        {/* Narrative Context Note */}
+        <p className="text-xs sm:text-sm text-slate-300 max-w-xl font-sans mb-6 hidden sm:block drop-shadow-lg">
+          {activeSub}
         </p>
 
-        {/* Dynamic Interactive Call-to-Action Pill */}
-        <div className="pointer-events-auto mt-2">
-          <div className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-black/70 backdrop-blur-xl border border-white/20 text-xs sm:text-sm font-mono text-amber-300 font-bold shadow-[0_0_30px_rgba(245,158,11,0.2)] animate-pulse hover:bg-black/90 transition-all active:scale-95">
-            <Hand className="w-4 h-4" />
+        {/* Physical Action Button Indicator */}
+        <div className="pointer-events-auto mt-1">
+          <div className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-black/80 backdrop-blur-2xl border border-amber-400/40 text-xs sm:text-sm font-mono text-amber-300 font-bold shadow-[0_0_35px_rgba(245,158,11,0.3)] animate-pulse hover:bg-black/95 transition-all active:scale-95">
+            <Hand className="w-4 h-4 text-amber-400" />
             <span>
               {currentScene.id === 4
                 ? isZh
                   ? scene4Resolved.ctaZh
                   : scene4Resolved.ctaEn
                 : isZh
-                ? currentScene.interactivePromptZh
-                : currentScene.interactivePromptEn}
+                ? currentScene.actionPromptZh
+                : currentScene.actionPromptEn}
             </span>
-            <span className="text-white/40 hidden sm:inline">|</span>
+            <span className="text-white/30 hidden sm:inline">|</span>
             <span className="text-[10px] text-slate-400 font-normal hidden sm:inline">
               [SPACE / ENTER]
             </span>
@@ -304,7 +389,7 @@ export function OpeningExperience() {
         </div>
 
         {/* Bottom System Identity */}
-        <div className="mt-8 flex items-center justify-between w-full max-w-5xl text-[10px] font-mono text-slate-500 border-t border-white/10 pt-3">
+        <div className="mt-8 flex items-center justify-between w-full max-w-5xl text-[10px] font-mono text-slate-400 border-t border-white/10 pt-3">
           <span>ROCKYOS PROLOGUE // 2024 — 2034</span>
           <span>PRESS ESC TO SKIP · M TO MUTE · R TO REPLAY</span>
         </div>
