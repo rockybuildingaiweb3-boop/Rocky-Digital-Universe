@@ -1,15 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { WORLD_NODES } from "@/data/navigation";
 import { useLanguage } from "@/components/providers/language-provider";
 import { WeChatModal } from "@/features/connection/wechat-modal";
 import { ArrowRight, QrCode, Play, Sparkles } from "lucide-react";
 
 export default function HomePage() {
+  const router = useRouter();
   const { locale, t } = useLanguage();
   const [isWeChatOpen, setIsWeChatOpen] = useState(false);
+
+  // Check if first-time visitor; if not seen, guide to prologue
+  useEffect(() => {
+    try {
+      const seen = localStorage.getItem("rockyos_prologue_seen");
+      const urlParams = new URLSearchParams(window.location.search);
+      if (!seen && !urlParams.get("direct")) {
+        router.replace("/opening");
+      }
+    } catch (e) {
+      // Resilience for SSR or private mode
+    }
+  }, [router]);
 
   return (
     <div className="relative flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-20 max-w-6xl mx-auto w-full">

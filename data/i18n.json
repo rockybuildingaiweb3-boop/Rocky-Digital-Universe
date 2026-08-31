@@ -27,6 +27,40 @@
       "coord": "COORD",
       "world": "WORLD"
     },
+    "prologue": {
+      "badge": "PROLOGUE // THE AWAKENING",
+      "skip": "Skip to Universe Map",
+      "replay": "Replay Prologue",
+      "enter": "Enter Universe Map",
+      "scene1": {
+        "step": "ACT 01",
+        "title": "Distance",
+        "line1": "I questioned AI.",
+        "line2": "Skeptical of shortcuts. Guarding human craft.",
+        "action": "Robot reaches out · Human steps back"
+      },
+      "scene2": {
+        "step": "ACT 02",
+        "title": "Alignment",
+        "line1": "I learned to work with AI.",
+        "line2": "Not as a replacement, but as an intellectual amplifier.",
+        "action": "Hands unite · Neural circuits synchronize"
+      },
+      "scene3": {
+        "step": "ACT 03",
+        "title": "Synergy",
+        "line1": "Together, we built more than either of us could alone.",
+        "line2": "Human intuition multiplied by machine precision.",
+        "action": "Shared victory · Both thumbs raised high"
+      },
+      "scene4": {
+        "step": "ACT 04",
+        "title": "The Threshold",
+        "line1": "Four knocks on the gateway of a new era.",
+        "line2": "The door unlocks. Step into my digital universe.",
+        "action": "Knock 1 · Knock 2 · Knock 3 · Knock 4 · Vault Open"
+      }
+    },
     "footer": {
       "tagline": "Personal Operating System (2024–2034)",
       "edition": "Phase 1 Foundation Edition",
@@ -73,6 +107,40 @@
       "enterWorld": "进入世界",
       "coord": "坐标",
       "world": "世界"
+    },
+    "prologue": {
+      "badge": "前言剧场 // 人机共生觉醒",
+      "skip": "跳过前言 · 进入星系地图",
+      "replay": "重播前言剧场",
+      "enter": "踏入星系世界",
+      "scene1": {
+        "step": "第一幕",
+        "title": "审视与隔阂",
+        "line1": "我曾对 AI 抱有质疑。",
+        "line2": "警惕投机取巧，坚守人类独有的创造底线。",
+        "action": "机械臂主动示意 · 人类犹豫后撤"
+      },
+      "scene2": {
+        "step": "第二幕",
+        "title": "理解与交融",
+        "line1": "我开始学会与 AI 并肩作战。",
+        "line2": "它不是替代者，而是拓宽认知边界的心智放大器。",
+        "action": "双手紧握 · 神经脉冲与思维同频共振"
+      },
+      "scene3": {
+        "step": "第三幕",
+        "title": "共生与超越",
+        "line1": "携手同行，我们创造出彼此独自无法企及的可能。",
+        "line2": "以人类审美与哲学为罗盘，以机器极致效能为引擎。",
+        "action": "协同共胜 · 彼此共竖拇指点赞"
+      },
+      "scene4": {
+        "step": "第四幕",
+        "title": "启门与踏入",
+        "line1": "四声轻叩，敲响通往新纪元的大门。",
+        "line2": "门扉轻启，极光破晓。欢迎踏入我的数字宇宙。",
+        "action": "轻叩一声 · 两声 · 三声 · 四声 · 宇宙门启"
+      }
     },
     "footer": {
       "tagline": "个人成长操作系统 (2024–2034)",
@@ -121,6 +189,40 @@
       "coord": "KOORD",
       "world": "WELT"
     },
+    "prologue": {
+      "badge": "PROLOG // DAS ERWACHEN",
+      "skip": "Prolog überspringen",
+      "replay": "Prolog wiederholen",
+      "enter": "Universum betreten",
+      "scene1": {
+        "step": "AKT 01",
+        "title": "Distanz",
+        "line1": "Ich habe KI hinterfragt.",
+        "line2": "Skeptisch gegenüber Abkürzungen. Menschliche Handwerkskunst schützend.",
+        "action": "Roboter reicht Hand · Mensch weicht zurück"
+      },
+      "scene2": {
+        "step": "AKT 02",
+        "title": "Annäherung",
+        "line1": "Ich lernte, mit KI zu arbeiten.",
+        "line2": "Nicht als Ersatz, sondern als intellektueller Verstärker.",
+        "action": "Händedruck · Synapsen und Schaltkreise synchronisieren"
+      },
+      "scene3": {
+        "step": "AKT 03",
+        "title": "Synergie",
+        "line1": "Gemeinsam bauten wir mehr, als jeder allein gekonnt hätte.",
+        "line2": "Menschliche Intuition multipliziert mit maschineller Präzision.",
+        "action": "Geteilter Sieg · Beide Daumen nach oben"
+      },
+      "scene4": {
+        "step": "AKT 04",
+        "title": "Die Schwelle",
+        "line1": "Vier Klopfzeichen am Tor einer neuen Ära.",
+        "line2": "Die Tür öffnet sich. Treten Sie ein in mein digitales Universum.",
+        "action": "Klopfen 1 · 2 · 3 · 4 · Tor öffnet sich"
+      }
+    },
     "footer": {
       "tagline": "Persönliches Betriebssystem (2024–2034)",
       "edition": "Phase 1 Fundament-Edition",
@@ -168,6 +270,40 @@
       "coord": "COORD",
       "world": "MONDE"
     },
+    "prologue": {
+      "badge": "PROLOGUE // L'ÉVEIL",
+      "skip": "Passer le prologue",
+      "replay": "Rejouer le prologue",
+      "enter": "Entrer dans l'univers",
+      "scene1": {
+        "step": "ACTE 01",
+        "title": "Distance",
+        "line1": "J'ai remis en question l'IA.",
+        "line2": "Sceptique face aux raccourcis. Préservant l'artisanat humain.",
+        "action": "Le robot tend la main · L'humain recule"
+      },
+      "scene2": {
+        "step": "ACTE 02",
+        "title": "Alliance",
+        "line1": "J'ai appris à travailler avec l'IA.",
+        "line2": "Non pas comme un remplaçant, mais comme un amplificateur intellectuel.",
+        "action": "Poignée de main · Circuits et esprit synchronisés"
+      },
+      "scene3": {
+        "step": "ACTE 03",
+        "title": "Synergie",
+        "line1": "Ensemble, nous avons créé plus que chacun seul.",
+        "line2": "L'intuition humaine démultipliée par la précision machine.",
+        "action": "Victoire partagée · Deux pouces levés"
+      },
+      "scene4": {
+        "step": "ACTE 04",
+        "title": "Le Seuil",
+        "line1": "Quatre coups à la porte d'une nouvelle ère.",
+        "line2": "La porte s'ouvre. Entrez dans mon univers numérique.",
+        "action": "Frappe 1 · 2 · 3 · 4 · Portail déverrouillé"
+      }
+    },
     "footer": {
       "tagline": "Système d'exploitation personnel (2024–2034)",
       "edition": "Édition Fondation Phase 1",
@@ -214,6 +350,40 @@
       "enterWorld": "世界に入る",
       "coord": "座標",
       "world": "世界"
+    },
+    "prologue": {
+      "badge": "プロローグ // 人とAIの覚醒",
+      "skip": "プロローグをスキップ",
+      "replay": "プロローグを再生",
+      "enter": "銀河へ入る",
+      "scene1": {
+        "step": "第一幕",
+        "title": "懐疑と距離",
+        "line1": "私はAIに疑問を抱いていた。",
+        "line2": "安易な近道に疑念を抱き、人間の創造性を守るために。",
+        "action": "ロボットが手を差し伸べる · 人間は距離を取る"
+      },
+      "scene2": {
+        "step": "第二幕",
+        "title": "対話と調和",
+        "line1": "私はAIと共に働くことを学んだ。",
+        "line2": "代替ではなく、知性を拡張するアンプリファイアとして。",
+        "action": "握手を交わす · 神経回路と意識が共鳴する"
+      },
+      "scene3": {
+        "step": "第三幕",
+        "title": "相乗と飛躍",
+        "line1": "共に歩むことで、単独では創れぬものを築き上げた。",
+        "line2": "人間の直観と機械の精密さが掛け合わされる。",
+        "action": "共なる勝利 · 共に親指を立てる"
+      },
+      "scene4": {
+        "step": "第四幕",
+        "title": "扉を開く時",
+        "line1": "新たな時代の門を四度叩く。",
+        "line2": "扉は開かれた。私のデジタルの宇宙へようこそ。",
+        "action": "ノック1 · 2 · 3 · 4 · 宇宙の扉が開く"
+      }
     },
     "footer": {
       "tagline": "個人オペレーティングシステム（2024–2034）",
