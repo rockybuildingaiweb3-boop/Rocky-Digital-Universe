@@ -1,0 +1,5 @@
+# Data Directory
+Houses static registries:
+- navigation.ts
+- i18n/ (en.json, zh.json)
+- timeline.ts

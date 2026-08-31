@@ -1,0 +1,10 @@
+# Features Directory
+Modular domain modules:
+- features/opening/ (4-scene Human-AI prologue)
+- features/galaxy/ (Universe Map interaction)
+- features/identity/
+- features/capability/
+- features/knowledge/
+- features/laboratory/
+- features/connection/ (WeChat modal & transmission)
+- features/growth/ (10-year timeline)
