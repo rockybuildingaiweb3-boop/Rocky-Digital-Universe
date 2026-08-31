@@ -1,31 +1,63 @@
 "use client";
 
-import Link from "next/link";
+import React from "react";
+import { WorldPortalTemplate } from "@/features/galaxy/world-portal-template";
 import { useLanguage } from "@/components/providers/language-provider";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export default function IdentityPage() {
-  const { t } = useLanguage();
+  const { locale } = useLanguage();
+
+  const isZh = locale === "zh";
+
+  const subsystems = [
+    {
+      number: "01",
+      title: isZh ? "个人原点故事" : "The Origin Story",
+      desc: isZh ? "从早期技术好奇到专业全栈工程开拓者的心路历程。" : "Narrative biography tracing the journey from curiosity to builder.",
+      tag: "BIOGRAPHY",
+    },
+    {
+      number: "02",
+      title: isZh ? "核心价值观" : "Core Values",
+      desc: isZh ? "匠人精神、技术诚实、极致所有权与长期主义守则。" : "Principles of craftsmanship, extreme ownership, and long-termism.",
+      tag: "VALUES",
+    },
+    {
+      number: "03",
+      title: isZh ? "成长转折时间线" : "Formative Timeline",
+      desc: isZh ? "人生核心章节、关键十字路口与心智认知重塑节点。" : "Major life chapters, crossroads, and intellectual milestones.",
+      tag: "CHRONOLOGY",
+    },
+    {
+      number: "04",
+      title: isZh ? "思想与哲学源泉" : "Books & Mental Models",
+      desc: isZh ? "塑造个人世界观的思想家、经典著作与认知透镜。" : "Thinkers, foundational books, and mental models that shaped my lens.",
+      tag: "PHILOSOPHY",
+    },
+    {
+      number: "05",
+      title: isZh ? "实体世界探索影像" : "Curated Gallery & Footprints",
+      desc: isZh ? "物理世界的足迹、城市漫游与屏幕之外的真实温度。" : "Visual footprints across physical cities, cultures, and offline life.",
+      tag: "EXPLORATION",
+    },
+    {
+      number: "06",
+      title: isZh ? "十年人生罗盘" : "10-Year Horizon Compass",
+      desc: isZh ? "未来十年的技术使命、个人愿景与生命航向。" : "Personal aspirations and purposeful compass for the decade ahead.",
+      tag: "VISION",
+    },
+  ];
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto">
-      <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-mono">
-        <Sparkles className="w-3.5 h-3.5" />
-        <span>WORLD 01 // IDENTITY SYSTEM</span>
-      </div>
-      <h1 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
-        {t("nav.identity")}
-      </h1>
-      <p className="text-slate-400 text-sm sm:text-base mb-8 leading-relaxed">
-        {t("subpage.underConstruction")}
-      </p>
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-all"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>{t("subpage.backHome")}</span>
-      </Link>
-    </main>
+    <WorldPortalTemplate
+      worldOrder="01"
+      worldName={isZh ? "身份世界" : "Identity Realm"}
+      worldSubtitle={isZh ? "剥离技术标签，回归真实的生命底色。" : "Human · Origin · Values · Purpose Behind The Code."}
+      missionQuote={isZh ? "技术的终极归宿是人性的温度。" : "Technology should feel human. Strip away the titles, uncover the core."}
+      accentColor="#06b6d4"
+      icon={Sparkles}
+      subsystems={subsystems}
+    />
   );
 }
