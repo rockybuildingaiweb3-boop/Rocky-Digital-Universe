@@ -1,21 +1,31 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "World 02: Capability // What I Can Build — RockyOS",
-  description: "Flagship engineering projects, full-stack architecture, and skills matrix.",
-};
+import Link from "next/link";
+import { useLanguage } from "@/components/providers/language-provider";
+import { ArrowLeft, Cpu } from "lucide-react";
 
 export default function CapabilityPage() {
+  const { t } = useLanguage();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
-      <div className="text-xs font-mono text-cyan-400 mb-2">WORLD 02 // CAPABILITY SYSTEM</div>
-      <h1 className="text-3xl font-bold mb-4">What I Can Build</h1>
-      <p className="max-w-md text-slate-400 text-sm mb-6">
-        Flagship projects, technical architectures, and verified engineering execution.
+    <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto">
+      <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-mono">
+        <Cpu className="w-3.5 h-3.5" />
+        <span>WORLD 02 // CAPABILITY SYSTEM</span>
+      </div>
+      <h1 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+        {t("nav.capability")}
+      </h1>
+      <p className="text-slate-400 text-sm sm:text-base mb-8 leading-relaxed">
+        {t("subpage.underConstruction")}
       </p>
-      <a href="/" className="text-xs font-mono text-cyan-400 hover:underline">
-        &larr; Back to Universe Map
-      </a>
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-all"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        <span>{t("subpage.backHome")}</span>
+      </Link>
     </main>
   );
 }

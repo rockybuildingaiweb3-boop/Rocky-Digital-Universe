@@ -1,21 +1,31 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "World 05: Connection // Human Bridge — RockyOS",
-  description: "Direct transmission, WeChat QR connection, and global collaboration channels.",
-};
+import Link from "next/link";
+import { useLanguage } from "@/components/providers/language-provider";
+import { ArrowLeft, Network } from "lucide-react";
 
 export default function ConnectionPage() {
+  const { t } = useLanguage();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 text-center">
-      <div className="text-xs font-mono text-cyan-400 mb-2">WORLD 05 // CONNECTION SYSTEM</div>
-      <h1 className="text-3xl font-bold mb-4">Human Bridge</h1>
-      <p className="max-w-md text-slate-400 text-sm mb-6">
-        Direct transmission, WeChat connectivity, and global cross-border bridges.
+    <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto">
+      <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-mono">
+        <Network className="w-3.5 h-3.5" />
+        <span>WORLD 05 // CONNECTION SYSTEM</span>
+      </div>
+      <h1 className="text-3xl sm:text-5xl font-bold mb-4 text-white">
+        {t("nav.connection")}
+      </h1>
+      <p className="text-slate-400 text-sm sm:text-base mb-8 leading-relaxed">
+        {t("subpage.underConstruction")}
       </p>
-      <a href="/" className="text-xs font-mono text-cyan-400 hover:underline">
-        &larr; Back to Universe Map
-      </a>
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-all"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        <span>{t("subpage.backHome")}</span>
+      </Link>
     </main>
   );
 }

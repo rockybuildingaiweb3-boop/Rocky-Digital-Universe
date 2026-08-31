@@ -1,7 +1,12 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { useLanguage } from "@/components/providers/language-provider";
 
 export function GlobalFooter() {
+  const { t } = useLanguage();
+
   return (
     <footer className="w-full border-t border-white/10 bg-slate-950/60 backdrop-blur-sm py-10 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-xs text-slate-500">
@@ -11,19 +16,19 @@ export function GlobalFooter() {
             Rocky&apos;s Digital Universe
           </span>
           <span className="hidden sm:inline text-slate-700">/</span>
-          <span>Personal Operating System (2024–2034)</span>
+          <span>{t("footer.tagline")}</span>
         </div>
 
         {/* Center Links */}
-        <div className="flex items-center gap-4 text-slate-400">
+        <div className="flex flex-wrap justify-center items-center gap-4 text-slate-400">
           <Link href="/opening" className="hover:text-cyan-400 transition-colors">
-            Prologue
+            {t("nav.prologue")}
           </Link>
           <Link href="/growth" className="hover:text-cyan-400 transition-colors">
-            Changelog
+            {t("nav.growth")}
           </Link>
           <Link href="/connection" className="hover:text-cyan-400 transition-colors">
-            WeChat QR
+            {t("nav.connection")}
           </Link>
           <a
             href="https://github.com/rockybuildingaiweb3-boop/Rocky-Digital-Universe"
@@ -38,7 +43,7 @@ export function GlobalFooter() {
         {/* Right Status */}
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span className="text-slate-400">Phase 1 Foundation Edition</span>
+          <span className="text-slate-400">{t("footer.edition")}</span>
         </div>
       </div>
     </footer>

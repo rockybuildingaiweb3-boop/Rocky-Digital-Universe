@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Copy, Check, QrCode } from "lucide-react";
+import { Copy, Check, QrCode, X } from "lucide-react";
+import { useLanguage } from "@/components/providers/language-provider";
 
 export function WeChatModal({
   isOpen,
@@ -10,6 +11,7 @@ export function WeChatModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const wechatId = "rocky_digital_os";
 
@@ -22,17 +24,34 @@ export function WeChatModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="wechat-modal-title"
+    >
       <div className="relative w-full max-w-sm p-6 rounded-2xl border border-white/10 bg-slate-900 text-center shadow-2xl">
+        {/* Close Button Top Right */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+          aria-label={t("wechat.close")}
+        >
+          <X className="w-4 h-4" />
+        </button>
+
         {/* Laser Scanner Indicator */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono mb-4">
           <QrCode className="w-3.5 h-3.5" />
-          <span>WECHAT DIRECT CONNECT</span>
+          <span>{t("wechat.badge")}</span>
         </div>
 
-        <h3 className="text-lg font-bold text-white mb-2">Connect via WeChat (微信)</h3>
+        <h3 id="wechat-modal-title" className="text-lg font-bold text-white mb-2">
+          {t("wechat.title")}
+        </h3>
         <p className="text-xs text-slate-400 mb-6">
-          Scan the QR code or copy the ID for domestic partnership & consulting.
+          {t("wechat.desc")}
         </p>
 
         {/* QR Frame with Laser Line */}
@@ -45,34 +64,34 @@ export function WeChatModal({
         </div>
 
         {/* Copy WeChat ID Pill */}
-        <div className="flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5 text-xs font-mono mb-6">
+        <div className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 text-xs font-mono mb-6">
           <span className="text-slate-300">ID: {wechatId}</span>
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 transition-all active:scale-95"
           >
             {copied ? (
               <>
                 <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400">Copied!</span>
+                <span className="text-emerald-400 font-bold">{t("wechat.copied")}</span>
               </>
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5" />
-                <span>Copy ID</span>
+                <span>{t("wechat.copyId")}</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Close Button */}
+        {/* Bottom Close Button */}
         <button
           type="button"
           onClick={onClose}
           className="w-full py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-xs font-mono text-slate-300 hover:text-white transition-colors"
         >
-          Close
+          {t("wechat.close")}
         </button>
       </div>
     </div>

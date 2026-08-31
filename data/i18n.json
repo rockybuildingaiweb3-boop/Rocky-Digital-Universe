@@ -1,0 +1,237 @@
+{
+  "en": {
+    "nav": {
+      "universeMap": "Universe Map",
+      "identity": "Identity",
+      "capability": "Capability",
+      "knowledge": "Knowledge",
+      "laboratory": "Laboratory",
+      "connection": "Connection",
+      "growth": "Growth",
+      "prologue": "Prologue",
+      "connect": "Connect",
+      "status": "ONLINE",
+      "menu": "Menu",
+      "close": "Close"
+    },
+    "hero": {
+      "badge": "ROCKYOS v1.0 // KERNEL ONLINE",
+      "titleLine1": "Not a Portfolio.",
+      "titleLine2": "My Personal Operating System.",
+      "mission": "A living digital universe to document growth, showcase capabilities, share knowledge, and connect with the world over the next decade (2024–2034).",
+      "ctaPrologue": "Watch Human-AI Prologue",
+      "ctaWeChat": "WeChat Connect",
+      "worldsHeading": "The Six Core Worlds",
+      "worldsSub": "Select a celestial realm to explore Rocky's digital ecosystem.",
+      "enterWorld": "Enter World",
+      "coord": "COORD",
+      "world": "WORLD"
+    },
+    "footer": {
+      "tagline": "Personal Operating System (2024–2034)",
+      "edition": "Phase 1 Foundation Edition",
+      "rights": "All rights reserved."
+    },
+    "wechat": {
+      "badge": "WECHAT DIRECT CONNECT",
+      "title": "Connect via WeChat (微信)",
+      "desc": "Scan the QR code or copy the ID for domestic partnership & consulting.",
+      "copied": "Copied!",
+      "copyId": "Copy ID",
+      "close": "Close"
+    },
+    "subpage": {
+      "backHome": "Back to Universe Map",
+      "status": "WORLD ONLINE",
+      "underConstruction": "This world is undergoing initial architectural construction. Detailed systems, interactive blueprints, and knowledge items will be deployed incrementally."
+    }
+  },
+  "zh": {
+    "nav": {
+      "universeMap": "星系总览",
+      "identity": "身份世界",
+      "capability": "能力世界",
+      "knowledge": "知识世界",
+      "laboratory": "实验世界",
+      "connection": "连接世界",
+      "growth": "成长世界",
+      "prologue": "前言剧场",
+      "connect": "商务连接",
+      "status": "正常运行",
+      "menu": "导航菜单",
+      "close": "关闭"
+    },
+    "hero": {
+      "badge": "ROCKYOS v1.0 // 内核正常运行",
+      "titleLine1": "它不是一个作品集。",
+      "titleLine2": "它是我的个人操作系统。",
+      "mission": "这是我的数字世界：一个记录成长、展示能力、分享知识、连接他人的地方。不仅展示现在的自己，更记录未来十年成长的自己 (2024–2034)。",
+      "ctaPrologue": "观看人机合作前言剧场",
+      "ctaWeChat": "微信扫码直连",
+      "worldsHeading": "六大核心世界",
+      "worldsSub": "探索 RockyOS 数字化生命宇宙的六大核心维度。",
+      "enterWorld": "进入世界",
+      "coord": "坐标",
+      "world": "世界"
+    },
+    "footer": {
+      "tagline": "个人成长操作系统 (2024–2034)",
+      "edition": "第一阶段 基石版本",
+      "rights": "保留所有权利。"
+    },
+    "wechat": {
+      "badge": "微信官方直连",
+      "title": "微信扫码直连名片",
+      "desc": "扫描二维码或一键复制微信号，开启技术咨询与深度合作洽谈。",
+      "copied": "微信号已复制！",
+      "copyId": "复制微信号",
+      "close": "关闭"
+    },
+    "subpage": {
+      "backHome": "返回星系主页",
+      "status": "世界运行中",
+      "underConstruction": "本世界正处于第一阶段基石建设中。详细的架构蓝图、工程案例与知识沉淀将在此逐步部署呈现。"
+    }
+  },
+  "de": {
+    "nav": {
+      "universeMap": "Universum-Karte",
+      "identity": "Identität",
+      "capability": "Fähigkeiten",
+      "knowledge": "Wissen",
+      "laboratory": "Labor",
+      "connection": "Verbindung",
+      "growth": "Wachstum",
+      "prologue": "Prolog",
+      "connect": "Kontakt",
+      "status": "ONLINE",
+      "menu": "Menü",
+      "close": "Schließen"
+    },
+    "hero": {
+      "badge": "ROCKYOS v1.0 // KERNEL AKTIV",
+      "titleLine1": "Kein Portfolio.",
+      "titleLine2": "Mein persönliches Betriebssystem.",
+      "mission": "Ein lebendiges digitales Universum zur Dokumentation von Wachstum, Fähigkeiten, Wissen und weltweiter Vernetzung (2024–2034).",
+      "ctaPrologue": "Mensch-KI Prolog ansehen",
+      "ctaWeChat": "WeChat Kontakt",
+      "worldsHeading": "Die Sechs Kernwelten",
+      "worldsSub": "Wählen Sie eine Welt, um Rockys digitales Ökosystem zu erkunden.",
+      "enterWorld": "Welt betreten",
+      "coord": "KOORD",
+      "world": "WELT"
+    },
+    "footer": {
+      "tagline": "Persönliches Betriebssystem (2024–2034)",
+      "edition": "Phase 1 Fundament-Edition",
+      "rights": "Alle Rechte vorbehalten."
+    },
+    "wechat": {
+      "badge": "WECHAT DIREKTVERBINDUNG",
+      "title": "Über WeChat verbinden",
+      "desc": "QR-Code scannen oder ID kopieren für Partnerschaften & Beratung.",
+      "copied": "Kopiert!",
+      "copyId": "ID kopieren",
+      "close": "Schließen"
+    },
+    "subpage": {
+      "backHome": "Zurück zur Universum-Karte",
+      "status": "WELT ONLINE",
+      "underConstruction": "Diese Welt befindet sich im architektonischen Aufbau. Detaillierte Systeme werden schrittweise bereitgestellt."
+    }
+  },
+  "fr": {
+    "nav": {
+      "universeMap": "Carte de l'univers",
+      "identity": "Identité",
+      "capability": "Capacités",
+      "knowledge": "Connaissance",
+      "laboratory": "Laboratoire",
+      "connection": "Connexion",
+      "growth": "Croissance",
+      "prologue": "Prologue",
+      "connect": "Contact",
+      "status": "EN LIGNE",
+      "menu": "Menu",
+      "close": "Fermer"
+    },
+    "hero": {
+      "badge": "ROCKYOS v1.0 // NOYAU EN LIGNE",
+      "titleLine1": "Pas un portfolio.",
+      "titleLine2": "Mon système d'exploitation personnel.",
+      "mission": "Un univers numérique vivant pour documenter la croissance, exposer les compétences, partager le savoir et se connecter au monde (2024–2034).",
+      "ctaPrologue": "Regarder le prologue Humain-IA",
+      "ctaWeChat": "Connexion WeChat",
+      "worldsHeading": "Les Six Mondes Fondamentaux",
+      "worldsSub": "Explorez les dimensions de l'écosystème numérique de Rocky.",
+      "enterWorld": "Entrer dans le monde",
+      "coord": "COORD",
+      "world": "MONDE"
+    },
+    "footer": {
+      "tagline": "Système d'exploitation personnel (2024–2034)",
+      "edition": "Édition Fondation Phase 1",
+      "rights": "Tous droits réservés."
+    },
+    "wechat": {
+      "badge": "CONNEXION DIRECTE WECHAT",
+      "title": "Se connecter via WeChat",
+      "desc": "Scannez le code QR ou copiez l'ID pour des partenariats et conseils.",
+      "copied": "Copié !",
+      "copyId": "Copier l'ID",
+      "close": "Fermer"
+    },
+    "subpage": {
+      "backHome": "Retour à la carte de l'univers",
+      "status": "MONDE EN LIGNE",
+      "underConstruction": "Ce monde est en cours de construction architecturale initiale. Les systèmes seront déployés progressivement."
+    }
+  },
+  "ja": {
+    "nav": {
+      "universeMap": "銀河マップ",
+      "identity": "自己の探求",
+      "capability": "能力と実績",
+      "knowledge": "知識と学び",
+      "laboratory": "実験場",
+      "connection": "つながり",
+      "growth": "成長の軌跡",
+      "prologue": "プロローグ",
+      "connect": "連絡先",
+      "status": "稼働中",
+      "menu": "メニュー",
+      "close": "閉じる"
+    },
+    "hero": {
+      "badge": "ROCKYOS v1.0 // カーネル稼働中",
+      "titleLine1": "ポートフォリオではない。",
+      "titleLine2": "私の個人オペレーティングシステム。",
+      "mission": "成長を記録し、能力を示し、知識を共有し、世界とつながるためのデジタルの宇宙（2024–2034）。",
+      "ctaPrologue": "人間とAIのプロローグを見る",
+      "ctaWeChat": "WeChatで接続",
+      "worldsHeading": "6つのコアワールド",
+      "worldsSub": "Rockyのデジタルエコシステムを探索するための銀河の世界を選択してください。",
+      "enterWorld": "世界に入る",
+      "coord": "座標",
+      "world": "世界"
+    },
+    "footer": {
+      "tagline": "個人オペレーティングシステム（2024–2034）",
+      "edition": "フェーズ1 基盤エディション",
+      "rights": "無断転載を禁じます。"
+    },
+    "wechat": {
+      "badge": "WECHAT 公式ダイレクト",
+      "title": "WeChatでつながる",
+      "desc": "QRコードをスキャンするかIDをコピーして、提携や相談を開始できます。",
+      "copied": "コピーしました！",
+      "copyId": "IDをコピー",
+      "close": "閉じる"
+    },
+    "subpage": {
+      "backHome": "銀河マップへ戻る",
+      "status": "ワールド稼働中",
+      "underConstruction": "この世界は初期アーキテクチャ構築中です。詳細なシステムと知見は段階的に公開されます。"
+    }
+  }
+}
