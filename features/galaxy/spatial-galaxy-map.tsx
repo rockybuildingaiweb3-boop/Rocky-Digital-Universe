@@ -26,8 +26,8 @@ export function SpatialGalaxyMap() {
         {/* Deep Space Background Orbit Network, Galaxy, & Exoplanet */}
         <OrbitalEnergyGrid activeWorld={activeWorld} />
 
-        {/* Integrated Floating Hero Aside (Top-Left Cosmic Quadrant) */}
-        <div className="absolute top-6 sm:top-14 left-2 sm:left-8 lg:left-12 z-30 pointer-events-auto">
+        {/* Integrated Floating Hero Aside (Top-Left Cosmic Flow) */}
+        <div className="absolute top-6 sm:top-12 left-2 sm:left-6 lg:left-10 z-30 pointer-events-auto">
           <GalaxyHeroAside />
         </div>
 
@@ -47,7 +47,7 @@ export function SpatialGalaxyMap() {
         ))}
 
         {/* Right Vertical Orbit / Scroll Guide matching reference */}
-        <div className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col items-center gap-2.5 z-20 pointer-events-none opacity-70 pr-2">
+        <div className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col items-center gap-2.5 z-20 pointer-events-none opacity-75 pr-2">
           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.95)]" />
           <div className="w-1 h-1 rounded-full bg-slate-500/80" />
           <div className="w-1 h-1 rounded-full bg-slate-500/80" />

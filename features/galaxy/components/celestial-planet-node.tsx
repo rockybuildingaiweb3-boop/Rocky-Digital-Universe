@@ -94,7 +94,7 @@ export function CelestialPlanetNode({
           isLeftPlacement ? "flex-row-reverse text-right" : "flex-row text-left"
         }`}
       >
-        {/* 1. LUMINOUS PLANETARY SPHERE */}
+        {/* 1. VOLUMETRIC LUMINOUS PLANETARY SPHERE */}
         <div className="relative flex items-center justify-center">
           {/* Outer Coronal Glow Atmosphere */}
           <motion.div
@@ -119,7 +119,7 @@ export function CelestialPlanetNode({
             style={{ borderColor: node.accentColor }}
           />
 
-          {/* Spherical Planetary Body */}
+          {/* Spherical Planetary Body with 3D Light Source */}
           <motion.div
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.94 }}
@@ -133,7 +133,7 @@ export function CelestialPlanetNode({
             }}
           >
             {/* Top-Left Specular Highlight Arc */}
-            <div className="absolute top-1 left-2 w-6 h-3 rounded-full bg-white/50 blur-[1px] -rotate-45 pointer-events-none" />
+            <div className="absolute top-1 left-2 w-6 h-3 rounded-full bg-white/60 blur-[1px] -rotate-45 pointer-events-none" />
             <div className="relative z-10 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
               {getIcon()}
             </div>
