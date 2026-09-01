@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/components/providers/language-provider";
 import { CINEMA_SCENES, type CinematicSceneConfig } from "./opening-config";
 import { InteractiveOpeningStage } from "./interactive-opening-stage";
@@ -21,8 +22,8 @@ export function OpeningExperience() {
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const isHoldingRef = useRef<boolean>(false);
-  const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const sunTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+  const holdStartTimeRef = useRef<number>(0);
 
   const currentScene: CinematicSceneConfig = CINEMA_SCENES[currentIndex];
   const isZh = locale === "zh";
@@ -131,74 +132,82 @@ export function OpeningExperience() {
   }, [knockStage]);
 
   // =========================================================================
-  // Pointer Down (Handles Scene 1 & 3 Pressing / Anticipation)
+  // Continuous Physics Loop via requestAnimationFrame
   // =========================================================================
-  const handlePointerDown = () => {
-    cinematicAudio.unlockAudio();
-    isHoldingRef.current = true;
+  const updateHoldPhysics = useCallback(() => {
+    if (!isHoldingRef.current) return;
+    const elapsed = performance.now() - holdStartTimeRef.current;
 
-    // Scene 1: Anticipation & Pressure Accumulation (1.6s)
-    if (currentScene.id === 1 && motionState !== "impact" && motionState !== "follow_through") {
-      setMotionState("engaging");
-      if (holdTimerRef.current) clearInterval(holdTimerRef.current);
-      let p = 0;
-      holdTimerRef.current = setInterval(() => {
-        if (!isHoldingRef.current) {
-          clearInterval(holdTimerRef.current!);
-          return;
-        }
-        p += 0.06;
-        setPressProgress(Math.min(p, 1));
-        cinematicAudio.updateTensionSound(p);
+    // Scene 1: Non-linear tension accumulation (1.6s)
+    if (currentScene.id === 1) {
+      const progress = Math.min(elapsed / MOTION_TIMING.scene1_holdDurationMs, 1);
+      setPressProgress(progress);
+      cinematicAudio.updateTensionSound(progress);
 
-        if (p >= 1) {
-          clearInterval(holdTimerRef.current!);
-          triggerScene1Shatter();
-        }
-      }, 95);
+      if (progress >= 1) {
+        isHoldingRef.current = false;
+        triggerScene1Shatter();
+        return;
+      }
     }
 
-    // Scene 3: Hold to rise the light
+    // Scene 3: Continuous light rise (1.8s)
+    if (currentScene.id === 3) {
+      const progress = Math.min(elapsed / MOTION_TIMING.scene3_riseHoldMs, 1);
+      setSunProgress(progress);
+      cinematicAudio.playSunRiseTone(progress);
+
+      if (progress >= 1) {
+        isHoldingRef.current = false;
+        setMotionState("follow_through");
+        setTimeout(() => {
+          setMotionState("idle");
+          setCurrentIndex(3); // Advance to Scene 4
+        }, MOTION_TIMING.scene3_settleMs);
+        return;
+      }
+    }
+
+    rafIdRef.current = requestAnimationFrame(updateHoldPhysics);
+  }, [currentScene.id, triggerScene1Shatter]);
+
+  // Pointer Down (Captures pointer & starts continuous physics)
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    cinematicAudio.unlockAudio();
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (err) {}
+
+    isHoldingRef.current = true;
+    holdStartTimeRef.current = performance.now();
+
+    if (currentScene.id === 1 && motionState !== "impact" && motionState !== "follow_through") {
+      setMotionState("engaging");
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(updateHoldPhysics);
+    }
+
     if (currentScene.id === 3) {
       setMotionState("engaging");
-      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
-      sunTimerRef.current = setInterval(() => {
-        if (!isHoldingRef.current) {
-          clearInterval(sunTimerRef.current!);
-          return;
-        }
-        setSunProgress((prev) => {
-          const next = Math.min(prev + 0.08, 1);
-          cinematicAudio.playSunRiseTone(next);
-          if (next >= 1) {
-            clearInterval(sunTimerRef.current!);
-            setMotionState("follow_through");
-            setTimeout(() => {
-              setMotionState("idle");
-              setCurrentIndex(3); // Advance to Scene 4
-            }, MOTION_TIMING.scene3_settleMs);
-          }
-          return next;
-        });
-      }, 90);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = requestAnimationFrame(updateHoldPhysics);
     }
   };
 
-  // Pointer Up (Cancels hold if released early with damping)
+  // Pointer Up (Damped release if released early)
   const handlePointerUp = () => {
     isHoldingRef.current = false;
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
 
-    // Scene 1 release early
+    // Scene 1 early release
     if (currentScene.id === 1 && pressProgress < 1 && motionState === "engaging") {
-      if (holdTimerRef.current) clearInterval(holdTimerRef.current);
       setPressProgress(0);
       setMotionState("idle");
       cinematicAudio.stopTensionSound();
     }
 
-    // Scene 3 release early
+    // Scene 3 early release
     if (currentScene.id === 3 && sunProgress < 1) {
-      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
       setMotionState("idle");
     }
   };
@@ -304,6 +313,7 @@ export function OpeningExperience() {
       onClick={handleStageClick}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
       className={`fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden select-none touch-none cursor-pointer transition-all duration-1000 ${
         motionState === "transitioning" || motionState === "complete"
           ? "opacity-0 scale-105 filter blur-md"

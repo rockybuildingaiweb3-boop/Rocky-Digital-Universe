@@ -2,9 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import type { CinematicSceneConfig } from "./opening-config";
 import type { MotionState } from "./motion-spec";
-import { MOTION_EASING } from "./motion-spec";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export function InteractiveOpeningStage({
@@ -28,25 +28,31 @@ export function InteractiveOpeningStage({
     <div className="relative w-full h-full overflow-hidden select-none bg-black">
       {/* =========================================================================
           SCENE 1: REJECTION (sc1.png)
-          Motion: Anticipation Contract -> Tension Build-up -> Crisp Shatter Release
+          Physics: Non-Linear Inward Tension -> Instant Shatter Snap -> Damped Release
           ========================================================================= */}
       {scene.id === 1 && (
-        <div
+        <motion.div
           className="relative w-full h-full"
-          style={{
-            transform:
+          animate={{
+            scale:
               motionState === "impact"
-                ? "scale(1.02) translate3d(0, -2px, 0)"
+                ? 1.025
                 : motionState === "engaging"
-                ? `scale(${1 - pressProgress * 0.008})`
-                : "scale(1)",
-            transition:
+                ? 1 - Math.sqrt(pressProgress) * 0.015
+                : 1,
+            y:
               motionState === "impact"
-                ? `transform 180ms ${MOTION_EASING.impactOvershoot}, filter 180ms ease-out`
-                : motionState === "follow_through"
-                ? `transform 450ms ${MOTION_EASING.smoothOut}`
-                : `transform 120ms ${MOTION_EASING.anticipationIn}`,
+                ? -3
+                : motionState === "engaging"
+                ? Math.sin(pressProgress * 30) * 0.8
+                : 0,
             filter: motionState === "impact" ? "brightness(1.25)" : "brightness(1)",
+          }}
+          transition={{
+            type: "spring",
+            stiffness: motionState === "impact" ? 600 : 300,
+            damping: motionState === "impact" ? 18 : 30,
+            mass: 0.8,
           }}
         >
           <Image
@@ -59,9 +65,9 @@ export function InteractiveOpeningStage({
             className="object-cover object-center"
           />
 
-          {/* Anticipatory Tension Darkening during Hold */}
-          <div
-            className="absolute inset-0 pointer-events-none transition-opacity duration-150"
+          {/* Dynamic Physical Tension Darkening */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
             style={{
               background: `radial-gradient(circle at center, transparent ${
                 72 - pressProgress * 32
@@ -70,43 +76,43 @@ export function InteractiveOpeningStage({
             }}
           />
 
-          {/* Clean Glass Fracture on Impact */}
-          {(motionState === "impact" || motionState === "follow_through") && (
-            <div
-              className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
-              style={{
-                opacity: motionState === "impact" ? 1 : 0.4,
-                transition: `opacity ${MOTION_EASING.smoothOut} 300ms`,
-              }}
-            >
-              <svg className="w-full h-full max-w-xl" viewBox="0 0 800 800" fill="none">
-                <path d="M400 400 L250 150 M400 400 L570 180 M400 400 L670 420 M400 400 L550 670 M400 400 L230 610 M400 400 L130 380" stroke="#bae6fd" strokeWidth="3" strokeLinecap="round" />
-                <path d="M250 150 L190 85 M570 180 L710 120 M670 420 L770 450 M550 670 L610 750 M230 610 L150 710" stroke="#7dd3fc" strokeWidth="1.5" strokeLinecap="round" />
-                <circle cx="400" cy="400" r="40" stroke="#ffffff" strokeWidth="2.5" fill="rgba(6,182,212,0.15)" />
-              </svg>
-            </div>
-          )}
-        </div>
+          {/* Clean Glass Fracture Shockwave on Impact */}
+          <AnimatePresence>
+            {(motionState === "impact" || motionState === "follow_through") && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
+              >
+                <svg className="w-full h-full max-w-xl" viewBox="0 0 800 800" fill="none">
+                  <path d="M400 400 L250 150 M400 400 L570 180 M400 400 L670 420 M400 400 L550 670 M400 400 L230 610 M400 400 L130 380" stroke="#bae6fd" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M250 150 L190 85 M570 180 L710 120 M670 420 L770 450 M550 670 L610 750 M230 610 L150 710" stroke="#7dd3fc" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="400" cy="400" r="40" stroke="#ffffff" strokeWidth="2.5" fill="rgba(6,182,212,0.15)" />
+                </svg>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       )}
 
       {/* =========================================================================
           SCENE 2: HANDSHAKE (sc2.png)
-          Motion: Contact -> Micro-Rebound -> Warm Golden Energy Flare
+          Physics: Contact Micro-Rebound Spring (Critically Damped) -> Warm Golden Energy
           ========================================================================= */}
       {scene.id === 2 && (
-        <div
+        <motion.div
           className="relative w-full h-full"
-          style={{
-            transform:
-              motionState === "impact"
-                ? "translate3d(1.5px, -1px, 0) scale(1.012) rotate(0.2deg)"
-                : motionState === "follow_through"
-                ? "translate3d(0, 0, 0) scale(1.002)"
-                : "translate3d(0, 0, 0) scale(1)",
-            transition:
-              motionState === "impact"
-                ? `transform 120ms ${MOTION_EASING.impactOvershoot}`
-                : `transform 450ms ${MOTION_EASING.smoothOut}`,
+          animate={{
+            x: motionState === "impact" ? [0, 2, -1, 0.5, 0] : 0,
+            y: motionState === "impact" ? [0, -1.5, 0.8, -0.3, 0] : 0,
+            scale: motionState === "impact" ? [1, 1.015, 1.002, 1] : 1,
+            rotate: motionState === "impact" ? [0, 0.25, -0.15, 0] : 0,
+          }}
+          transition={{
+            duration: 0.45,
+            ease: [0.16, 1, 0.3, 1],
           }}
         >
           <Image
@@ -119,36 +125,34 @@ export function InteractiveOpeningStage({
             className="object-cover object-center"
           />
 
-          {/* Warm Golden Energy Flare at Clasp Center */}
-          {(motionState === "impact" || motionState === "follow_through") && (
-            <div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-amber-400/25 blur-3xl pointer-events-none z-10"
-              style={{
-                opacity: motionState === "impact" ? 1 : 0.6,
-                transform:
-                  motionState === "impact"
-                    ? "translate(-50%, -50%) scale(1.1)"
-                    : "translate(-50%, -50%) scale(1.3)",
-                transition: `all 500ms ${MOTION_EASING.smoothOut}`,
-              }}
-            />
-          )}
-        </div>
+          {/* Localized Warm Golden Energy Flare on Contact */}
+          <AnimatePresence>
+            {(motionState === "impact" || motionState === "follow_through") && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.6, scale: 1.25 }}
+                exit={{ opacity: 0, scale: 1.4 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-amber-400/30 blur-3xl pointer-events-none z-10"
+              />
+            )}
+          </AnimatePresence>
+        </motion.div>
       )}
 
       {/* =========================================================================
-          SCENE 3: APPROVAL / CO-CREATION (sc3.png)
-          Motion: Slow Light Ascent -> Translucent Amber Warmth Expansion
+          SCENE 3: APPROVAL / TRUST (sc3.png)
+          Physics: Continuous Light Ascent & Hope Expansion
           ========================================================================= */}
       {scene.id === 3 && (
-        <div
+        <motion.div
           className="relative w-full h-full"
-          style={{
+          animate={{
             filter: `brightness(${1 + sunProgress * 0.35}) saturate(${
               1 + sunProgress * 0.25
             })`,
-            transition: `filter 180ms ${MOTION_EASING.smoothOut}`,
           }}
+          transition={{ duration: 0.15, ease: "linear" }}
         >
           <Image
             src={scene.imageSrc}
@@ -161,39 +165,46 @@ export function InteractiveOpeningStage({
           />
 
           {/* Rising Amber Backlight Expansion */}
-          <div
+          <motion.div
             className="absolute inset-0 pointer-events-none"
+            animate={{
+              opacity: sunProgress > 0 ? 1 : 0,
+            }}
             style={{
               background: `radial-gradient(circle at 50% ${70 - sunProgress * 30}%, rgba(251,191,36,${
                 sunProgress * 0.35
               }) 0%, transparent 70%)`,
-              opacity: sunProgress > 0 ? 1 : 0,
-              transition: `opacity 120ms ${MOTION_EASING.smoothOut}`,
             }}
           />
-        </div>
+        </motion.div>
       )}
 
       {/* =========================================================================
           SCENE 4: THREE-STAGE DOOR SEQUENCE (sc4.png)
-          Motion: 3-Knock Rhythm -> Escalation across 3 Door Panels
+          Physics: Rhythmic Door Impulse Matrices (Knock 1..3) -> Golden Light Flood
           ========================================================================= */}
       {scene.id === 4 && (
-        <div
+        <motion.div
           className="relative w-full h-full"
-          style={{
-            transform:
+          animate={{
+            x:
               knockStage === 1 && motionState === "impact"
-                ? "translate3d(-2px, 0, 0)"
-                : knockStage === 2 && motionState === "impact"
-                ? "translate3d(0, 1.5px, 0)"
+                ? [-2, 1.5, -0.8, 0]
+                : 0,
+            y:
+              knockStage === 2 && motionState === "impact"
+                ? [1.5, -1, 0.5, 0]
                 : knockStage === 3 && motionState === "impact"
-                ? "translate3d(0, -3px, 0) scale(1.015)"
-                : "translate3d(0, 0, 0) scale(1)",
-            transition:
-              motionState === "impact"
-                ? `transform 140ms ${MOTION_EASING.impactOvershoot}`
-                : `transform 400ms ${MOTION_EASING.smoothOut}`,
+                ? [-3, 2, -1, 0]
+                : 0,
+            scale:
+              knockStage === 3 && motionState === "impact"
+                ? [1, 1.02, 1.005, 1]
+                : 1,
+          }}
+          transition={{
+            duration: 0.35,
+            ease: [0.16, 1, 0.3, 1],
           }}
         >
           <Image
@@ -209,48 +220,56 @@ export function InteractiveOpeningStage({
           {/* 3-Panel Lighting Spotlight Feedback */}
           <div className="absolute inset-0 grid grid-cols-3 pointer-events-none">
             {/* Panel 1: Robot Hand on Closed Door */}
-            <div
-              className={`h-full border-r border-white/5 transition-all duration-700 ${
-                knockStage === 1
-                  ? "bg-cyan-500/15 shadow-[inset_0_0_80px_rgba(6,182,212,0.35)]"
-                  : "bg-black/30"
-              }`}
+            <motion.div
+              animate={{
+                backgroundColor:
+                  knockStage === 1 ? "rgba(6,182,212,0.18)" : "rgba(0,0,0,0.3)",
+              }}
+              transition={{ duration: 0.4 }}
+              className="h-full border-r border-white/5"
             />
             {/* Panel 2: Human Fist on Closed Door */}
-            <div
-              className={`h-full border-r border-white/5 transition-all duration-700 ${
-                knockStage === 2
-                  ? "bg-amber-500/20 shadow-[inset_0_0_80px_rgba(245,158,11,0.35)]"
-                  : "bg-black/30"
-              }`}
+            <motion.div
+              animate={{
+                backgroundColor:
+                  knockStage === 2 ? "rgba(245,158,11,0.22)" : "rgba(0,0,0,0.3)",
+              }}
+              transition={{ duration: 0.4 }}
+              className="h-full border-r border-white/5"
             />
             {/* Panel 3: Together Reaching to Open Door with Light Spill */}
-            <div
-              className={`h-full transition-all duration-700 ${
-                knockStage >= 3
-                  ? "bg-amber-400/25 shadow-[inset_0_0_100px_rgba(251,191,36,0.5)]"
-                  : "bg-black/30"
-              }`}
+            <motion.div
+              animate={{
+                backgroundColor:
+                  knockStage >= 3 ? "rgba(251,191,36,0.3)" : "rgba(0,0,0,0.3)",
+              }}
+              transition={{ duration: 0.4 }}
+              className="h-full"
             />
           </div>
 
           {/* Full Golden Volumetric Light Burst upon Knock 3 */}
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/35 to-amber-200/85 mix-blend-screen pointer-events-none"
-            style={{
+          <motion.div
+            animate={{
               opacity: knockStage >= 3 ? 1 : 0,
-              transition: `opacity 900ms ${MOTION_EASING.cinematicInOut}`,
             }}
+            transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/35 to-amber-200/85 mix-blend-screen pointer-events-none"
           />
-        </div>
+        </motion.div>
       )}
 
       {/* =========================================================================
           SCENE 5: WELCOME ROCKYOS — COSMIC PROLOGUE (sc5.png)
-          Observation deck panoramic view of galaxy & nebulae
+          Observation deck panoramic view with interactive entrance CTA
           ========================================================================= */}
       {scene.id === 5 && (
-        <div className="relative w-full h-full flex flex-col items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full h-full flex flex-col items-center justify-center"
+        >
           <Image
             src={scene.imageSrc}
             alt="Scene 5: Welcome RockyOS"
@@ -261,22 +280,29 @@ export function InteractiveOpeningStage({
             className="object-cover object-center"
           />
 
-          {/* Center Interactive Call to Action */}
-          <div className="relative z-30 flex flex-col items-center gap-4 pointer-events-auto mt-16 sm:mt-24 animate-in fade-in zoom-in-95 duration-1000">
-            <button
+          {/* Center Interactive Entrance CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-30 flex flex-col items-center gap-3.5 pointer-events-auto mt-16 sm:mt-24"
+          >
+            <motion.button
               type="button"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 45px rgba(6,182,212,0.6)" }}
+              whileTap={{ scale: 0.95 }}
               onClick={onEnterUniverse}
-              className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 active:scale-95 text-white font-mono text-sm tracking-wider uppercase backdrop-blur-md border border-cyan-400/50 shadow-[0_0_35px_rgba(6,182,212,0.45)] transition-all"
+              className="group flex items-center gap-3 px-8 py-3.5 rounded-full bg-cyan-500/25 hover:bg-cyan-500/40 text-white font-mono text-sm tracking-wider uppercase backdrop-blur-md border border-cyan-400/60 shadow-[0_0_35px_rgba(6,182,212,0.45)] transition-colors"
             >
               <Sparkles className="w-4 h-4 text-cyan-300 group-hover:rotate-12 transition-transform" />
               <span>{isZh ? "踏入星系主页" : "Enter Universe"}</span>
               <ArrowRight className="w-4 h-4 text-cyan-300 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </motion.button>
             <span className="text-[11px] font-mono text-white/40 tracking-widest uppercase">
               {isZh ? "点击按钮或任意区域进入" : "Click anywhere to explore"}
             </span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   );
