@@ -6,20 +6,19 @@ import { useLanguage } from "@/components/providers/language-provider";
 import { CINEMA_SCENES, type CinematicSceneConfig } from "./opening-config";
 import { InteractiveOpeningStage } from "./interactive-opening-stage";
 import { cinematicAudio } from "@/lib/cinematic-audio";
-import { Volume2, VolumeX, FastForward } from "lucide-react";
+import { MOTION_TIMING, type MotionState } from "./motion-spec";
+import { Volume2, VolumeX } from "lucide-react";
 
 export function OpeningExperience() {
   const router = useRouter();
   const { locale } = useLanguage();
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [motionState, setMotionState] = useState<MotionState>("idle");
   const [knockStage, setKnockStage] = useState<number>(0);
   const [sunProgress, setSunProgress] = useState<number>(0);
   const [pressProgress, setPressProgress] = useState<number>(0);
-  const [isShattering, setIsShattering] = useState<boolean>(false);
-  const [isHandshakeShaking, setIsHandshakeShaking] = useState<boolean>(false);
   const [isDoorOpen, setIsDoorOpen] = useState<boolean>(false);
-  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const isHoldingRef = useRef<boolean>(false);
@@ -36,13 +35,14 @@ export function OpeningExperience() {
 
   // Enter RockyOS Universe Map smoothly with BGM fadeout
   const handleEnterHomepage = useCallback(() => {
-    setIsTransitioning(true);
-    cinematicAudio.fadeOutBGM(900);
+    setMotionState("transitioning");
+    cinematicAudio.fadeOutBGM(MOTION_TIMING.scene4_bgmFadeoutMs);
     try {
       localStorage.setItem("rockyos_prologue_seen", "true");
     } catch (e) {}
 
     setTimeout(() => {
+      setMotionState("complete");
       router.push("/");
     }, 900);
   }, [router]);
@@ -54,67 +54,95 @@ export function OpeningExperience() {
     setIsMuted(muted);
   };
 
-  // Scene 1: Shatter Action after 1.6s Hold
+  // =========================================================================
+  // Scene 1: Shatter Action (Anticipation -> Impact -> Follow-Through)
+  // =========================================================================
   const triggerScene1Shatter = useCallback(() => {
-    if (isShattering) return;
+    if (motionState === "impact" || motionState === "follow_through") return;
+
+    setMotionState("impact");
     cinematicAudio.playRejectionShatter();
-    setIsShattering(true);
     setPressProgress(1);
 
+    // Follow-through phase
     setTimeout(() => {
-      setIsShattering(false);
-      setPressProgress(0);
-      setCurrentIndex(1);
-    }, 650);
-  }, [isShattering]);
+      setMotionState("follow_through");
+    }, MOTION_TIMING.scene1_shatterImpactMs);
 
-  // Scene 2: Handshake Clasp Action
+    // Dissolution & Advance to Scene 2
+    setTimeout(() => {
+      setPressProgress(0);
+      setMotionState("idle");
+      setCurrentIndex(1);
+    }, MOTION_TIMING.scene1_shatterImpactMs + MOTION_TIMING.scene1_followThroughMs);
+  }, [motionState]);
+
+  // =========================================================================
+  // Scene 2: Handshake Clasp Action (Contact -> Micro-Rebound -> Follow-Through)
+  // =========================================================================
   const triggerScene2Clasp = useCallback(() => {
-    if (isHandshakeShaking) return;
+    if (motionState === "impact" || motionState === "follow_through") return;
+
     cinematicAudio.unlockAudio();
     cinematicAudio.playHandshakeClasp();
-    setIsHandshakeShaking(true);
+    setMotionState("impact");
 
     setTimeout(() => {
-      setIsHandshakeShaking(false);
-      setCurrentIndex(2);
-    }, 750);
-  }, [isHandshakeShaking]);
+      setMotionState("follow_through");
+    }, MOTION_TIMING.scene2_reboundMs);
 
-  // Scene 4: 3-Stage Knock Action
+    setTimeout(() => {
+      setMotionState("idle");
+      setCurrentIndex(2);
+    }, MOTION_TIMING.scene2_reboundMs + MOTION_TIMING.scene2_followThroughMs);
+  }, [motionState]);
+
+  // =========================================================================
+  // Scene 4: 3-Stage Door Knock Sequence (Rhythm -> Escalation -> Payoff)
+  // =========================================================================
   const triggerDoorKnock = useCallback(() => {
     cinematicAudio.unlockAudio();
+    setMotionState("impact");
 
     if (knockStage === 0) {
       // Knock 1: Robot alone (door locked)
       setKnockStage(1);
       cinematicAudio.playDoorKnock1_Robot();
+      setTimeout(() => setMotionState("idle"), MOTION_TIMING.scene4_knock1TremorMs + 100);
     } else if (knockStage === 1) {
       // Knock 2: Human alone (door locked)
       setKnockStage(2);
       cinematicAudio.playDoorKnock2_Human();
+      setTimeout(() => setMotionState("idle"), MOTION_TIMING.scene4_knock2TremorMs + 100);
     } else if (knockStage === 2) {
-      // Knock 3: Together (door opens!)
+      // Knock 3: Together (Grand Payoff — door opens!)
       setKnockStage(3);
       setIsDoorOpen(true);
       cinematicAudio.playDoorKnock3_Together();
 
-      // Automatically transition to Universe Map after epic swell
+      setTimeout(() => {
+        setMotionState("follow_through");
+      }, MOTION_TIMING.scene4_knock3ImpactMs);
+
+      // Automatically transition to Universe Map after epic swell & light flood
       setTimeout(() => {
         handleEnterHomepage();
-      }, 3200);
+      }, MOTION_TIMING.scene4_homepageTransitionDelayMs);
     } else {
       handleEnterHomepage();
     }
   }, [knockStage, handleEnterHomepage]);
 
-  // Pointer Down (Handles Scene 1 Hold & Scene 3 Sunrise Hold)
+  // =========================================================================
+  // Pointer Down (Handles Scene 1 & 3 Pressing / Anticipation)
+  // =========================================================================
   const handlePointerDown = () => {
     cinematicAudio.unlockAudio();
     isHoldingRef.current = true;
 
-    // Scene 1: Hold to accumulate tension (1.6s)
-    if (currentScene.id === 1 && !isShattering) {
+    // Scene 1: Anticipation & Pressure Accumulation (1.6s)
+    if (currentScene.id === 1 && motionState !== "impact" && motionState !== "follow_through") {
+      setMotionState("engaging");
       if (holdTimerRef.current) clearInterval(holdTimerRef.current);
       let p = 0;
       holdTimerRef.current = setInterval(() => {
@@ -135,6 +163,7 @@ export function OpeningExperience() {
 
     // Scene 3: Hold to rise the sun
     if (currentScene.id === 3) {
+      setMotionState("engaging");
       if (sunTimerRef.current) clearInterval(sunTimerRef.current);
       sunTimerRef.current = setInterval(() => {
         if (!isHoldingRef.current) {
@@ -146,9 +175,11 @@ export function OpeningExperience() {
           cinematicAudio.playSunRiseTone(next);
           if (next >= 1) {
             clearInterval(sunTimerRef.current!);
+            setMotionState("follow_through");
             setTimeout(() => {
+              setMotionState("idle");
               setCurrentIndex(3);
-            }, 600);
+            }, MOTION_TIMING.scene3_settleMs);
           }
           return next;
         });
@@ -156,20 +187,22 @@ export function OpeningExperience() {
     }
   };
 
-  // Pointer Up (Cancels hold if released early)
+  // Pointer Up (Cancels hold if released early with damping)
   const handlePointerUp = () => {
     isHoldingRef.current = false;
 
     // Scene 1 release early
-    if (currentScene.id === 1 && pressProgress < 1 && !isShattering) {
+    if (currentScene.id === 1 && pressProgress < 1 && motionState === "engaging") {
       if (holdTimerRef.current) clearInterval(holdTimerRef.current);
       setPressProgress(0);
+      setMotionState("idle");
       cinematicAudio.stopTensionSound();
     }
 
     // Scene 3 release early
     if (currentScene.id === 3 && sunProgress < 1) {
       if (sunTimerRef.current) clearInterval(sunTimerRef.current);
+      setMotionState("idle");
     }
   };
 
@@ -195,7 +228,7 @@ export function OpeningExperience() {
         else if (currentScene.id === 2) triggerScene2Clasp();
         else if (currentScene.id === 3) {
           setSunProgress(1);
-          setTimeout(() => setCurrentIndex(3), 600);
+          setTimeout(() => setCurrentIndex(3), 500);
         } else if (currentScene.id === 4) triggerDoorKnock();
       } else if (e.code === "Escape") {
         e.preventDefault();
@@ -210,6 +243,7 @@ export function OpeningExperience() {
         setKnockStage(0);
         setSunProgress(0);
         setPressProgress(0);
+        setMotionState("idle");
         setIsDoorOpen(false);
       }
     };
@@ -272,7 +306,7 @@ export function OpeningExperience() {
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       className={`fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden select-none touch-none cursor-pointer transition-all duration-1000 ${
-        isTransitioning
+        motionState === "transitioning" || motionState === "complete"
           ? "opacity-0 scale-105 filter blur-md"
           : "opacity-100 scale-100"
       }`}
@@ -282,11 +316,10 @@ export function OpeningExperience() {
           ------------------------------------------------------------- */}
       <InteractiveOpeningStage
         scene={currentScene}
+        motionState={motionState}
         knockStage={knockStage}
         sunProgress={sunProgress}
         pressProgress={pressProgress}
-        isShattering={isShattering}
-        isHandshakeShaking={isHandshakeShaking}
         isDoorOpen={isDoorOpen}
       />
 
