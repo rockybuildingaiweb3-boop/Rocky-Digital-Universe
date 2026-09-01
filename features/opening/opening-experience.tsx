@@ -6,15 +6,7 @@ import { useLanguage } from "@/components/providers/language-provider";
 import { CINEMA_SCENES, type CinematicSceneConfig } from "./opening-config";
 import { InteractiveOpeningStage } from "./interactive-opening-stage";
 import { cinematicAudio } from "@/lib/cinematic-audio";
-import {
-  Volume2,
-  VolumeX,
-  FastForward,
-  RotateCcw,
-  Sparkles,
-  ArrowRight,
-  Hand,
-} from "lucide-react";
+import { Volume2, VolumeX, FastForward } from "lucide-react";
 
 export function OpeningExperience() {
   const router = useRouter();
@@ -62,7 +54,7 @@ export function OpeningExperience() {
     setIsMuted(muted);
   };
 
-  // Scene 1: Shatter Action after 1.8s Hold
+  // Scene 1: Shatter Action after 1.6s Hold
   const triggerScene1Shatter = useCallback(() => {
     if (isShattering) return;
     cinematicAudio.playRejectionShatter();
@@ -73,7 +65,7 @@ export function OpeningExperience() {
       setIsShattering(false);
       setPressProgress(0);
       setCurrentIndex(1);
-    }, 700);
+    }, 650);
   }, [isShattering]);
 
   // Scene 2: Handshake Clasp Action
@@ -86,7 +78,7 @@ export function OpeningExperience() {
     setTimeout(() => {
       setIsHandshakeShaking(false);
       setCurrentIndex(2);
-    }, 800);
+    }, 750);
   }, [isHandshakeShaking]);
 
   // Scene 4: 3-Stage Knock Action
@@ -110,7 +102,7 @@ export function OpeningExperience() {
       // Automatically transition to Universe Map after epic swell
       setTimeout(() => {
         handleEnterHomepage();
-      }, 3400);
+      }, 3200);
     } else {
       handleEnterHomepage();
     }
@@ -121,7 +113,7 @@ export function OpeningExperience() {
     cinematicAudio.unlockAudio();
     isHoldingRef.current = true;
 
-    // Scene 1: Hold to accumulate tension (1.8s)
+    // Scene 1: Hold to accumulate tension (1.6s)
     if (currentScene.id === 1 && !isShattering) {
       if (holdTimerRef.current) clearInterval(holdTimerRef.current);
       let p = 0;
@@ -130,7 +122,7 @@ export function OpeningExperience() {
           clearInterval(holdTimerRef.current!);
           return;
         }
-        p += 0.055; // Reaches 1.0 in ~1.8s
+        p += 0.06; // Reaches 1.0 in ~1.6s
         setPressProgress(Math.min(p, 1));
         cinematicAudio.updateTensionSound(p);
 
@@ -138,7 +130,7 @@ export function OpeningExperience() {
           clearInterval(holdTimerRef.current!);
           triggerScene1Shatter();
         }
-      }, 90);
+      }, 95);
     }
 
     // Scene 3: Hold to rise the sun
@@ -239,28 +231,22 @@ export function OpeningExperience() {
       return {
         lineEn: "I questioned AI.",
         lineZh: "我曾质疑 AI。",
-        subEn: "Robot knocks alone. The gateway remains silent and sealed.",
-        subZh: "机器独行敲击，大门纹丝不动。需要人类的参与。",
-        ctaEn: "Human, tap to knock (2/3)",
-        ctaZh: "人类加入 · 敲击第二声 (2/3)",
+        hintEn: "· robot alone cannot open · tap to assist (2/3) ·",
+        hintZh: "· 机器无法独力开门 · 点击协助 (2/3) ·",
       };
     } else if (knockStage === 2) {
       return {
         lineEn: "I learned to work with AI.",
         lineZh: "我学会了与 AI 合作。",
-        subEn: "Human knocks alone. The lock still resists without synergy.",
-        subZh: "人类独自敲击，大门依然锁死。唯有双方合力方能解锁。",
-        ctaEn: "Knock together to open portal (3/3)",
-        ctaZh: "双方合力 · 敲击开启大门 (3/3)",
+        hintEn: "· human alone cannot open · tap together (3/3) ·",
+        hintZh: "· 人类无法独力开启 · 双方合力 (3/3) ·",
       };
     } else {
       return {
         lineEn: "Welcome to RockyOS",
         lineZh: "欢迎来到 RockyOS",
-        subEn: "The gateway unlocks. Step into the personal digital universe.",
-        subZh: "极光漫灌，门扉大开。欢迎踏入我的个人数字宇宙。",
-        ctaEn: "Enter Universe Map",
-        ctaZh: "踏入星系主页",
+        hintEn: "· entering the universe ·",
+        hintZh: "· 正在踏入个人数字宇宙 ·",
       };
     }
   };
@@ -271,14 +257,14 @@ export function OpeningExperience() {
     currentScene.id === 4 ? scene4Resolved.lineEn : currentScene.lineEn;
   const activeLineZh =
     currentScene.id === 4 ? scene4Resolved.lineZh : currentScene.lineZh;
-  const activeSub =
+  const activeHint =
     currentScene.id === 4
       ? isZh
-        ? scene4Resolved.subZh
-        : scene4Resolved.subEn
+        ? scene4Resolved.hintZh
+        : scene4Resolved.hintEn
       : isZh
-      ? currentScene.subZh
-      : currentScene.subEn;
+      ? currentScene.hintZh
+      : currentScene.hintEn;
 
   return (
     <div
@@ -292,7 +278,7 @@ export function OpeningExperience() {
       }`}
     >
       {/* -------------------------------------------------------------
-          FULLSCREEN HIGH-DEFINITION STAGE (1920x1080 Native Render)
+          LAYER 1 & 2: PURE 1080P CINEMATIC CANVAS & EMOTIONAL LIGHTING
           ------------------------------------------------------------- */}
       <InteractiveOpeningStage
         scene={currentScene}
@@ -302,81 +288,56 @@ export function OpeningExperience() {
         isShattering={isShattering}
         isHandshakeShaking={isHandshakeShaking}
         isDoorOpen={isDoorOpen}
-        isZh={isZh}
       />
 
       {/* -------------------------------------------------------------
-          TOP BAR: ACT NUMBER, SCENE INDICATORS, MUTE & SKIP
+          LAYER 3: MINIMAL CLEAN TOP BAR (Subtle Index + Tiny Mute & Skip)
           ------------------------------------------------------------- */}
       <div
         className="absolute top-0 inset-x-0 p-6 sm:p-8 flex items-center justify-between z-30 pointer-events-none"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Act Badge */}
-        <div className="flex items-center gap-3">
-          <div className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-xs font-mono text-cyan-400 font-bold flex items-center gap-2 shadow-xl">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{currentScene.actBadge}</span>
-            <span className="text-white/30">·</span>
-            <span className="text-slate-200">
-              {isZh ? currentScene.actTitleZh : currentScene.actTitleEn}
-            </span>
-          </div>
+        {/* Clean Minimal Act Index */}
+        <div className="font-mono text-xs text-white/50 tracking-widest uppercase">
+          {currentScene.actBadge}
         </div>
 
-        {/* Scene Navigation Pills */}
-        <div className="hidden sm:flex items-center gap-2">
-          {CINEMA_SCENES.map((scene, idx) => (
-            <div
-              key={scene.id}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                idx === currentIndex
-                  ? "w-10 bg-amber-400 shadow-[0_0_14px_rgba(251,191,36,0.95)]"
-                  : idx < currentIndex
-                  ? "w-4 bg-white/70"
-                  : "w-2 bg-white/20"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Top Controls: Audio + Skip */}
-        <div className="flex items-center gap-3 pointer-events-auto">
-          {/* Mute/Unmute Toggle */}
+        {/* Minimal Controls */}
+        <div className="flex items-center gap-4 pointer-events-auto">
+          {/* Subtle Mute Button */}
           <button
             type="button"
             onClick={handleToggleMute}
-            className="p-2.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-slate-300 hover:text-white hover:border-white/40 transition-all active:scale-95 shadow-xl"
-            title={isMuted ? "Unmute Audio (BGM & SFX)" : "Mute Audio (BGM & SFX)"}
-            aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
+            className="p-2 rounded-full text-white/50 hover:text-white transition-colors active:scale-95"
+            title={isMuted ? "Unmute" : "Mute"}
+            aria-label={isMuted ? "Unmute" : "Mute"}
           >
             {isMuted ? (
-              <VolumeX className="w-4 h-4 text-slate-400" />
+              <VolumeX className="w-4 h-4 text-white/30" />
             ) : (
-              <Volume2 className="w-4 h-4 text-cyan-400 animate-pulse" />
+              <Volume2 className="w-4 h-4 text-white/70 animate-pulse" />
             )}
           </button>
 
-          {/* Skip Button */}
+          {/* Minimal Skip Button */}
           <button
             type="button"
             onClick={handleEnterHomepage}
-            className="px-4 py-2 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-xs font-mono text-slate-200 hover:text-white hover:border-white/40 transition-all flex items-center gap-2 active:scale-95 shadow-xl"
+            className="text-xs font-mono text-white/40 hover:text-white tracking-widest uppercase transition-colors"
           >
-            <span>{isZh ? "跳过 (SKIP)" : "SKIP"}</span>
-            <FastForward className="w-3.5 h-3.5 text-cyan-400" />
+            {isZh ? "跳过" : "SKIP"}
           </button>
         </div>
       </div>
 
       {/* -------------------------------------------------------------
-          BOTTOM STAGE: BILINGUAL SUBTITLES & PHYSICAL ACTION PILL
+          LAYER 3: CINEMATIC POETIC SUBTITLE & DELICATE BREATH HINT
           ------------------------------------------------------------- */}
-      <div className="absolute bottom-0 inset-x-0 p-6 sm:p-12 flex flex-col items-center text-center z-30 pointer-events-none">
-        {/* Primary Narrative Title (English) */}
+      <div className="absolute bottom-0 inset-x-0 pb-12 sm:pb-16 flex flex-col items-center text-center z-30 pointer-events-none px-6">
+        {/* Primary Cinematic Subtitle Line (English) */}
         <h1
           key={`title-en-${currentIndex}-${knockStage}`}
-          className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-2 font-display drop-shadow-[0_4px_30px_rgba(0,0,0,1)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-4xl"
+          className="text-2xl sm:text-4xl md:text-5xl font-light tracking-tight text-white font-sans drop-shadow-[0_2px_20px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-4xl"
         >
           {activeLineEn}
         </h1>
@@ -384,45 +345,18 @@ export function OpeningExperience() {
         {/* Secondary Native Subtitle (Chinese) */}
         <p
           key={`title-zh-${currentIndex}-${knockStage}`}
-          className="text-lg sm:text-2xl text-slate-100 font-sans font-semibold mb-3 drop-shadow-[0_2px_16px_rgba(0,0,0,1)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-3xl"
+          className="text-sm sm:text-lg text-slate-300 font-sans font-normal mt-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-3xl"
         >
           {activeLineZh}
         </p>
 
-        {/* Narrative Context Note */}
-        <p className="text-xs sm:text-sm text-slate-300 max-w-xl font-sans mb-6 hidden sm:block drop-shadow-lg">
-          {activeSub}
+        {/* Delicate Breath Hint */}
+        <p
+          key={`hint-${currentIndex}-${knockStage}`}
+          className="text-xs font-mono text-white/40 tracking-widest mt-6 animate-pulse"
+        >
+          {activeHint}
         </p>
-
-        {/* Physical Action Button Indicator */}
-        <div className="pointer-events-auto mt-1">
-          <div className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-black/85 backdrop-blur-2xl border border-amber-400/50 text-xs sm:text-sm font-mono text-amber-300 font-bold shadow-[0_0_35px_rgba(245,158,11,0.35)] animate-pulse hover:bg-black/95 transition-all active:scale-95">
-            <Hand className="w-4 h-4 text-amber-400" />
-            <span>
-              {currentScene.id === 1
-                ? isZh
-                  ? "按住屏幕 · 蓄压碎裂破冰 (Hold 1.8s)"
-                  : "Press & Hold Screen to Shatter (1.8s)"
-                : currentScene.id === 4
-                ? isZh
-                  ? scene4Resolved.ctaZh
-                  : scene4Resolved.ctaEn
-                : isZh
-                ? currentScene.actionPromptZh
-                : currentScene.actionPromptEn}
-            </span>
-            <span className="text-white/30 hidden sm:inline">|</span>
-            <span className="text-[10px] text-slate-400 font-normal hidden sm:inline">
-              [SPACE / ENTER]
-            </span>
-          </div>
-        </div>
-
-        {/* Bottom System Identity */}
-        <div className="mt-8 flex items-center justify-between w-full max-w-5xl text-[10px] font-mono text-slate-400 border-t border-white/10 pt-3">
-          <span>ROCKYOS PROLOGUE // 2024 — 2034</span>
-          <span>PRESS ESC TO SKIP · M TO MUTE · R TO REPLAY</span>
-        </div>
       </div>
     </div>
   );

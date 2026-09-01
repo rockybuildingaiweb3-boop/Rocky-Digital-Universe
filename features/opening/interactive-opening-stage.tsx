@@ -12,35 +12,33 @@ export function InteractiveOpeningStage({
   isShattering,
   isHandshakeShaking,
   isDoorOpen,
-  isZh,
 }: {
   scene: CinematicSceneConfig;
-  knockStage: number; // 0, 1, 2, 3
-  sunProgress: number; // 0 to 1
-  pressProgress: number; // 0 to 1
+  knockStage: number;
+  sunProgress: number;
+  pressProgress: number;
   isShattering: boolean;
   isHandshakeShaking: boolean;
   isDoorOpen: boolean;
-  isZh: boolean;
 }) {
   return (
     <div className="relative w-full h-full overflow-hidden select-none bg-black">
       {/* =========================================================
-          ACT 01: REJECTION (1080P HD + High-Tension Shatter Crack)
+          ACT 01: REJECTION (1080P HD + Cold Tension + Clean Shatter)
           ========================================================= */}
       {scene.id === 1 && (
         <div
           className={`relative w-full h-full transition-transform duration-100 ${
             isShattering
-              ? "scale-105 filter brightness-150"
+              ? "scale-105 filter brightness-125"
               : pressProgress > 0
-              ? "scale-[1.015] translate-y-[-1px]"
+              ? "scale-[1.012] translate-y-[-1px]"
               : "scale-100"
           }`}
         >
           <Image
             src={scene.imageSrc}
-            alt="Scene 1: Rejection"
+            alt="Act 1: Rejection"
             fill
             priority
             quality={98}
@@ -48,160 +46,113 @@ export function InteractiveOpeningStage({
             className="object-cover object-[center_45%] transform transition-transform duration-7000 ease-out"
           />
 
-          {/* Frost Tension Vignette Creeping during Hold */}
+          {/* Natural Tension Darkening during Hold */}
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-150"
             style={{
               background: `radial-gradient(circle at center, transparent ${
-                65 - pressProgress * 35
-              }%, rgba(6,182,212,${pressProgress * 0.45}) 80%, rgba(0,0,0,0.95) 100%)`,
+                70 - pressProgress * 30
+              }%, rgba(0,0,0,${0.3 + pressProgress * 0.4}) 100%)`,
               opacity: pressProgress > 0 ? 1 : 0,
             }}
           />
 
-          {/* Center Hold Charge Gauge Ring */}
-          {pressProgress > 0 && !isShattering && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center pointer-events-none">
-              <div className="relative w-32 h-32 flex items-center justify-center">
-                <svg className="w-full h-full -rotate-90">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="54"
-                    stroke="rgba(255,255,255,0.2)"
-                    strokeWidth="4"
-                    fill="transparent"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="54"
-                    stroke="#06b6d4"
-                    strokeWidth="6"
-                    strokeDasharray={339.3}
-                    strokeDashoffset={339.3 * (1 - pressProgress)}
-                    strokeLinecap="round"
-                    fill="transparent"
-                    className="transition-all duration-75"
-                  />
-                </svg>
-                <span className="absolute font-mono text-sm font-bold text-cyan-300">
-                  {Math.round(pressProgress * 100)}%
-                </span>
-              </div>
-              <span className="mt-2 text-[11px] font-mono text-cyan-200 tracking-widest bg-black/70 px-3 py-1 rounded-full border border-cyan-500/40 shadow-lg">
-                {isZh ? "按住破冰中..." : "BREAKING THE DISTANCE..."}
-              </span>
-            </div>
-          )}
-
-          {/* Multi-Branch Glass Fracture SVG Matrix when Shattering */}
+          {/* Clean Glass Fracture SVG on Shatter */}
           {isShattering && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30 animate-ping opacity-95">
-              <svg className="w-full h-full max-w-2xl" viewBox="0 0 800 800" fill="none">
-                <path d="M400 400 L250 150 M400 400 L580 180 M400 400 L680 430 M400 400 L550 680 M400 400 L220 620 M400 400 L120 380" stroke="#a5f3fc" strokeWidth="6" strokeLinecap="round" />
-                <path d="M250 150 L180 80 M580 180 L720 120 M680 430 L780 460 M550 680 L620 760 M220 620 L140 720" stroke="#38bdf8" strokeWidth="3" strokeLinecap="round" />
-                <circle cx="400" cy="400" r="80" stroke="#ffffff" strokeWidth="8" fill="rgba(6,182,212,0.4)" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20 animate-ping opacity-90">
+              <svg className="w-full h-full max-w-xl" viewBox="0 0 800 800" fill="none">
+                <path d="M400 400 L260 160 M400 400 L560 190 M400 400 L660 420 M400 400 L540 660 M400 400 L240 600 M400 400 L140 390" stroke="#bae6fd" strokeWidth="4" strokeLinecap="round" />
+                <path d="M260 160 L200 90 M560 190 L700 130 M660 420 L760 450 M540 660 L600 740 M240 600 L160 700" stroke="#7dd3fc" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="400" cy="400" r="50" stroke="#ffffff" strokeWidth="4" fill="rgba(6,182,212,0.2)" />
               </svg>
             </div>
           )}
 
-          {/* Minimal Film Edge Vignette */}
-          <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/70 pointer-events-none" />
-        </div>
-      )}
-
-      {/* =========================================================
-          ACT 02: HANDSHAKE (1080P HD + Elastic Haptic Clasp)
-          ========================================================= */}
-      {scene.id === 2 && (
-        <div
-          className={`relative w-full h-full transition-transform duration-200 ${
-            isHandshakeShaking
-              ? "scale-102 translate-x-2 translate-y-[-1px] rotate-[0.35deg]"
-              : "scale-100"
-          }`}
-        >
-          <Image
-            src={scene.imageSrc}
-            alt="Scene 2: Handshake"
-            fill
-            priority
-            quality={98}
-            sizes="100vw"
-            className="object-cover object-[center_45%] transform transition-transform duration-7000 ease-out"
-          />
-
-          {/* Center Clasp Golden-Cyan Energy Flare Pulse */}
-          {isHandshakeShaking && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-amber-400/40 blur-3xl animate-pulse pointer-events-none z-20" />
-          )}
-
-          {/* Minimal Film Edge Vignette */}
-          <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/65 pointer-events-none" />
-        </div>
-      )}
-
-      {/* =========================================================
-          ACT 03: APPROVAL (1080P HD + Volumetric Sunrise Illumination)
-          ========================================================= */}
-      {scene.id === 3 && (
-        <div
-          className="relative w-full h-full transition-all duration-300"
-          style={{
-            filter: `brightness(${1 + sunProgress * 0.45}) saturate(${
-              1 + sunProgress * 0.35
-            })`,
-          }}
-        >
-          <Image
-            src={scene.imageSrc}
-            alt="Scene 3: Approval"
-            fill
-            priority
-            quality={98}
-            sizes="100vw"
-            className="object-cover object-[center_45%] transform transition-transform duration-7000 ease-out"
-          />
-
-          {/* Rising Sun Glowing Solar Orb Over Horizon */}
-          <div
-            className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none transition-all duration-100"
-            style={{
-              bottom: `${15 + sunProgress * 35}%`,
-              width: `${180 + sunProgress * 440}px`,
-              height: `${180 + sunProgress * 440}px`,
-              background: `radial-gradient(circle, rgba(251,191,36,${
-                0.28 + sunProgress * 0.55
-              }) 0%, rgba(245,158,11,${0.18 + sunProgress * 0.35}) 45%, transparent 75%)`,
-              opacity: sunProgress > 0 ? 1 : 0,
-            }}
-          />
-
-          {/* Sun Rise Progress Indicator Pill */}
-          {sunProgress > 0 && sunProgress < 1 && (
-            <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
-              <span className="text-[11px] font-mono text-amber-300 tracking-widest bg-black/75 px-3.5 py-1 rounded-full border border-amber-500/40 shadow-xl">
-                {isZh
-                  ? `晨曦破晓中 ${(sunProgress * 100).toFixed(0)}%`
-                  : `DAWN RISING ${(sunProgress * 100).toFixed(0)}%`}
-              </span>
-            </div>
-          )}
-
-          {/* Minimal Film Edge Vignette */}
+          {/* Minimal Film Vignette */}
           <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/60 pointer-events-none" />
         </div>
       )}
 
       {/* =========================================================
-          ACT 04: THE DOOR (1080P HD + 3-Stage Door Knock Progression)
+          ACT 02: HANDSHAKE (1080P HD + Warm Golden Clasp)
+          ========================================================= */}
+      {scene.id === 2 && (
+        <div
+          className={`relative w-full h-full transition-transform duration-200 ${
+            isHandshakeShaking
+              ? "scale-102 translate-x-1.5 translate-y-[-1px] rotate-[0.25deg]"
+              : "scale-100"
+          }`}
+        >
+          <Image
+            src={scene.imageSrc}
+            alt="Act 2: Handshake"
+            fill
+            priority
+            quality={98}
+            sizes="100vw"
+            className="object-cover object-[center_45%] transform transition-transform duration-7000 ease-out"
+          />
+
+          {/* Warm Golden Energy Bloom at Center on Tap */}
+          {isHandshakeShaking && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-amber-400/30 blur-3xl animate-pulse pointer-events-none z-10" />
+          )}
+
+          {/* Minimal Film Vignette */}
+          <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/55 pointer-events-none" />
+        </div>
+      )}
+
+      {/* =========================================================
+          ACT 03: APPROVAL (1080P HD + Smooth Volumetric Sunrise)
+          ========================================================= */}
+      {scene.id === 3 && (
+        <div
+          className="relative w-full h-full transition-all duration-300"
+          style={{
+            filter: `brightness(${1 + sunProgress * 0.4}) saturate(${
+              1 + sunProgress * 0.3
+            })`,
+          }}
+        >
+          <Image
+            src={scene.imageSrc}
+            alt="Act 3: Approval"
+            fill
+            priority
+            quality={98}
+            sizes="100vw"
+            className="object-cover object-[center_45%] transform transition-transform duration-7000 ease-out"
+          />
+
+          {/* Rising Dawn Light Flare */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none transition-all duration-100"
+            style={{
+              bottom: `${15 + sunProgress * 35}%`,
+              width: `${160 + sunProgress * 400}px`,
+              height: `${160 + sunProgress * 400}px`,
+              background: `radial-gradient(circle, rgba(251,191,36,${
+                0.25 + sunProgress * 0.5
+              }) 0%, rgba(245,158,11,${0.15 + sunProgress * 0.3}) 45%, transparent 75%)`,
+              opacity: sunProgress > 0 ? 1 : 0,
+            }}
+          />
+
+          {/* Minimal Film Vignette */}
+          <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/50 pointer-events-none" />
+        </div>
+      )}
+
+      {/* =========================================================
+          ACT 04: THE DOOR (1080P HD + 3-Knock Rhythm + Light Flood)
           ========================================================= */}
       {scene.id === 4 && (
         <div className="relative w-full h-full">
           <Image
             src={scene.imageSrc}
-            alt="Scene 4: The Door Sequence"
+            alt="Act 4: The Door"
             fill
             priority
             quality={98}
@@ -209,7 +160,7 @@ export function InteractiveOpeningStage({
             className="object-cover object-[center_45%]"
           />
 
-          {/* Door Knock Spotlight Feedback Columns */}
+          {/* Door Knock Lighting Resonance */}
           <div className="absolute inset-0 grid grid-cols-4 pointer-events-none">
             {[1, 2, 3, 4].map((i) => {
               const isGlowing =
@@ -222,53 +173,23 @@ export function InteractiveOpeningStage({
                   key={i}
                   className={`h-full border-r border-white/5 transition-all duration-700 ${
                     isGlowing
-                      ? "bg-amber-400/25 shadow-[inset_0_0_90px_rgba(245,158,11,0.45)]"
-                      : "bg-black/50"
+                      ? "bg-amber-400/20 shadow-[inset_0_0_80px_rgba(245,158,11,0.35)]"
+                      : "bg-black/40"
                   }`}
                 />
               );
             })}
           </div>
 
-          {/* Golden Volumetric Light Burst Spill when Door 3 is knocked open */}
+          {/* Golden Volumetric Light Flood when Door 3 Unlocks */}
           <div
-            className={`absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/40 to-amber-200/85 mix-blend-screen transition-opacity duration-1000 pointer-events-none ${
+            className={`absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/35 to-amber-200/80 mix-blend-screen transition-opacity duration-1000 pointer-events-none ${
               isDoorOpen ? "opacity-100" : "opacity-0"
             }`}
           />
 
-          {/* Top Inscription Indicator Pills */}
-          <div className="absolute top-16 sm:top-20 inset-x-0 flex items-center justify-center gap-3 sm:gap-8 z-20 pointer-events-none">
-            {[
-              { step: 1, label: isZh ? "1. 机器敲门 (未开)" : "1. ROBOT KNOCK" },
-              { step: 2, label: isZh ? "2. 人类敲门 (未开)" : "2. HUMAN KNOCK" },
-              { step: 3, label: isZh ? "3. 双方合力 (门开)" : "3. TOGETHER UNLOCK" },
-            ].map((d) => {
-              const isAchieved = knockStage >= d.step;
-              return (
-                <div
-                  key={d.step}
-                  className={`flex flex-col items-center gap-1.5 transition-all duration-500 ${
-                    isAchieved ? "opacity-100 scale-105" : "opacity-35 scale-95"
-                  }`}
-                >
-                  <span
-                    className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                      isAchieved
-                        ? "bg-amber-400 shadow-[0_0_14px_rgba(251,191,36,0.95)]"
-                        : "bg-slate-700"
-                    }`}
-                  />
-                  <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-amber-200/90 hidden sm:inline">
-                    {d.label}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-
           {/* Minimal Bottom Vignette */}
-          <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
         </div>
       )}
     </div>
