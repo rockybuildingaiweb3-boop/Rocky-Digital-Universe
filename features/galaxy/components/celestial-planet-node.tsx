@@ -90,9 +90,8 @@ export function CelestialPlanetNode({
     >
       <Link
         href={node.route}
-        className={`group relative flex items-center gap-3.5 focus:outline-none ${
-          isLeftPlacement ? "flex-row-reverse text-right" : "flex-row text-left"
-        }`}
+        className={`group relative flex items-center gap-3.5 focus:outline-none ${isLeftPlacement ? "flex-row-reverse text-right" : "flex-row text-left"
+          }`}
       >
         {/* 1. VOLUMETRIC LUMINOUS PLANETARY SPHERE */}
         <div className="relative flex items-center justify-center">
@@ -142,9 +141,8 @@ export function CelestialPlanetNode({
 
         {/* 2. SPATIAL TYPOGRAPHY BLOCK WITH GEO COORDINATES */}
         <div
-          className={`flex flex-col pointer-events-none whitespace-nowrap ${
-            isLeftPlacement ? "items-end text-right" : "items-start text-left"
-          }`}
+          className={`flex flex-col pointer-events-none whitespace-nowrap ${isLeftPlacement ? "items-end text-right" : "items-start text-left"
+            }`}
         >
           {/* Planet Title */}
           <span

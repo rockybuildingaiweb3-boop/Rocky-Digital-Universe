@@ -29,16 +29,16 @@ export function SingularityCore({
 
         {/* 3D Tilted Orbital Elliptical Rings with Particle Sparks */}
         {/* Ring 1 (Tilted Primary Orbit) */}
-        <div className="absolute w-[290px] sm:w-[430px] h-[115px] sm:h-[170px] rounded-[100%] border border-cyan-400/40 rotate-[22deg] animate-[spin_90s_linear_infinite]" />
+        <div className="absolute w-[290px] sm:w-[430px] h-[115px] sm:h-[170px] rounded-[100%] border border-cyan-400/40 rotate-[22deg] animate-spin-slow" />
         {/* Ring 2 (Cross Counter Orbit with Dashed Line) */}
-        <div className="absolute w-[265px] sm:w-[390px] h-[100px] sm:h-[145px] rounded-[100%] border border-dashed border-indigo-300/30 rotate-[-35deg] animate-[spin_70s_linear_infinite_reverse]" />
+        <div className="absolute w-[265px] sm:w-[390px] h-[100px] sm:h-[145px] rounded-[100%] border border-dashed border-indigo-300/30 rotate-[-35deg] animate-spin-reverse-slow" />
         {/* Ring 3 (Steep Tilted Orbital Ellipse) */}
-        <div className="absolute w-[235px] sm:w-[350px] h-[85px] sm:h-[125px] rounded-[100%] border border-white/20 rotate-[70deg] animate-[spin_100s_linear_infinite]" />
+        <div className="absolute w-[235px] sm:w-[350px] h-[85px] sm:h-[125px] rounded-[100%] border border-white/20 rotate-[70deg] animate-spin-slow" />
 
         {/* The Central Volumetric 3D Planet Body */}
-        <div className="relative w-40 h-40 sm:w-56 sm:h-56 rounded-full bg-[radial-gradient(circle_at_35%_30%,#38bdf8_0%,#0369a1_25%,#0c234b_55%,#030a1c_85%)] border-2 border-cyan-300/90 shadow-[0_0_65px_rgba(6,182,212,0.85),inset_0_0_40px_rgba(56,189,248,0.9)] flex flex-col items-center justify-center overflow-hidden">
+        <div className="relative w-40 h-40 sm:w-56 sm:h-56 rounded-full bg-[radial-gradient(circle_at_36%_28%,#38bdf8_0%,#0284c7_22%,#0f2856_52%,#030712_85%)] border-2 border-cyan-300/90 shadow-[0_0_65px_rgba(6,182,212,0.85),inset_0_0_40px_rgba(56,189,248,0.9)] flex flex-col items-center justify-center overflow-hidden">
           {/* Internal Plasma Atmosphere & Specular Highlights */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.7)_0%,rgba(56,189,248,0.35)_35%,transparent_70%)] mix-blend-screen pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_32%_26%,rgba(255,255,255,0.75)_0%,rgba(56,189,248,0.4)_35%,transparent_70%)] mix-blend-screen pointer-events-none" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_80%,rgba(168,85,247,0.4)_0%,transparent_60%)] mix-blend-screen pointer-events-none" />
           
           {/* Specular Limb Sheen */}
@@ -48,7 +48,7 @@ export function SingularityCore({
           <div className="relative z-10 flex flex-col items-center text-center">
             {/* Orbit Crescent Emblem */}
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-cyan-400/25 border border-cyan-200/90 flex items-center justify-center mb-1.5 shadow-[0_0_25px_rgba(6,182,212,0.95)]">
-              <Orbit className="w-5 h-5 sm:w-7 sm:h-7 text-white animate-[spin_40s_linear_infinite]" />
+              <Orbit className="w-5 h-5 sm:w-7 sm:h-7 text-white animate-spin-slow" />
             </div>
 
             {/* RockyOS Brand Wordmark */}
