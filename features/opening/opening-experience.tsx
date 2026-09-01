@@ -18,7 +18,6 @@ export function OpeningExperience() {
   const [knockStage, setKnockStage] = useState<number>(0);
   const [sunProgress, setSunProgress] = useState<number>(0);
   const [pressProgress, setPressProgress] = useState<number>(0);
-  const [isDoorOpen, setIsDoorOpen] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   const isHoldingRef = useRef<boolean>(false);
@@ -64,16 +63,14 @@ export function OpeningExperience() {
     cinematicAudio.playRejectionShatter();
     setPressProgress(1);
 
-    // Follow-through phase
     setTimeout(() => {
       setMotionState("follow_through");
     }, MOTION_TIMING.scene1_shatterImpactMs);
 
-    // Dissolution & Advance to Scene 2
     setTimeout(() => {
       setPressProgress(0);
       setMotionState("idle");
-      setCurrentIndex(1);
+      setCurrentIndex(1); // Advance to Scene 2
     }, MOTION_TIMING.scene1_shatterImpactMs + MOTION_TIMING.scene1_followThroughMs);
   }, [motionState]);
 
@@ -93,12 +90,12 @@ export function OpeningExperience() {
 
     setTimeout(() => {
       setMotionState("idle");
-      setCurrentIndex(2);
+      setCurrentIndex(2); // Advance to Scene 3
     }, MOTION_TIMING.scene2_reboundMs + MOTION_TIMING.scene2_followThroughMs);
   }, [motionState]);
 
   // =========================================================================
-  // Scene 4: 3-Stage Door Knock Sequence (Rhythm -> Escalation -> Payoff)
+  // Scene 4: 3-Stage Door Knock Sequence (Panel 1 -> Panel 2 -> Panel 3 Unlock -> Scene 5)
   // =========================================================================
   const triggerDoorKnock = useCallback(() => {
     cinematicAudio.unlockAudio();
@@ -115,23 +112,23 @@ export function OpeningExperience() {
       cinematicAudio.playDoorKnock2_Human();
       setTimeout(() => setMotionState("idle"), MOTION_TIMING.scene4_knock2TremorMs + 100);
     } else if (knockStage === 2) {
-      // Knock 3: Together (Grand Payoff — door opens!)
+      // Knock 3: Together (door opens!)
       setKnockStage(3);
-      setIsDoorOpen(true);
       cinematicAudio.playDoorKnock3_Together();
 
       setTimeout(() => {
         setMotionState("follow_through");
       }, MOTION_TIMING.scene4_knock3ImpactMs);
 
-      // Automatically transition to Universe Map after epic swell & light flood
+      // Advance to Scene 5 (Welcome to RockyOS) after light flood
       setTimeout(() => {
-        handleEnterHomepage();
-      }, MOTION_TIMING.scene4_homepageTransitionDelayMs);
+        setMotionState("idle");
+        setCurrentIndex(4); // Advance to Scene 5
+      }, 1200);
     } else {
-      handleEnterHomepage();
+      setCurrentIndex(4);
     }
-  }, [knockStage, handleEnterHomepage]);
+  }, [knockStage]);
 
   // =========================================================================
   // Pointer Down (Handles Scene 1 & 3 Pressing / Anticipation)
@@ -150,7 +147,7 @@ export function OpeningExperience() {
           clearInterval(holdTimerRef.current!);
           return;
         }
-        p += 0.06; // Reaches 1.0 in ~1.6s
+        p += 0.06;
         setPressProgress(Math.min(p, 1));
         cinematicAudio.updateTensionSound(p);
 
@@ -161,7 +158,7 @@ export function OpeningExperience() {
       }, 95);
     }
 
-    // Scene 3: Hold to rise the sun
+    // Scene 3: Hold to rise the light
     if (currentScene.id === 3) {
       setMotionState("engaging");
       if (sunTimerRef.current) clearInterval(sunTimerRef.current);
@@ -178,7 +175,7 @@ export function OpeningExperience() {
             setMotionState("follow_through");
             setTimeout(() => {
               setMotionState("idle");
-              setCurrentIndex(3);
+              setCurrentIndex(3); // Advance to Scene 4
             }, MOTION_TIMING.scene3_settleMs);
           }
           return next;
@@ -214,6 +211,8 @@ export function OpeningExperience() {
       triggerScene2Clasp();
     } else if (currentScene.id === 4) {
       triggerDoorKnock();
+    } else if (currentScene.id === 5) {
+      handleEnterHomepage();
     }
   };
 
@@ -230,6 +229,7 @@ export function OpeningExperience() {
           setSunProgress(1);
           setTimeout(() => setCurrentIndex(3), 500);
         } else if (currentScene.id === 4) triggerDoorKnock();
+        else if (currentScene.id === 5) handleEnterHomepage();
       } else if (e.code === "Escape") {
         e.preventDefault();
         handleEnterHomepage();
@@ -244,7 +244,6 @@ export function OpeningExperience() {
         setSunProgress(0);
         setPressProgress(0);
         setMotionState("idle");
-        setIsDoorOpen(false);
       }
     };
 
@@ -277,10 +276,10 @@ export function OpeningExperience() {
       };
     } else {
       return {
-        lineEn: "Welcome to RockyOS",
-        lineZh: "欢迎来到 RockyOS",
-        hintEn: "· entering the universe ·",
-        hintZh: "· 正在踏入个人数字宇宙 ·",
+        lineEn: "I began to see what we could become together.",
+        lineZh: "我开始看到我们共同走向的未来。",
+        hintEn: "· door opens into the cosmos ·",
+        hintZh: "· 门扉敞开 · 踏入星门 ·",
       };
     }
   };
@@ -320,7 +319,8 @@ export function OpeningExperience() {
         knockStage={knockStage}
         sunProgress={sunProgress}
         pressProgress={pressProgress}
-        isDoorOpen={isDoorOpen}
+        onEnterUniverse={handleEnterHomepage}
+        isZh={isZh}
       />
 
       {/* -------------------------------------------------------------
@@ -365,32 +365,35 @@ export function OpeningExperience() {
 
       {/* -------------------------------------------------------------
           LAYER 3: CINEMATIC POETIC SUBTITLE & DELICATE BREATH HINT
+          (Hidden on Scene 5 to keep the cosmic cockpit clean)
           ------------------------------------------------------------- */}
-      <div className="absolute bottom-0 inset-x-0 pb-12 sm:pb-16 flex flex-col items-center text-center z-30 pointer-events-none px-6">
-        {/* Primary Cinematic Subtitle Line (English) */}
-        <h1
-          key={`title-en-${currentIndex}-${knockStage}`}
-          className="text-2xl sm:text-4xl md:text-5xl font-light tracking-tight text-white font-sans drop-shadow-[0_2px_20px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-4xl"
-        >
-          {activeLineEn}
-        </h1>
+      {currentScene.id !== 5 && (
+        <div className="absolute bottom-0 inset-x-0 pb-12 sm:pb-16 flex flex-col items-center text-center z-30 pointer-events-none px-6">
+          {/* Primary Cinematic Subtitle Line (English) */}
+          <h1
+            key={`title-en-${currentIndex}-${knockStage}`}
+            className="text-2xl sm:text-4xl md:text-5xl font-light tracking-tight text-white font-sans drop-shadow-[0_2px_20px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-4xl"
+          >
+            {activeLineEn}
+          </h1>
 
-        {/* Secondary Native Subtitle (Chinese) */}
-        <p
-          key={`title-zh-${currentIndex}-${knockStage}`}
-          className="text-sm sm:text-lg text-slate-300 font-sans font-normal mt-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-3xl"
-        >
-          {activeLineZh}
-        </p>
+          {/* Secondary Native Subtitle (Chinese) */}
+          <p
+            key={`title-zh-${currentIndex}-${knockStage}`}
+            className="text-sm sm:text-lg text-slate-300 font-sans font-normal mt-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-3xl"
+          >
+            {activeLineZh}
+          </p>
 
-        {/* Delicate Breath Hint */}
-        <p
-          key={`hint-${currentIndex}-${knockStage}`}
-          className="text-xs font-mono text-white/40 tracking-widest mt-6 animate-pulse"
-        >
-          {activeHint}
-        </p>
-      </div>
+          {/* Delicate Breath Hint */}
+          <p
+            key={`hint-${currentIndex}-${knockStage}`}
+            className="text-xs font-mono text-white/40 tracking-widest mt-6 animate-pulse"
+          >
+            {activeHint}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
