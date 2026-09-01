@@ -25,27 +25,27 @@ export function Scene1RejectionStage({
         animate={{
           scale:
             motionState === "impact"
-              ? [1, 1.035, 1.008, 1]
+              ? [1, 1.045, 1.01, 1]
               : motionState === "engaging"
-              ? 1 - Math.sqrt(pressProgress) * 0.018
+              ? 1 - Math.sqrt(pressProgress) * 0.02
               : 1,
           x:
             motionState === "impact"
-              ? [-4, 3, -1.5, 0]
+              ? [-6, 4.5, -2, 1, 0]
               : 0,
           y:
             motionState === "impact"
-              ? [-3, 2, -1, 0]
+              ? [-4, 3, -1.5, 0]
               : motionState === "engaging"
-              ? Math.sin(pressProgress * 35) * 1.2
+              ? Math.sin(pressProgress * 40) * 1.5
               : 0,
           filter:
             motionState === "impact"
-              ? "brightness(1.4) contrast(1.15)"
+              ? "brightness(1.45) contrast(1.18)"
               : "brightness(1) contrast(1)",
         }}
         transition={{
-          duration: motionState === "impact" ? 0.42 : 0.15,
+          duration: motionState === "impact" ? 0.45 : 0.15,
           ease: [0.16, 1, 0.3, 1],
         }}
       >
@@ -64,21 +64,21 @@ export function Scene1RejectionStage({
           className="absolute inset-0 pointer-events-none"
           style={{
             background: `radial-gradient(circle at center, transparent ${
-              68 - pressProgress * 36
-            }%, rgba(0,0,0,${0.3 + pressProgress * 0.5}) 100%)`,
+              65 - pressProgress * 38
+            }%, rgba(0,0,0,${0.35 + pressProgress * 0.55}) 100%)`,
             opacity: pressProgress > 0 ? 1 : 0,
           }}
         />
 
-        {/* Blinding Energy Flare upon Breakthrough Impact */}
+        {/* Blinding Radial Chromatic Energy Flare upon Breakthrough */}
         <AnimatePresence>
           {motionState === "impact" && (
             <motion.div
-              initial={{ opacity: 0.9, scale: 0.9 }}
-              animate={{ opacity: 0, scale: 1.5 }}
+              initial={{ opacity: 1, scale: 0.85 }}
+              animate={{ opacity: 0, scale: 1.6 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.38, ease: "easeOut" }}
-              className="absolute inset-0 bg-radial from-cyan-300/60 via-sky-500/20 to-transparent pointer-events-none z-30 mix-blend-screen"
+              transition={{ duration: 0.42, ease: "easeOut" }}
+              className="absolute inset-0 bg-radial from-cyan-200/70 via-sky-500/30 to-transparent pointer-events-none z-30 mix-blend-screen"
             />
           )}
         </AnimatePresence>
