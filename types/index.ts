@@ -21,6 +21,8 @@ export interface WorldNode {
   route: string;
   accentColor: string;
   coordinates: { x: number; y: number };
+  geoCoordinates?: { lat: string; lng: string };
+  labelPlacement?: 'left' | 'right';
 }
 
 export interface TelemetryState {

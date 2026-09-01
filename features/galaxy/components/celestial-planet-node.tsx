@@ -12,7 +12,6 @@ import {
   FlaskConical,
   Sprout,
   Share2,
-  ArrowRight,
 } from "lucide-react";
 
 export function CelestialPlanetNode({
@@ -31,27 +30,27 @@ export function CelestialPlanetNode({
   const { locale } = useLanguage();
   const isZh = locale === "zh";
 
-  // World specific icons matching master design
+  // World-specific icons matching target reference
   const getIcon = () => {
     switch (node.id) {
       case "identity":
-        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
       case "capability":
-        return <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
       case "knowledge":
-        return <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
       case "laboratory":
-        return <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
       case "growth":
-        return <Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
       case "connection":
-        return <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
       default:
-        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white" />;
+        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
     }
   };
 
-  // Specific subtitle labels matching master mockup
+  // Specific action label with arrow matching target reference
   const getActionLabel = () => {
     switch (node.id) {
       case "identity":
@@ -71,7 +70,7 @@ export function CelestialPlanetNode({
     }
   };
 
-  // 3D Orbital Parallax Factor
+  const isLeftPlacement = node.labelPlacement === "left";
   const depthFactor = (parseInt(node.order, 10) % 3 + 1) * 7;
 
   return (
@@ -91,71 +90,88 @@ export function CelestialPlanetNode({
     >
       <Link
         href={node.route}
-        className="group relative flex items-center gap-3 focus:outline-none"
+        className={`group relative flex items-center gap-3.5 focus:outline-none ${
+          isLeftPlacement ? "flex-row-reverse text-right" : "flex-row text-left"
+        }`}
       >
-        {/* 1. Luminous Energy Orb (Circular Planet Sphere) */}
+        {/* 1. LUMINOUS PLANETARY SPHERE */}
         <div className="relative flex items-center justify-center">
-          {/* Coronal Glow Halo */}
+          {/* Outer Coronal Glow */}
           <motion.div
             animate={{
-              scale: isActive ? 1.5 : 1.1,
-              opacity: isActive ? 0.85 : 0.45,
+              scale: isActive ? 1.55 : 1.15,
+              opacity: isActive ? 0.9 : 0.5,
             }}
             transition={{ duration: 0.35 }}
-            className="absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full blur-xl pointer-events-none"
+            className="absolute w-24 h-24 sm:w-32 sm:h-32 rounded-full blur-2xl pointer-events-none"
             style={{ backgroundColor: node.accentColor }}
           />
 
-          {/* Outer Pulsing Corona Ring on Hover */}
+          {/* Rotating Dashed Orbit Corona on Hover */}
           <motion.div
             animate={{
-              scale: isActive ? 1.25 : 1,
-              opacity: isActive ? 0.9 : 0,
+              scale: isActive ? 1.3 : 1,
+              opacity: isActive ? 1 : 0,
               rotate: isActive ? 90 : 0,
             }}
             transition={{ duration: 0.6 }}
-            className="absolute w-18 h-18 sm:w-24 sm:h-24 rounded-full border border-dashed pointer-events-none"
+            className="absolute w-20 h-20 sm:w-26 sm:h-26 rounded-full border border-dashed pointer-events-none"
             style={{ borderColor: node.accentColor }}
           />
 
           {/* Spherical Glowing Body */}
           <motion.div
-            whileHover={{ scale: 1.14 }}
-            whileTap={{ scale: 0.92 }}
-            className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 flex items-center justify-center shadow-2xl backdrop-blur-md overflow-hidden transition-all duration-300"
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.94 }}
+            className="relative w-14 h-14 sm:w-18 sm:h-18 rounded-full border-2 flex items-center justify-center shadow-2xl backdrop-blur-md overflow-hidden transition-all duration-300"
             style={{
-              backgroundColor: `${node.accentColor}25`,
+              backgroundColor: `${node.accentColor}20`,
               borderColor: isActive ? "#ffffff" : node.accentColor,
               boxShadow: isActive
-                ? `0 0 35px ${node.accentColor}, inset 0 0 20px ${node.accentColor}`
-                : `0 0 20px ${node.accentColor}80, inset 0 0 12px ${node.accentColor}50`,
+                ? `0 0 40px ${node.accentColor}, inset 0 0 25px ${node.accentColor}`
+                : `0 0 25px ${node.accentColor}80, inset 0 0 15px ${node.accentColor}60`,
             }}
           >
-            {/* Specular Highlight Arc */}
-            <div className="absolute top-1 left-2 w-5 h-2.5 rounded-full bg-white/40 blur-[1px] -rotate-45 pointer-events-none" />
-            <div className="relative z-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            {/* Top-Left Specular Reflection Arc */}
+            <div className="absolute top-1 left-2 w-6 h-3 rounded-full bg-white/40 blur-[1px] -rotate-45 pointer-events-none" />
+            <div className="relative z-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               {getIcon()}
             </div>
           </motion.div>
         </div>
 
-        {/* 2. Side Label Typography Pill (Matching Master UI Position) */}
-        <div className="flex flex-col text-left pointer-events-none whitespace-nowrap">
+        {/* 2. SPATIAL TYPOGRAPHY BLOCK WITH GEO COORDINATES */}
+        <div
+          className={`flex flex-col pointer-events-none whitespace-nowrap ${
+            isLeftPlacement ? "items-end text-right" : "items-start text-left"
+          }`}
+        >
+          {/* Planet Title */}
           <span
-            className="text-xs sm:text-sm font-bold tracking-wide transition-colors"
+            className="text-sm sm:text-base font-bold tracking-wide transition-colors"
             style={{
-              color: isActive ? "#ffffff" : "#f1f5f9",
-              textShadow: isActive ? `0 0 15px ${node.accentColor}` : "none",
+              color: isActive ? "#ffffff" : "#f8fafc",
+              textShadow: isActive ? `0 0 15px ${node.accentColor}` : "0 2px 8px rgba(0,0,0,0.8)",
             }}
           >
             {node.name[locale] || node.name.en}
           </span>
+
+          {/* Action Tagline */}
           <span
-            className="text-[10px] sm:text-[11px] font-mono tracking-wider opacity-80 group-hover:opacity-100 transition-opacity"
-            style={{ color: node.accentColor }}
+            className="text-[11px] sm:text-xs font-mono tracking-wider transition-colors my-0.5"
+            style={{ color: isActive ? "#ffffff" : "#cbd5e1" }}
           >
             {getActionLabel()}
           </span>
+
+          {/* Latitude & Longitude Telemetry */}
+          {node.geoCoordinates && (
+            <div className="flex flex-col font-mono text-[9px] sm:text-[10px] text-slate-400/80 leading-tight">
+              <span>{node.geoCoordinates.lat}</span>
+              <span>{node.geoCoordinates.lng}</span>
+            </div>
+          )}
         </div>
       </Link>
     </motion.div>
