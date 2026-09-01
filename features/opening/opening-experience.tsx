@@ -285,7 +285,7 @@ export function OpeningExperience() {
       onClick={handleStageClick}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
-      className={`fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden select-none cursor-pointer transition-all duration-1000 ${
+      className={`fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden select-none touch-none cursor-pointer transition-all duration-1000 ${
         isTransitioning
           ? "opacity-0 scale-105 filter blur-md"
           : "opacity-100 scale-100"
