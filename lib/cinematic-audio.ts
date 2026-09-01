@@ -1,6 +1,7 @@
 /**
  * Premium Cinematic Audio Engine for RockyOS Opening Experience
- * Manages background music playback (/opening/background.mp3) and procedural spatial sound effects.
+ * Manages background music playback (/opening/background.mp3) with seamless continuous looping
+ * and procedural spatial sound effects.
  */
 
 class CinematicAudioEngine {
@@ -68,26 +69,23 @@ class CinematicAudioEngine {
   public unlockAudio() {
     this.initContext();
 
-    // Initialize & play background music
+    // Initialize & play background music with guaranteed continuous loop
     if (!this.bgmAudio && typeof window !== "undefined") {
       try {
-        // First try background.mp3, fallback to bgm.mp3
         this.bgmAudio = new Audio("/opening/background.mp3");
         this.bgmAudio.loop = true;
         this.bgmAudio.volume = this.isMuted ? 0 : 0.5;
 
-        this.bgmAudio.play().catch(() => {
-          // If background.mp3 fails, try bgm.mp3
-          try {
-            this.bgmAudio = new Audio("/opening/bgm.mp3");
-            this.bgmAudio.loop = true;
-            this.bgmAudio.volume = this.isMuted ? 0 : 0.5;
-            this.bgmAudio.play().catch(() => {
-              this.startProceduralAmbient();
-            });
-          } catch (e) {
-            this.startProceduralAmbient();
+        // Ensure seamless looping even if browser drops loop flag on mobile
+        this.bgmAudio.addEventListener("ended", () => {
+          if (this.bgmAudio && !this.isMuted) {
+            this.bgmAudio.currentTime = 0;
+            this.bgmAudio.play().catch(() => {});
           }
+        });
+
+        this.bgmAudio.play().catch(() => {
+          this.startProceduralAmbient();
         });
       } catch (e) {
         this.startProceduralAmbient();
