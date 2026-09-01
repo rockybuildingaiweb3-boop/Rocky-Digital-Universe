@@ -1,14 +1,18 @@
 /**
- * Web Audio Cinematic Sound Engine for RockyOS Opening Experience
- * Pure procedural synthesis — Zero external network audio dependencies, low latency, instant autoplay unlock
+ * Web Audio & BGM Engine for RockyOS Opening Experience
+ * Supports external MP3 background music with fallback to procedural cinematic synth,
+ * plus dedicated physical interaction sound effects for each act.
  */
 
 class CinematicAudioEngine {
   private ctx: AudioContext | null = null;
+  private bgmAudio: HTMLAudioElement | null = null;
   private isMuted: boolean = false;
+  private isUnlocked: boolean = false;
   private ambientGain: GainNode | null = null;
   private ambientOsc: OscillatorNode | null = null;
-  private isUnlocked: boolean = false;
+  private tensionOsc: OscillatorNode | null = null;
+  private tensionGain: GainNode | null = null;
 
   constructor() {
     if (typeof window !== "undefined") {
@@ -19,6 +23,8 @@ class CinematicAudioEngine {
 
   public unlockAudio() {
     if (typeof window === "undefined") return;
+
+    // Initialize Web Audio Context
     if (!this.ctx) {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (AudioCtx) {
@@ -28,9 +34,26 @@ class CinematicAudioEngine {
     if (this.ctx && this.ctx.state === "suspended") {
       this.ctx.resume();
     }
-    if (!this.isUnlocked && this.ctx) {
+
+    // Initialize BGM audio element
+    if (!this.bgmAudio) {
+      try {
+        this.bgmAudio = new Audio("/opening/bgm.mp3");
+        this.bgmAudio.loop = true;
+        this.bgmAudio.volume = this.isMuted ? 0 : 0.45;
+        this.bgmAudio.play().catch(() => {
+          // If bgm.mp3 is not present or blocked, fallback to procedural ambient
+          this.startProceduralAmbient();
+        });
+      } catch (e) {
+        this.startProceduralAmbient();
+      }
+    } else if (this.bgmAudio.paused && !this.isMuted) {
+      this.bgmAudio.play().catch(() => {});
+    }
+
+    if (!this.isUnlocked) {
       this.isUnlocked = true;
-      this.startAmbient();
     }
   }
 
@@ -39,6 +62,11 @@ class CinematicAudioEngine {
     if (typeof window !== "undefined") {
       localStorage.setItem("rockyos_audio_muted", String(this.isMuted));
     }
+
+    if (this.bgmAudio) {
+      this.bgmAudio.volume = this.isMuted ? 0 : 0.45;
+    }
+
     if (this.ambientGain && this.ctx) {
       this.ambientGain.gain.setTargetAtTime(
         this.isMuted ? 0 : 0.04,
@@ -54,9 +82,33 @@ class CinematicAudioEngine {
   }
 
   /**
-   * Continuous deep cinematic space ambient drone (50Hz sub-bass)
+   * Smoothly fade out BGM when entering homepage
    */
-  public startAmbient() {
+  public fadeOutBGM(durationMs: number = 800) {
+    if (this.bgmAudio) {
+      const startVol = this.bgmAudio.volume;
+      const step = startVol / (durationMs / 50);
+      const interval = setInterval(() => {
+        if (!this.bgmAudio) {
+          clearInterval(interval);
+          return;
+        }
+        if (this.bgmAudio.volume > step) {
+          this.bgmAudio.volume -= step;
+        } else {
+          this.bgmAudio.volume = 0;
+          this.bgmAudio.pause();
+          clearInterval(interval);
+        }
+      }, 50);
+    }
+    this.stopProceduralAmbient();
+  }
+
+  /**
+   * Procedural low-frequency deep space ambient (Fallback or reinforcement)
+   */
+  public startProceduralAmbient() {
     if (this.ambientOsc || !this.ctx) return;
     try {
       const t = this.ctx.currentTime;
@@ -73,7 +125,7 @@ class CinematicAudioEngine {
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = "lowpass";
-      filter.frequency.setValueAtTime(180, t);
+      filter.frequency.setValueAtTime(160, t);
 
       this.ambientOsc.connect(filter);
       filter.connect(this.ambientGain);
@@ -83,7 +135,7 @@ class CinematicAudioEngine {
     } catch (e) {}
   }
 
-  public stopAmbient() {
+  public stopProceduralAmbient() {
     if (this.ambientGain && this.ctx) {
       const t = this.ctx.currentTime;
       this.ambientGain.gain.setTargetAtTime(0, t, 0.4);
@@ -98,40 +150,101 @@ class CinematicAudioEngine {
   }
 
   /**
-   * Scene 1: Rejection Shatter / Impact Wave
+   * Scene 1: Pressure/Tension accumulation during hold
    */
-  public playRejectionShatter() {
+  public updateTensionSound(progress: number) {
     this.unlockAudio();
     if (this.isMuted || !this.ctx) return;
 
     try {
       const t = this.ctx.currentTime;
-      // Impact down-sweep
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
+      if (!this.tensionOsc) {
+        this.tensionOsc = this.ctx.createOscillator();
+        this.tensionGain = this.ctx.createGain();
+        this.tensionOsc.type = "sawtooth";
+        this.tensionGain.gain.setValueAtTime(0.001, t);
 
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(260, t);
-      osc.frequency.exponentialRampToValueAtTime(40, t + 0.28);
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(400, t);
 
-      gain.gain.setValueAtTime(0.2, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+        this.tensionOsc.connect(filter);
+        filter.connect(this.tensionGain);
+        this.tensionGain.connect(this.ctx.destination);
+        this.tensionOsc.start();
+      }
 
-      const filter = this.ctx.createBiquadFilter();
-      filter.type = "lowpass";
-      filter.frequency.setValueAtTime(450, t);
+      const freq = 120 + progress * 380;
+      this.tensionOsc.frequency.setValueAtTime(freq, t);
+      const vol = Math.min(progress * 0.12, 0.12);
+      this.tensionGain?.gain.setValueAtTime(vol, t);
+    } catch (e) {}
+  }
 
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(this.ctx.destination);
+  public stopTensionSound() {
+    if (this.tensionGain && this.ctx) {
+      this.tensionGain.gain.setValueAtTime(0.001, this.ctx.currentTime);
+      setTimeout(() => {
+        try {
+          this.tensionOsc?.stop();
+          this.tensionOsc?.disconnect();
+        } catch (e) {}
+        this.tensionOsc = null;
+        this.tensionGain = null;
+      }, 50);
+    }
+  }
 
-      osc.start(t);
-      osc.stop(t + 0.35);
+  /**
+   * Scene 1: Glass Shatter / Ice Break Impact
+   */
+  public playRejectionShatter() {
+    this.stopTensionSound();
+    this.unlockAudio();
+    if (this.isMuted || !this.ctx) return;
+
+    try {
+      const t = this.ctx.currentTime;
+
+      // 1. High frequency shatter noise burst
+      const bufferSize = this.ctx.sampleRate * 0.18;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      const noiseFilter = this.ctx.createBiquadFilter();
+      noiseFilter.type = "highpass";
+      noiseFilter.frequency.setValueAtTime(1200, t);
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.25, t);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(t);
+
+      // 2. Heavy sub impact
+      const sub = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      sub.type = "sine";
+      sub.frequency.setValueAtTime(180, t);
+      sub.frequency.exponentialRampToValueAtTime(35, t + 0.3);
+      subGain.gain.setValueAtTime(0.35, t);
+      subGain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+
+      sub.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      sub.start(t);
+      sub.stop(t + 0.38);
     } catch (e) {}
   }
 
   /**
-   * Scene 2: Handshake Clasp & Warm Connection
+   * Scene 2: Handshake Elastic Clasp & Warm Chime
    */
   public playHandshakeClasp() {
     this.unlockAudio();
@@ -139,28 +252,28 @@ class CinematicAudioEngine {
 
     try {
       const t = this.ctx.currentTime;
-      // Dual harmonic resonance (warm 4th chord: F3 & C4)
-      [174.61, 261.63].forEach((freq) => {
+      // Warm chord: F3, A3, C4
+      [174.61, 220.0, 261.63].forEach((freq, idx) => {
         const osc = this.ctx!.createOscillator();
         const gain = this.ctx!.createGain();
 
         osc.type = "triangle";
-        osc.frequency.setValueAtTime(freq, t);
+        osc.frequency.setValueAtTime(freq, t + idx * 0.03);
 
-        gain.gain.setValueAtTime(0.12, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+        gain.gain.setValueAtTime(0.12, t + idx * 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
 
         osc.connect(gain);
         gain.connect(this.ctx!.destination);
 
-        osc.start(t);
-        osc.stop(t + 0.55);
+        osc.start(t + idx * 0.03);
+        osc.stop(t + 0.65);
       });
     } catch (e) {}
   }
 
   /**
-   * Scene 3: Rising Sun / Golden Glow Swell (Dynamic pitch based on hold progress 0 -> 1)
+   * Scene 3: Rising Sun Harmonic Tone (Pitch climbs with progress)
    */
   public playSunRiseTone(progress: number) {
     this.unlockAudio();
@@ -171,24 +284,23 @@ class CinematicAudioEngine {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
-      // Pitch climbs smoothly with solar rise from 220Hz to 660Hz
       const freq = 220 + progress * 440;
       osc.type = "sine";
       osc.frequency.setValueAtTime(freq, t);
 
-      gain.gain.setValueAtTime(0.08, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+      gain.gain.setValueAtTime(0.06, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
 
       osc.start(t);
-      osc.stop(t + 0.18);
+      osc.stop(t + 0.15);
     } catch (e) {}
   }
 
   /**
-   * Scene 4: Knock 1 — Robot Alone (High metallic clang, door locked)
+   * Scene 4: Knock 1 — Robot Alone (Metallic clang, door locked)
    */
   public playDoorKnock1_Robot() {
     this.unlockAudio();
@@ -200,15 +312,15 @@ class CinematicAudioEngine {
       const gain = this.ctx.createGain();
 
       osc.type = "square";
-      osc.frequency.setValueAtTime(320, t);
-      osc.frequency.exponentialRampToValueAtTime(80, t + 0.2);
+      osc.frequency.setValueAtTime(340, t);
+      osc.frequency.exponentialRampToValueAtTime(70, t + 0.2);
 
-      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.setValueAtTime(0.28, t);
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = "bandpass";
-      filter.frequency.setValueAtTime(800, t);
+      filter.frequency.setValueAtTime(900, t);
 
       osc.connect(filter);
       filter.connect(gain);
@@ -232,10 +344,10 @@ class CinematicAudioEngine {
       const gain = this.ctx.createGain();
 
       osc.type = "triangle";
-      osc.frequency.setValueAtTime(140, t);
-      osc.frequency.exponentialRampToValueAtTime(30, t + 0.25);
+      osc.frequency.setValueAtTime(130, t);
+      osc.frequency.exponentialRampToValueAtTime(28, t + 0.25);
 
-      gain.gain.setValueAtTime(0.35, t);
+      gain.gain.setValueAtTime(0.38, t);
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
 
       osc.connect(gain);
@@ -247,7 +359,7 @@ class CinematicAudioEngine {
   }
 
   /**
-   * Scene 4: Knock 3 — Together (Heavy impact, mechanical lock opening, celestial chord swell)
+   * Scene 4: Knock 3 — Together (Heavy impact, lock unlatch, grand portal chord swell)
    */
   public playDoorKnock3_Together() {
     this.unlockAudio();
@@ -256,29 +368,29 @@ class CinematicAudioEngine {
     try {
       const t = this.ctx.currentTime;
 
-      // 1. Dual Heavy Impact
+      // 1. Heavy Impact
       const impact = this.ctx.createOscillator();
       const impactGain = this.ctx.createGain();
       impact.type = "sawtooth";
-      impact.frequency.setValueAtTime(200, t);
+      impact.frequency.setValueAtTime(220, t);
       impact.frequency.exponentialRampToValueAtTime(30, t + 0.4);
-      impactGain.gain.setValueAtTime(0.4, t);
+      impactGain.gain.setValueAtTime(0.45, t);
       impactGain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
       impact.connect(impactGain);
       impactGain.connect(this.ctx.destination);
       impact.start(t);
       impact.stop(t + 0.5);
 
-      // 2. Mechanical Vault Click (at t + 0.35)
+      // 2. Mechanical Vault Lock Click
       setTimeout(() => {
         if (!this.ctx) return;
         const ct = this.ctx.currentTime;
         const click = this.ctx.createOscillator();
         const clickGain = this.ctx.createGain();
         click.type = "sine";
-        click.frequency.setValueAtTime(880, ct);
-        click.frequency.exponentialRampToValueAtTime(220, ct + 0.1);
-        clickGain.gain.setValueAtTime(0.15, ct);
+        click.frequency.setValueAtTime(920, ct);
+        click.frequency.exponentialRampToValueAtTime(240, ct + 0.1);
+        clickGain.gain.setValueAtTime(0.18, ct);
         clickGain.gain.exponentialRampToValueAtTime(0.001, ct + 0.12);
         click.connect(clickGain);
         clickGain.connect(this.ctx.destination);
@@ -296,14 +408,14 @@ class CinematicAudioEngine {
         osc.frequency.setValueAtTime(f, t + 0.4 + i * 0.05);
 
         gain.gain.setValueAtTime(0.001, t + 0.4 + i * 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.08, t + 1.2 + i * 0.08);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 4.0);
+        gain.gain.exponentialRampToValueAtTime(0.09, t + 1.2 + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 4.2);
 
         osc.connect(gain);
         gain.connect(this.ctx!.destination);
 
         osc.start(t + 0.4 + i * 0.05);
-        osc.stop(t + 4.2);
+        osc.stop(t + 4.5);
       });
     } catch (e) {}
   }

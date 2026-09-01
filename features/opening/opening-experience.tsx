@@ -23,26 +23,29 @@ export function OpeningExperience() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [knockStage, setKnockStage] = useState<number>(0);
   const [sunProgress, setSunProgress] = useState<number>(0);
+  const [pressProgress, setPressProgress] = useState<number>(0);
   const [isShattering, setIsShattering] = useState<boolean>(false);
   const [isHandshakeShaking, setIsHandshakeShaking] = useState<boolean>(false);
   const [isDoorOpen, setIsDoorOpen] = useState<boolean>(false);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isHoldingSun, setIsHoldingSun] = useState<boolean>(false);
 
+  const isHoldingRef = useRef<boolean>(false);
+  const holdTimerRef = useRef<NodeJS.Timeout | null>(null);
   const sunTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   const currentScene: CinematicSceneConfig = CINEMA_SCENES[currentIndex];
   const isZh = locale === "zh";
 
-  // Initialize audio mute state
+  // Audio mute init
   useEffect(() => {
     setIsMuted(cinematicAudio.getIsMuted());
   }, []);
 
-  // Smooth transition to Universe Map
+  // Enter RockyOS Universe Map smoothly with BGM fadeout
   const handleEnterHomepage = useCallback(() => {
     setIsTransitioning(true);
-    cinematicAudio.stopAmbient();
+    cinematicAudio.fadeOutBGM(900);
     try {
       localStorage.setItem("rockyos_prologue_seen", "true");
     } catch (e) {}
@@ -52,31 +55,29 @@ export function OpeningExperience() {
     }, 900);
   }, [router]);
 
-  // Audio toggle
+  // Audio mute toggle
   const handleToggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
     const muted = cinematicAudio.toggleMute();
     setIsMuted(muted);
-    if (!muted) {
-      cinematicAudio.startAmbient();
-    }
   };
 
-  // Scene 1 Action: Rejection Shatter
-  const triggerScene1 = useCallback(() => {
+  // Scene 1: Shatter Action after 1.8s Hold
+  const triggerScene1Shatter = useCallback(() => {
     if (isShattering) return;
-    cinematicAudio.unlockAudio();
     cinematicAudio.playRejectionShatter();
     setIsShattering(true);
+    setPressProgress(1);
 
     setTimeout(() => {
       setIsShattering(false);
+      setPressProgress(0);
       setCurrentIndex(1);
     }, 700);
   }, [isShattering]);
 
-  // Scene 2 Action: Handshake Clasp
-  const triggerScene2 = useCallback(() => {
+  // Scene 2: Handshake Clasp Action
+  const triggerScene2Clasp = useCallback(() => {
     if (isHandshakeShaking) return;
     cinematicAudio.unlockAudio();
     cinematicAudio.playHandshakeClasp();
@@ -88,40 +89,7 @@ export function OpeningExperience() {
     }, 800);
   }, [isHandshakeShaking]);
 
-  // Scene 3 Action: Sunrise holding loop
-  useEffect(() => {
-    if (currentIndex !== 2) {
-      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
-      setSunProgress(0);
-      setIsHoldingSun(false);
-      return;
-    }
-
-    if (isHoldingSun) {
-      cinematicAudio.unlockAudio();
-      sunTimerRef.current = setInterval(() => {
-        setSunProgress((prev) => {
-          const next = Math.min(prev + 0.08, 1);
-          cinematicAudio.playSunRiseTone(next);
-          if (next >= 1) {
-            if (sunTimerRef.current) clearInterval(sunTimerRef.current);
-            setTimeout(() => {
-              setCurrentIndex(3);
-            }, 600);
-          }
-          return next;
-        });
-      }, 80);
-    } else {
-      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
-    }
-
-    return () => {
-      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
-    };
-  }, [currentIndex, isHoldingSun]);
-
-  // Scene 4 Action: 3-Knock progression
+  // Scene 4: 3-Stage Knock Action
   const triggerDoorKnock = useCallback(() => {
     cinematicAudio.unlockAudio();
 
@@ -139,7 +107,7 @@ export function OpeningExperience() {
       setIsDoorOpen(true);
       cinematicAudio.playDoorKnock3_Together();
 
-      // Automatically transition to Universe Map after swell
+      // Automatically transition to Universe Map after epic swell
       setTimeout(() => {
         handleEnterHomepage();
       }, 3400);
@@ -148,33 +116,95 @@ export function OpeningExperience() {
     }
   }, [knockStage, handleEnterHomepage]);
 
-  // General user interaction handler on whole stage
+  // Pointer Down (Handles Scene 1 Hold & Scene 3 Sunrise Hold)
+  const handlePointerDown = () => {
+    cinematicAudio.unlockAudio();
+    isHoldingRef.current = true;
+
+    // Scene 1: Hold to accumulate tension (1.8s)
+    if (currentScene.id === 1 && !isShattering) {
+      if (holdTimerRef.current) clearInterval(holdTimerRef.current);
+      let p = 0;
+      holdTimerRef.current = setInterval(() => {
+        if (!isHoldingRef.current) {
+          clearInterval(holdTimerRef.current!);
+          return;
+        }
+        p += 0.055; // Reaches 1.0 in ~1.8s
+        setPressProgress(Math.min(p, 1));
+        cinematicAudio.updateTensionSound(p);
+
+        if (p >= 1) {
+          clearInterval(holdTimerRef.current!);
+          triggerScene1Shatter();
+        }
+      }, 90);
+    }
+
+    // Scene 3: Hold to rise the sun
+    if (currentScene.id === 3) {
+      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
+      sunTimerRef.current = setInterval(() => {
+        if (!isHoldingRef.current) {
+          clearInterval(sunTimerRef.current!);
+          return;
+        }
+        setSunProgress((prev) => {
+          const next = Math.min(prev + 0.08, 1);
+          cinematicAudio.playSunRiseTone(next);
+          if (next >= 1) {
+            clearInterval(sunTimerRef.current!);
+            setTimeout(() => {
+              setCurrentIndex(3);
+            }, 600);
+          }
+          return next;
+        });
+      }, 90);
+    }
+  };
+
+  // Pointer Up (Cancels hold if released early)
+  const handlePointerUp = () => {
+    isHoldingRef.current = false;
+
+    // Scene 1 release early
+    if (currentScene.id === 1 && pressProgress < 1 && !isShattering) {
+      if (holdTimerRef.current) clearInterval(holdTimerRef.current);
+      setPressProgress(0);
+      cinematicAudio.stopTensionSound();
+    }
+
+    // Scene 3 release early
+    if (currentScene.id === 3 && sunProgress < 1) {
+      if (sunTimerRef.current) clearInterval(sunTimerRef.current);
+    }
+  };
+
+  // Tap action on stage
   const handleStageClick = () => {
     cinematicAudio.unlockAudio();
 
-    if (currentScene.id === 1) {
-      triggerScene1();
-    } else if (currentScene.id === 2) {
-      triggerScene2();
-    } else if (currentScene.id === 3) {
-      // If clicked without holding in Scene 3, automatically perform full sunrise
-      setIsHoldingSun(true);
+    if (currentScene.id === 2) {
+      triggerScene2Clasp();
     } else if (currentScene.id === 4) {
       triggerDoorKnock();
     }
   };
 
-  // Keyboard navigation: Space/Enter/Esc/M/R
+  // Keyboard controls: Space/Enter/Esc/M/R
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      cinematicAudio.unlockAudio();
+
       if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
-        cinematicAudio.unlockAudio();
-
-        if (currentScene.id === 1) triggerScene1();
-        else if (currentScene.id === 2) triggerScene2();
-        else if (currentScene.id === 3) setIsHoldingSun(true);
-        else if (currentScene.id === 4) triggerDoorKnock();
+        if (currentScene.id === 1) triggerScene1Shatter();
+        else if (currentScene.id === 2) triggerScene2Clasp();
+        else if (currentScene.id === 3) {
+          setSunProgress(1);
+          setTimeout(() => setCurrentIndex(3), 600);
+        } else if (currentScene.id === 4) triggerDoorKnock();
       } else if (e.code === "Escape") {
         e.preventDefault();
         handleEnterHomepage();
@@ -187,6 +217,7 @@ export function OpeningExperience() {
         setCurrentIndex(0);
         setKnockStage(0);
         setSunProgress(0);
+        setPressProgress(0);
         setIsDoorOpen(false);
       }
     };
@@ -195,13 +226,14 @@ export function OpeningExperience() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [
     currentScene.id,
-    triggerScene1,
-    triggerScene2,
+    pressProgress,
+    triggerScene1Shatter,
+    triggerScene2Clasp,
     triggerDoorKnock,
     handleEnterHomepage,
   ]);
 
-  // Dynamic Scene 4 narrative resolution based on the 3 knocks
+  // Dynamic Scene 4 narrative state
   const getScene4State = () => {
     if (knockStage <= 1) {
       return {
@@ -251,15 +283,8 @@ export function OpeningExperience() {
   return (
     <div
       onClick={handleStageClick}
-      onPointerDown={() => {
-        cinematicAudio.unlockAudio();
-        if (currentScene.id === 3) setIsHoldingSun(true);
-      }}
-      onPointerUp={() => {
-        if (currentScene.id === 3 && sunProgress < 1) {
-          setIsHoldingSun(false);
-        }
-      }}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
       className={`fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden select-none cursor-pointer transition-all duration-1000 ${
         isTransitioning
           ? "opacity-0 scale-105 filter blur-md"
@@ -273,6 +298,7 @@ export function OpeningExperience() {
         scene={currentScene}
         knockStage={knockStage}
         sunProgress={sunProgress}
+        pressProgress={pressProgress}
         isShattering={isShattering}
         isHandshakeShaking={isHandshakeShaking}
         isDoorOpen={isDoorOpen}
@@ -288,7 +314,7 @@ export function OpeningExperience() {
       >
         {/* Act Badge */}
         <div className="flex items-center gap-3">
-          <div className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-cyan-400 font-bold flex items-center gap-2 shadow-lg">
+          <div className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-xs font-mono text-cyan-400 font-bold flex items-center gap-2 shadow-xl">
             <Sparkles className="w-3.5 h-3.5" />
             <span>{currentScene.actBadge}</span>
             <span className="text-white/30">·</span>
@@ -320,8 +346,8 @@ export function OpeningExperience() {
           <button
             type="button"
             onClick={handleToggleMute}
-            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-slate-300 hover:text-white hover:border-white/40 transition-all active:scale-95 shadow-lg"
-            title={isMuted ? "Unmute Audio" : "Mute Audio"}
+            className="p-2.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-slate-300 hover:text-white hover:border-white/40 transition-all active:scale-95 shadow-xl"
+            title={isMuted ? "Unmute Audio (BGM & SFX)" : "Mute Audio (BGM & SFX)"}
             aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
           >
             {isMuted ? (
@@ -335,7 +361,7 @@ export function OpeningExperience() {
           <button
             type="button"
             onClick={handleEnterHomepage}
-            className="px-4 py-2 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-xs font-mono text-slate-200 hover:text-white hover:border-white/40 transition-all flex items-center gap-2 active:scale-95 shadow-lg"
+            className="px-4 py-2 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-xs font-mono text-slate-200 hover:text-white hover:border-white/40 transition-all flex items-center gap-2 active:scale-95 shadow-xl"
           >
             <span>{isZh ? "跳过 (SKIP)" : "SKIP"}</span>
             <FastForward className="w-3.5 h-3.5 text-cyan-400" />
@@ -370,10 +396,14 @@ export function OpeningExperience() {
 
         {/* Physical Action Button Indicator */}
         <div className="pointer-events-auto mt-1">
-          <div className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-black/80 backdrop-blur-2xl border border-amber-400/40 text-xs sm:text-sm font-mono text-amber-300 font-bold shadow-[0_0_35px_rgba(245,158,11,0.3)] animate-pulse hover:bg-black/95 transition-all active:scale-95">
+          <div className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-black/85 backdrop-blur-2xl border border-amber-400/50 text-xs sm:text-sm font-mono text-amber-300 font-bold shadow-[0_0_35px_rgba(245,158,11,0.35)] animate-pulse hover:bg-black/95 transition-all active:scale-95">
             <Hand className="w-4 h-4 text-amber-400" />
             <span>
-              {currentScene.id === 4
+              {currentScene.id === 1
+                ? isZh
+                  ? "按住屏幕 · 蓄压碎裂破冰 (Hold 1.8s)"
+                  : "Press & Hold Screen to Shatter (1.8s)"
+                : currentScene.id === 4
                 ? isZh
                   ? scene4Resolved.ctaZh
                   : scene4Resolved.ctaEn

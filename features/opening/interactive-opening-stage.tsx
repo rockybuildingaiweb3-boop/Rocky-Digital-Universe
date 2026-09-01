@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import type { CinematicSceneConfig } from "./opening-config";
 
@@ -8,6 +8,7 @@ export function InteractiveOpeningStage({
   scene,
   knockStage,
   sunProgress,
+  pressProgress,
   isShattering,
   isHandshakeShaking,
   isDoorOpen,
@@ -16,6 +17,7 @@ export function InteractiveOpeningStage({
   scene: CinematicSceneConfig;
   knockStage: number; // 0, 1, 2, 3
   sunProgress: number; // 0 to 1
+  pressProgress: number; // 0 to 1 (for Scene 1 hold)
   isShattering: boolean;
   isHandshakeShaking: boolean;
   isDoorOpen: boolean;
@@ -24,12 +26,16 @@ export function InteractiveOpeningStage({
   return (
     <div className="relative w-full h-full overflow-hidden select-none bg-black">
       {/* =========================================================
-          ACT 01: REJECTION (Ultra-HD Canvas + Shatter Shockwave)
+          ACT 01: REJECTION (1080P HD + Press & Hold Shatter)
           ========================================================= */}
       {scene.id === 1 && (
         <div
           className={`relative w-full h-full transition-transform duration-100 ${
-            isShattering ? "scale-105 filter brightness-125" : "scale-100"
+            isShattering
+              ? "scale-105 filter brightness-150"
+              : pressProgress > 0
+              ? "scale-[1.015] translate-y-[-1px]"
+              : "scale-100"
           }`}
         >
           <Image
@@ -39,13 +45,60 @@ export function InteractiveOpeningStage({
             priority
             quality={98}
             sizes="100vw"
-            className="object-cover object-center transform transition-transform duration-5000 ease-out"
+            className="object-cover object-center transform transition-transform duration-7000 ease-out"
           />
 
-          {/* Dynamic Shatter Shockwave Effect on Interaction */}
+          {/* Pressure Charge Vignette & Tension Ring during Hold */}
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-150"
+            style={{
+              background: `radial-gradient(circle at center, transparent ${
+                70 - pressProgress * 40
+              }%, rgba(6,182,212,${pressProgress * 0.4}) 85%, rgba(0,0,0,0.9) 100%)`,
+              opacity: pressProgress > 0 ? 1 : 0,
+            }}
+          />
+
+          {/* Center Hold Charge Gauge Ring */}
+          {pressProgress > 0 && !isShattering && (
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center pointer-events-none">
+              <div className="relative w-28 h-28 flex items-center justify-center">
+                <svg className="w-full h-full -rotate-90">
+                  <circle
+                    cx="56"
+                    cy="56"
+                    r="48"
+                    stroke="rgba(255,255,255,0.15)"
+                    strokeWidth="4"
+                    fill="transparent"
+                  />
+                  <circle
+                    cx="56"
+                    cy="56"
+                    r="48"
+                    stroke="#06b6d4"
+                    strokeWidth="6"
+                    strokeDasharray={301.6}
+                    strokeDashoffset={301.6 * (1 - pressProgress)}
+                    strokeLinecap="round"
+                    fill="transparent"
+                    className="transition-all duration-75"
+                  />
+                </svg>
+                <span className="absolute font-mono text-xs font-bold text-cyan-300">
+                  {Math.round(pressProgress * 100)}%
+                </span>
+              </div>
+              <span className="mt-2 text-[10px] font-mono text-cyan-200 tracking-widest bg-black/60 px-2 py-0.5 rounded-full border border-cyan-500/30">
+                {isZh ? "蓄压破冰中..." : "ACCUMULATING PRESSURE..."}
+              </span>
+            </div>
+          )}
+
+          {/* Glass Shatter Impact Shockwave upon reaching 100% */}
           {isShattering && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 animate-ping opacity-80">
-              <div className="w-[500px] h-[500px] rounded-full border-4 border-cyan-300/90 shadow-[0_0_80px_rgba(6,182,212,0.9)]" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30 animate-ping opacity-90">
+              <div className="w-[640px] h-[640px] rounded-full border-8 border-cyan-200 shadow-[0_0_120px_rgba(6,182,212,1)]" />
             </div>
           )}
 
@@ -55,13 +108,13 @@ export function InteractiveOpeningStage({
       )}
 
       {/* =========================================================
-          ACT 02: HANDSHAKE (Ultra-HD Canvas + Elastic Clasp Shake)
+          ACT 02: HANDSHAKE (1080P HD + Elastic Haptic Clasp)
           ========================================================= */}
       {scene.id === 2 && (
         <div
-          className={`relative w-full h-full transition-transform duration-150 ${
+          className={`relative w-full h-full transition-transform duration-200 ${
             isHandshakeShaking
-              ? "scale-102 translate-x-1 translate-y-[-1px]"
+              ? "scale-102 translate-x-1.5 translate-y-[-1px] rotate-[0.3deg]"
               : "scale-100"
           }`}
         >
@@ -72,12 +125,12 @@ export function InteractiveOpeningStage({
             priority
             quality={98}
             sizes="100vw"
-            className="object-cover object-center transform transition-transform duration-5000 ease-out"
+            className="object-cover object-center transform transition-transform duration-7000 ease-out"
           />
 
           {/* Warm Golden-Cyan Clasp Energy Bloom on Interaction */}
           {isHandshakeShaking && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-amber-400/30 blur-2xl animate-pulse pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-amber-400/35 blur-3xl animate-pulse pointer-events-none z-20" />
           )}
 
           {/* Film Edge Vignette */}
@@ -86,14 +139,14 @@ export function InteractiveOpeningStage({
       )}
 
       {/* =========================================================
-          ACT 03: APPROVAL (Ultra-HD Canvas + Interactive Sunrise)
+          ACT 03: APPROVAL (1080P HD + Dynamic Sunrise Illumination)
           ========================================================= */}
       {scene.id === 3 && (
         <div
           className="relative w-full h-full transition-all duration-300"
           style={{
-            filter: `brightness(${1 + sunProgress * 0.4}) saturate(${
-              1 + sunProgress * 0.3
+            filter: `brightness(${1 + sunProgress * 0.45}) saturate(${
+              1 + sunProgress * 0.35
             })`,
           }}
         >
@@ -104,22 +157,33 @@ export function InteractiveOpeningStage({
             priority
             quality={98}
             sizes="100vw"
-            className="object-cover object-center transform transition-transform duration-5000 ease-out"
+            className="object-cover object-center transform transition-transform duration-7000 ease-out"
           />
 
-          {/* Rising Sun Light Flare Over Horizon */}
+          {/* Rising Sun Glowing Orb Over Horizon */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none transition-all duration-150"
+            className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none transition-all duration-100"
             style={{
-              bottom: `${15 + sunProgress * 30}%`,
-              width: `${200 + sunProgress * 400}px`,
-              height: `${200 + sunProgress * 400}px`,
+              bottom: `${15 + sunProgress * 35}%`,
+              width: `${180 + sunProgress * 420}px`,
+              height: `${180 + sunProgress * 420}px`,
               background: `radial-gradient(circle, rgba(251,191,36,${
-                0.2 + sunProgress * 0.5
-              }) 0%, rgba(245,158,11,${0.1 + sunProgress * 0.3}) 40%, transparent 70%)`,
+                0.25 + sunProgress * 0.55
+              }) 0%, rgba(245,158,11,${0.15 + sunProgress * 0.35}) 45%, transparent 75%)`,
               opacity: sunProgress > 0 ? 1 : 0,
             }}
           />
+
+          {/* Sun Rise Progress Indicator Pill */}
+          {sunProgress > 0 && sunProgress < 1 && (
+            <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+              <span className="text-[10px] font-mono text-amber-300 tracking-widest bg-black/70 px-3 py-1 rounded-full border border-amber-500/40 shadow-lg">
+                {isZh
+                  ? `晨曦破晓中 ${(sunProgress * 100).toFixed(0)}%`
+                  : `DAWN RISING ${(sunProgress * 100).toFixed(0)}%`}
+              </span>
+            </div>
+          )}
 
           {/* Film Edge Vignette */}
           <div className="absolute inset-0 bg-radial from-transparent via-black/10 to-black/65 pointer-events-none" />
@@ -127,7 +191,7 @@ export function InteractiveOpeningStage({
       )}
 
       {/* =========================================================
-          ACT 04: THE DOOR (3-Stage Knock Progression + Portal Open)
+          ACT 04: THE DOOR (1080P HD + 3-Stage Knock Progression)
           ========================================================= */}
       {scene.id === 4 && (
         <div className="relative w-full h-full">
@@ -141,7 +205,7 @@ export function InteractiveOpeningStage({
             className="object-cover object-center"
           />
 
-          {/* Door Knock Spotlight Feedback */}
+          {/* Door Knock Spotlight Feedback Columns */}
           <div className="absolute inset-0 grid grid-cols-4 pointer-events-none">
             {[1, 2, 3, 4].map((i) => {
               const isGlowing =
@@ -154,7 +218,7 @@ export function InteractiveOpeningStage({
                   key={i}
                   className={`h-full border-r border-white/5 transition-all duration-700 ${
                     isGlowing
-                      ? "bg-amber-400/20 shadow-[inset_0_0_80px_rgba(245,158,11,0.4)]"
+                      ? "bg-amber-400/25 shadow-[inset_0_0_90px_rgba(245,158,11,0.45)]"
                       : "bg-black/50"
                   }`}
                 />
@@ -164,7 +228,7 @@ export function InteractiveOpeningStage({
 
           {/* Golden Volumetric Light Burst Spill when Door 3 is knocked open */}
           <div
-            className={`absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/35 to-amber-200/70 mix-blend-screen transition-opacity duration-1000 pointer-events-none ${
+            className={`absolute inset-0 bg-gradient-to-r from-transparent via-amber-500/40 to-amber-200/80 mix-blend-screen transition-opacity duration-1000 pointer-events-none ${
               isDoorOpen ? "opacity-100" : "opacity-0"
             }`}
           />
