@@ -246,14 +246,14 @@ export function InteractiveOpeningStage({
       )}
 
       {/* =========================================================================
-          SCENE 5: WELCOME TO ROCKYOS — COSMIC PROLOGUE (sc5.png)
+          SCENE 5: WELCOME ROCKYOS — COSMIC PROLOGUE (sc5.png)
           Observation deck panoramic view of galaxy & nebulae
           ========================================================================= */}
       {scene.id === 5 && (
         <div className="relative w-full h-full flex flex-col items-center justify-center">
           <Image
             src={scene.imageSrc}
-            alt="Scene 5: Welcome to RockyOS"
+            alt="Scene 5: Welcome RockyOS"
             fill
             priority
             quality={100}

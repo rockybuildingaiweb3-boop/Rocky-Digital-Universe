@@ -120,7 +120,7 @@ export function OpeningExperience() {
         setMotionState("follow_through");
       }, MOTION_TIMING.scene4_knock3ImpactMs);
 
-      // Advance to Scene 5 (Welcome to RockyOS) after light flood
+      // Advance to Scene 5 (Welcome RockyOS) after light flood
       setTimeout(() => {
         setMotionState("idle");
         setCurrentIndex(4); // Advance to Scene 5

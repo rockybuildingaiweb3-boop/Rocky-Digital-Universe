@@ -5,7 +5,7 @@
 
 export const MOTION_TIMING = {
   // Scene 1
-  scene1_holdDurationMs: 1600,
+  scene1_holdDurationMs: 1250,
   scene1_shatterImpactMs: 220,
   scene1_followThroughMs: 450,
 
@@ -14,7 +14,7 @@ export const MOTION_TIMING = {
   scene2_followThroughMs: 500,
 
   // Scene 3
-  scene3_riseHoldMs: 1800,
+  scene3_riseHoldMs: 1300,
   scene3_settleMs: 550,
 
   // Scene 4

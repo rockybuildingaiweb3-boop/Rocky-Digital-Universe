@@ -57,7 +57,7 @@ export const CINEMA_SCENES: CinematicSceneConfig[] = [
     type: "scene5",
     actBadge: "05 / 05",
     imageSrc: "/opening/sc5.png",
-    lineEn: "Welcome to RockyOS",
+    lineEn: "Welcome RockyOS",
     lineZh: "欢迎来到 RockyOS",
     hintEn: "· click to enter universe ·",
     hintZh: "· 点击踏入个人数字宇宙 ·",
