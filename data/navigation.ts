@@ -129,7 +129,7 @@ export const WORLD_NODES: WorldNode[] = [
       zh: "成长世界",
       de: "Wachstum",
       fr: "Croissance",
-      ja: "成長の記録",
+      ja: "成長の记录",
     },
     tagline: {
       en: "Keep Evolving",

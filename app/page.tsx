@@ -21,7 +21,7 @@ export default function HomePage() {
   }, [router]);
 
   return (
-    <main className="relative w-full flex-1 flex flex-col items-center justify-center px-4 sm:px-6 overflow-hidden">
+    <main className="relative w-full flex-1 flex flex-col justify-between overflow-hidden">
       <SpatialGalaxyMap />
     </main>
   );

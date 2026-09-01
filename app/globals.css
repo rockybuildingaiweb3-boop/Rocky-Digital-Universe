@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --bg-core: #050811;
-  --bg-surface: rgba(13, 17, 23, 0.85);
-  --bg-elevated: rgba(22, 27, 34, 0.75);
+  --bg-core: #040711;
+  --bg-surface: rgba(11, 15, 25, 0.85);
+  --bg-elevated: rgba(18, 24, 38, 0.75);
   --border-subtle: rgba(255, 255, 255, 0.08);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
@@ -55,12 +55,23 @@ body {
 
 @keyframes star-twinkle {
   0%, 100% {
-    opacity: 0.3;
-    transform: scale(0.8);
+    opacity: 0.35;
+    transform: scale(0.85);
   }
   50% {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.25);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
   }
 }
 
@@ -74,4 +85,8 @@ body {
 
 .animate-star-twinkle {
   animation: star-twinkle 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 6s ease-in-out infinite;
 }

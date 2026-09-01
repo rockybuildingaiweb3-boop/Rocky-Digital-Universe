@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronRight, Orbit } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
 
 export function GalaxyHeroAside() {

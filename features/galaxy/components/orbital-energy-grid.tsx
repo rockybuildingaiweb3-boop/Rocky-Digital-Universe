@@ -28,8 +28,8 @@ export function OrbitalEnergyGrid({
       {/* Top-Right Spiral Galaxy Nebula */}
       <div className="absolute -top-12 -right-12 w-[540px] sm:w-[720px] h-[540px] sm:h-[720px] rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.25)_0%,rgba(59,130,246,0.18)_35%,transparent_70%)] blur-3xl" />
       {/* Spiral Galaxy Core Spiral Rings */}
-      <div className="absolute top-10 right-14 w-48 h-48 rounded-full border border-purple-400/30 border-dashed animate-[spin_100s_linear_infinite] rotate-[45deg]" />
-      <div className="absolute top-16 right-20 w-36 h-36 rounded-full border border-cyan-400/25 animate-[spin_75s_linear_infinite_reverse] rotate-[30deg]" />
+      <div className="absolute top-10 right-14 w-48 h-48 rounded-full border border-purple-400/30 border-dashed animate-spin-slow rotate-[45deg]" />
+      <div className="absolute top-16 right-20 w-36 h-36 rounded-full border border-cyan-400/25 animate-spin-reverse-slow rotate-[30deg]" />
       <div className="absolute top-24 right-28 w-20 h-20 rounded-full bg-cyan-300/30 blur-xl" />
 
       {/* Bottom-Left Exoplanet Atmospheric Limb */}
@@ -43,10 +43,10 @@ export function OrbitalEnergyGrid({
       <div className="absolute top-1/2 right-1/3 w-[380px] h-[380px] rounded-full bg-indigo-600/12 blur-3xl" />
 
       {/* Twinkling Diamond Star Crosses in Background */}
-      <div className="absolute top-[28%] left-[22%] w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#38bdf8] animate-pulse" />
-      <div className="absolute top-[42%] right-[18%] w-1 h-1 rounded-full bg-white shadow-[0_0_6px_#ffffff] animate-pulse delay-700" />
-      <div className="absolute bottom-[35%] left-[45%] w-1 h-1 rounded-full bg-purple-300 shadow-[0_0_6px_#c084fc] animate-pulse delay-1000" />
-      <div className="absolute top-[15%] right-[40%] w-1.5 h-1.5 rounded-full bg-sky-200 shadow-[0_0_8px_#bae6fd] animate-pulse delay-500" />
+      <div className="absolute top-[28%] left-[22%] w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#38bdf8] animate-star-twinkle" />
+      <div className="absolute top-[42%] right-[18%] w-1 h-1 rounded-full bg-white shadow-[0_0_6px_#ffffff] animate-star-twinkle delay-700" />
+      <div className="absolute bottom-[35%] left-[45%] w-1 h-1 rounded-full bg-purple-300 shadow-[0_0_6px_#c084fc] animate-star-twinkle delay-1000" />
+      <div className="absolute top-[15%] right-[40%] w-1.5 h-1.5 rounded-full bg-sky-200 shadow-[0_0_8px_#bae6fd] animate-star-twinkle delay-500" />
 
       {/* -------------------------------------------------------------
           2. CLOSED CONCENTRIC ELLIPTICAL ORBIT BELTS

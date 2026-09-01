@@ -8,14 +8,12 @@ import { SingularityCore } from "./components/singularity-core";
 import { CelestialPlanetNode } from "./components/celestial-planet-node";
 import { OrbitalEnergyGrid } from "./components/orbital-energy-grid";
 import { GalaxyHeroAside } from "./components/galaxy-hero-aside";
-import { Orbit, Mouse } from "lucide-react";
-import { useLanguage } from "@/components/providers/language-provider";
+import { GalaxyTelemetryHUD } from "./components/galaxy-telemetry-hud";
+import { GalaxyDockMetrics } from "./components/galaxy-dock-metrics";
 
 export function SpatialGalaxyMap() {
   const cursorOffset = useGravitationalCursor();
   const [activeWorld, setActiveWorld] = useState<WorldNode | null>(null);
-  const { locale } = useLanguage();
-  const isZh = locale === "zh";
 
   return (
     <div className="relative w-full max-w-[1600px] mx-auto min-h-[calc(100vh-4.25rem)] flex flex-col justify-between px-4 sm:px-8 py-3 select-none overflow-hidden">
@@ -46,52 +44,14 @@ export function SpatialGalaxyMap() {
           />
         ))}
 
-        {/* Right Vertical Orbit / Scroll Guide matching reference */}
-        <div className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col items-center gap-2.5 z-20 pointer-events-none opacity-75 pr-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.95)]" />
-          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
-          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
-          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
-          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
-          <div className="flex flex-col items-center gap-1 font-mono text-[9px] text-slate-400 uppercase tracking-widest mt-3">
-            <Mouse className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Scroll</span>
-            <span>Explore</span>
-          </div>
-        </div>
+        {/* Right Vertical Orbit / Scroll Guide */}
+        <GalaxyTelemetryHUD />
       </div>
 
       {/* -------------------------------------------------------------
           2. AMBIENT SYSTEM STATUS STRIP (Bottom Floating Telemetry)
           ------------------------------------------------------------- */}
-      <div className="w-full flex items-center justify-between pt-2.5 border-t border-white/5 select-none z-30 pointer-events-auto backdrop-blur-sm">
-        {/* Bottom-Left System Emblem */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full border border-cyan-400/40 bg-cyan-500/10 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.35)]">
-            <Orbit className="w-3.5 h-3.5 text-cyan-300 animate-[spin_30s_linear_infinite]" />
-          </div>
-          <div className="flex flex-col text-left font-mono">
-            <span className="text-[11px] font-bold text-white tracking-wider">
-              ROCKY<span className="text-cyan-400">OS</span>
-            </span>
-            <span className="text-[9px] text-slate-400/90 tracking-widest">
-              {isZh ? "个人数字操作系统" : "PERSONAL OPERATING SYSTEM"}
-            </span>
-          </div>
-        </div>
-
-        {/* Bottom-Right Progress Bar & Status Metric */}
-        <div className="flex flex-col items-end gap-1.5 font-mono text-[10px]">
-          <div className="flex items-center gap-2 text-white">
-            <span className="text-cyan-300 font-medium">Six Worlds</span>
-            <span className="text-slate-600">/</span>
-            <span className="text-slate-400">Infinite Possibilities</span>
-          </div>
-          <div className="w-36 sm:w-44 h-1 rounded-full bg-slate-800/80 overflow-hidden">
-            <div className="w-2/3 h-full bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-full" />
-          </div>
-        </div>
-      </div>
+      <GalaxyDockMetrics />
     </div>
   );
 }
