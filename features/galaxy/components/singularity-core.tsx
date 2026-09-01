@@ -12,49 +12,52 @@ export function SingularityCore({
   return (
     <motion.div
       animate={{
-        x: cursorOffset.x * -6,
-        y: cursorOffset.y * -6,
+        x: cursorOffset.x * -8,
+        y: cursorOffset.y * -8,
       }}
       transition={{ ease: "linear", duration: 0.1 }}
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center pointer-events-none select-none"
     >
       {/* -------------------------------------------------------------
-          1. LUMINOUS BLUE PLANETARY PLASMA SPHERE
+          1. MASSIVE LUMINOUS BLUE PLANETARY PLASMA SPHERE
           ------------------------------------------------------------- */}
       <div className="relative flex items-center justify-center">
-        {/* Deep Blue & Cyan Coronal Atmosphere */}
-        <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-cyan-500/20 blur-3xl animate-pulse" />
-        <div className="absolute w-60 h-60 sm:w-80 sm:h-80 rounded-full bg-blue-600/25 blur-2xl animate-pulse delay-700" />
-        <div className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-sky-400/20 blur-xl" />
+        {/* Deep Gravitational Halo Layers */}
+        <div className="absolute w-80 h-80 sm:w-[440px] sm:h-[440px] rounded-full bg-cyan-500/25 blur-3xl animate-pulse" />
+        <div className="absolute w-64 h-64 sm:w-[360px] sm:h-[360px] rounded-full bg-blue-600/30 blur-2xl animate-pulse delay-700" />
+        <div className="absolute w-52 h-52 sm:w-[280px] sm:h-[280px] rounded-full bg-sky-400/25 blur-xl" />
 
-        {/* 3D Tilted Orbital Elliptical Rings */}
+        {/* 3D Tilted Orbital Elliptical Rings with Particle Accents */}
         {/* Ring 1 (Tilted Primary Orbit) */}
-        <div className="absolute w-80 sm:w-[440px] h-32 sm:h-44 rounded-[100%] border border-cyan-400/30 rotate-[22deg] animate-[spin_60s_linear_infinite]" />
+        <div className="absolute w-[320px] sm:w-[500px] h-[130px] sm:h-[190px] rounded-[100%] border border-cyan-400/40 rotate-[22deg] animate-[spin_80s_linear_infinite]" />
         {/* Ring 2 (Cross Counter Orbit with Dashed Line) */}
-        <div className="absolute w-72 sm:w-[400px] h-28 sm:h-38 rounded-[100%] border border-dashed border-indigo-400/25 rotate-[-35deg] animate-[spin_50s_linear_infinite_reverse]" />
+        <div className="absolute w-[290px] sm:w-[450px] h-[115px] sm:h-[165px] rounded-[100%] border border-dashed border-indigo-400/30 rotate-[-35deg] animate-[spin_65s_linear_infinite_reverse]" />
         {/* Ring 3 (Steep Tilted Orbital Ellipse) */}
-        <div className="absolute w-64 sm:w-[360px] h-24 sm:h-32 rounded-[100%] border border-white/15 rotate-[70deg] animate-[spin_70s_linear_infinite]" />
+        <div className="absolute w-[260px] sm:w-[400px] h-[100px] sm:h-[140px] rounded-[100%] border border-white/20 rotate-[70deg] animate-[spin_90s_linear_infinite]" />
 
-        {/* The Central Planetary Body */}
-        <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-gradient-to-tr from-blue-950 via-cyan-950 to-sky-700 border-2 border-cyan-300/80 shadow-[0_0_80px_rgba(6,182,212,0.65),inset_0_0_50px_rgba(56,189,248,0.85)] flex flex-col items-center justify-center overflow-hidden">
-          {/* Internal Plasma & Webbing Grid */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,0.45),transparent_65%)] mix-blend-screen pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,182,212,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.18)_1px,transparent_1px)] bg-[size:1.25rem_1.25rem] opacity-35 animate-[pulse_4s_ease-in-out_infinite]" />
+        {/* The Central Primary Planetary Body */}
+        <div className="relative w-52 h-52 sm:w-72 sm:h-72 rounded-full bg-gradient-to-tr from-[#030c1e] via-[#08224d] to-[#0284c7] border-2 border-cyan-300 shadow-[0_0_90px_rgba(6,182,212,0.75),inset_0_0_60px_rgba(56,189,248,0.9)] flex flex-col items-center justify-center overflow-hidden">
+          {/* Multi-layered Internal Plasma Texture */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,0.5),transparent_65%)] mix-blend-screen pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(56,189,248,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(56,189,248,0.2)_1px,transparent_1px)] bg-[size:1.25rem_1.25rem] opacity-40 animate-[pulse_4s_ease-in-out_infinite]" />
+          
+          {/* Atmospheric Limb Sheen */}
+          <div className="absolute inset-0 rounded-full border-4 border-cyan-200/40 blur-[2px] pointer-events-none" />
 
           {/* Central Logo & Typography Lockup */}
           <div className="relative z-10 flex flex-col items-center text-center">
-            {/* Crescent Emblem */}
-            <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-cyan-400/25 border border-cyan-200/90 flex items-center justify-center mb-2 shadow-[0_0_25px_rgba(6,182,212,0.85)]">
-              <Orbit className="w-6 h-6 sm:w-7 sm:h-7 text-white animate-[spin_40s_linear_infinite]" />
+            {/* Orbit Crescent Emblem */}
+            <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-cyan-400/30 border border-cyan-100 flex items-center justify-center mb-2.5 shadow-[0_0_30px_rgba(6,182,212,0.95)]">
+              <Orbit className="w-6 h-6 sm:w-8 sm:h-8 text-white animate-[spin_40s_linear_infinite]" />
             </div>
 
             {/* RockyOS Brand Wordmark */}
-            <span className="text-white font-extrabold text-lg sm:text-2xl tracking-wide drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)]">
+            <span className="text-white font-extrabold text-xl sm:text-3xl tracking-wide drop-shadow-[0_2px_18px_rgba(0,0,0,0.95)]">
               Rocky<span className="text-cyan-300">OS</span>
             </span>
 
             {/* Sub-tagline */}
-            <span className="text-[9px] sm:text-[10px] font-mono text-cyan-200/95 tracking-[0.25em] uppercase font-semibold mt-1">
+            <span className="text-[9px] sm:text-[11px] font-mono text-cyan-200 tracking-[0.28em] uppercase font-semibold mt-1 drop-shadow-sm">
               Think · Create · Grow
             </span>
           </div>
