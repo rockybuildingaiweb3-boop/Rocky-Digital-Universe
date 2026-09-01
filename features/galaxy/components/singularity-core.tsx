@@ -22,7 +22,7 @@ export function SingularityCore({
           1. VOLUMETRIC LUMINOUS PLANETARY SINGULARITY STAR
           ------------------------------------------------------------- */}
       <div className="relative flex items-center justify-center">
-        {/* Multitier Atmospheric Coronal Glows */}
+        {/* Layered Atmospheric Coronal Glows */}
         <div className="absolute w-72 h-72 sm:w-[400px] sm:h-[400px] rounded-full bg-cyan-500/20 blur-3xl animate-pulse" />
         <div className="absolute w-56 h-56 sm:w-[320px] sm:h-[320px] rounded-full bg-blue-600/25 blur-2xl animate-pulse delay-500" />
         <div className="absolute w-44 h-44 sm:w-[260px] sm:h-[260px] rounded-full bg-sky-400/20 blur-xl" />
