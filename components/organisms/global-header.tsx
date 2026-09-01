@@ -34,18 +34,15 @@ export function GlobalHeader() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/identity", label: "Worlds" },
-    { href: "/capability", label: "Projects" },
-    { href: "/knowledge", label: "Blog" },
-    { href: "/growth", label: "Resume" },
-    { href: "/connection", label: "Connect" },
+    { href: "/connection", label: "About" },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-slate-950/80 backdrop-blur-xl select-none">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 h-16">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-transparent backdrop-blur-md select-none">
+      <div className="max-w-[1500px] mx-auto flex items-center justify-between px-4 sm:px-8 h-15">
         {/* 1. Left: RockyOS Logo & Wordmark */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-full bg-cyan-400/15 border border-cyan-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:scale-105 transition-transform">
+          <div className="w-8 h-8 rounded-full bg-cyan-400/15 border border-cyan-400/50 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:scale-105 transition-transform">
             <Orbit className="w-4 h-4 text-cyan-300 animate-[spin_40s_linear_infinite]" />
           </div>
           <span className="font-extrabold text-base tracking-wide text-white">
@@ -54,7 +51,7 @@ export function GlobalHeader() {
         </Link>
 
         {/* 2. Center: Navigation Links with Active Cyan Indicator */}
-        <nav className="hidden md:flex items-center gap-6 font-mono text-xs" aria-label="Main Navigation">
+        <nav className="hidden md:flex items-center gap-8 font-mono text-xs" aria-label="Main Navigation">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -67,11 +64,11 @@ export function GlobalHeader() {
                 href={item.href}
                 className="relative py-1 text-slate-300 hover:text-white transition-colors group"
               >
-                <span className={isActive ? "text-white font-semibold" : "text-slate-400"}>
+                <span className={isActive ? "text-white font-medium" : "text-slate-400"}>
                   {item.label}
                 </span>
                 {isActive && (
-                  <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-1 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+                  <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.9)]" />
                 )}
               </Link>
             );
@@ -97,7 +94,7 @@ export function GlobalHeader() {
           <ThemeToggle />
 
           {/* UTC Mission Badge */}
-          <div className="hidden lg:flex flex-col items-end px-2.5 py-1 rounded-xl border border-white/10 bg-slate-900/60 font-mono text-[10px]">
+          <div className="hidden lg:flex flex-col items-end px-2.5 py-1 rounded-xl border border-white/10 bg-slate-950/60 font-mono text-[10px]">
             <span className="text-cyan-300 font-bold tracking-wider">
               UTC {utcTime}
             </span>

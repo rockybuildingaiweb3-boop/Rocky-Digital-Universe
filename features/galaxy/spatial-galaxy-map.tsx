@@ -18,16 +18,16 @@ export function SpatialGalaxyMap() {
   const isZh = locale === "zh";
 
   return (
-    <div className="relative w-full max-w-[1500px] mx-auto min-h-[calc(100vh-4.25rem)] flex flex-col justify-between px-4 sm:px-8 py-3 select-none overflow-hidden">
+    <div className="relative w-full max-w-[1600px] mx-auto min-h-[calc(100vh-4.25rem)] flex flex-col justify-between px-4 sm:px-8 py-3 select-none overflow-hidden">
       {/* -------------------------------------------------------------
           1. INTEGRATED SPATIAL UNIVERSE CANVAS (True Celestial Staging)
           ------------------------------------------------------------- */}
-      <div className="relative w-full flex-1 min-h-[620px] sm:min-h-[700px] flex items-center justify-center">
-        {/* Deep Space Background Orbit Network & Phenomena */}
+      <div className="relative w-full flex-1 min-h-[640px] sm:min-h-[720px] flex items-center justify-center">
+        {/* Deep Space Background Orbit Network, Galaxy, & Exoplanet */}
         <OrbitalEnergyGrid activeWorld={activeWorld} />
 
         {/* Integrated Floating Hero Aside (Top-Left Cosmic Quadrant) */}
-        <div className="absolute top-6 sm:top-12 left-2 sm:left-6 lg:left-10 z-30 pointer-events-auto">
+        <div className="absolute top-6 sm:top-14 left-2 sm:left-8 lg:left-12 z-30 pointer-events-auto">
           <GalaxyHeroAside />
         </div>
 
@@ -46,14 +46,14 @@ export function SpatialGalaxyMap() {
           />
         ))}
 
-        {/* Right Vertical Orbit / Scroll Guide */}
-        <div className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col items-center gap-3 z-20 pointer-events-none opacity-75">
+        {/* Right Vertical Orbit / Scroll Guide matching reference */}
+        <div className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col items-center gap-2.5 z-20 pointer-events-none opacity-70 pr-2">
           <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.95)]" />
-          <div className="w-1 h-1 rounded-full bg-slate-500" />
-          <div className="w-1 h-1 rounded-full bg-slate-500" />
-          <div className="w-1 h-1 rounded-full bg-slate-500" />
-          <div className="w-1 h-1 rounded-full bg-slate-500" />
-          <div className="flex flex-col items-center gap-1 font-mono text-[9px] text-slate-400 uppercase tracking-widest mt-4">
+          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
+          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
+          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
+          <div className="w-1 h-1 rounded-full bg-slate-500/80" />
+          <div className="flex flex-col items-center gap-1 font-mono text-[9px] text-slate-400 uppercase tracking-widest mt-3">
             <Mouse className="w-3.5 h-3.5 text-cyan-400" />
             <span>Scroll</span>
             <span>Explore</span>
@@ -64,7 +64,7 @@ export function SpatialGalaxyMap() {
       {/* -------------------------------------------------------------
           2. AMBIENT SYSTEM STATUS STRIP (Bottom Floating Telemetry)
           ------------------------------------------------------------- */}
-      <div className="w-full flex items-center justify-between pt-3 border-t border-white/10 select-none z-30 pointer-events-auto backdrop-blur-sm">
+      <div className="w-full flex items-center justify-between pt-2.5 border-t border-white/5 select-none z-30 pointer-events-auto backdrop-blur-sm">
         {/* Bottom-Left System Emblem */}
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-full border border-cyan-400/40 bg-cyan-500/10 flex items-center justify-center shadow-[0_0_12px_rgba(6,182,212,0.35)]">
@@ -74,7 +74,7 @@ export function SpatialGalaxyMap() {
             <span className="text-[11px] font-bold text-white tracking-wider">
               ROCKY<span className="text-cyan-400">OS</span>
             </span>
-            <span className="text-[9px] text-slate-400 tracking-widest">
+            <span className="text-[9px] text-slate-400/90 tracking-widest">
               {isZh ? "个人数字操作系统" : "PERSONAL OPERATING SYSTEM"}
             </span>
           </div>
@@ -87,7 +87,7 @@ export function SpatialGalaxyMap() {
             <span className="text-slate-600">/</span>
             <span className="text-slate-400">Infinite Possibilities</span>
           </div>
-          <div className="w-36 sm:w-44 h-1 rounded-full bg-slate-800 overflow-hidden">
+          <div className="w-36 sm:w-44 h-1 rounded-full bg-slate-800/80 overflow-hidden">
             <div className="w-2/3 h-full bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-full" />
           </div>
         </div>

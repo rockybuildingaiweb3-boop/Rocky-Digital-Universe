@@ -34,19 +34,19 @@ export function CelestialPlanetNode({
   const getIcon = () => {
     switch (node.id) {
       case "identity":
-        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
       case "capability":
-        return <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
       case "knowledge":
-        return <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
       case "laboratory":
-        return <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
       case "growth":
-        return <Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <Sprout className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
       case "connection":
-        return <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
       default:
-        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.75]" />;
+        return <User className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[1.8]" />;
     }
   };
 
@@ -54,24 +54,24 @@ export function CelestialPlanetNode({
   const getActionLabel = () => {
     switch (node.id) {
       case "identity":
-        return isZh ? "认识自己 →" : "Know Yourself →";
+        return isZh ? "认识自己 →" : "Know Yourself  →";
       case "capability":
-        return isZh ? "突破极限 →" : "Do More →";
+        return isZh ? "突破极限 →" : "Do More  →";
       case "knowledge":
-        return isZh ? "洞悉深度 →" : "See Deeper →";
+        return isZh ? "洞悉深度 →" : "See Deeper  →";
       case "laboratory":
-        return isZh ? "自由探索 →" : "Explore Freely →";
+        return isZh ? "自由探索 →" : "Explore Freely  →";
       case "growth":
-        return isZh ? "持续进化 →" : "Keep Evolving →";
+        return isZh ? "持续进化 →" : "Keep Evolving  →";
       case "connection":
-        return isZh ? "携手共创 →" : "Build Together →";
+        return isZh ? "携手共创 →" : "Build Together  →";
       default:
-        return "Enter →";
+        return "Enter  →";
     }
   };
 
   const isLeftPlacement = node.labelPlacement === "left";
-  const depthFactor = (parseInt(node.order, 10) % 3 + 1) * 7;
+  const depthFactor = (parseInt(node.order, 10) % 3 + 1) * 6;
 
   return (
     <motion.div
@@ -96,22 +96,22 @@ export function CelestialPlanetNode({
       >
         {/* 1. LUMINOUS PLANETARY SPHERE */}
         <div className="relative flex items-center justify-center">
-          {/* Outer Coronal Glow */}
+          {/* Outer Coronal Glow Atmosphere */}
           <motion.div
             animate={{
-              scale: isActive ? 1.55 : 1.15,
-              opacity: isActive ? 0.9 : 0.5,
+              scale: isActive ? 1.6 : 1.2,
+              opacity: isActive ? 0.95 : 0.55,
             }}
             transition={{ duration: 0.35 }}
             className="absolute w-24 h-24 sm:w-32 sm:h-32 rounded-full blur-2xl pointer-events-none"
             style={{ backgroundColor: node.accentColor }}
           />
 
-          {/* Rotating Dashed Orbit Corona on Hover */}
+          {/* Rotating Dashed Corona on Hover */}
           <motion.div
             animate={{
               scale: isActive ? 1.3 : 1,
-              opacity: isActive ? 1 : 0,
+              opacity: isActive ? 0.9 : 0,
               rotate: isActive ? 90 : 0,
             }}
             transition={{ duration: 0.6 }}
@@ -119,22 +119,22 @@ export function CelestialPlanetNode({
             style={{ borderColor: node.accentColor }}
           />
 
-          {/* Spherical Glowing Body */}
+          {/* Spherical Planetary Body */}
           <motion.div
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.94 }}
-            className="relative w-14 h-14 sm:w-18 sm:h-18 rounded-full border-2 flex items-center justify-center shadow-2xl backdrop-blur-md overflow-hidden transition-all duration-300"
+            className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 flex items-center justify-center shadow-2xl backdrop-blur-md overflow-hidden transition-all duration-300"
             style={{
-              backgroundColor: `${node.accentColor}20`,
+              backgroundColor: `${node.accentColor}25`,
               borderColor: isActive ? "#ffffff" : node.accentColor,
               boxShadow: isActive
-                ? `0 0 40px ${node.accentColor}, inset 0 0 25px ${node.accentColor}`
-                : `0 0 25px ${node.accentColor}80, inset 0 0 15px ${node.accentColor}60`,
+                ? `0 0 45px ${node.accentColor}, inset 0 0 25px ${node.accentColor}`
+                : `0 0 25px ${node.accentColor}90, inset 0 0 15px ${node.accentColor}70`,
             }}
           >
-            {/* Top-Left Specular Reflection Arc */}
-            <div className="absolute top-1 left-2 w-6 h-3 rounded-full bg-white/40 blur-[1px] -rotate-45 pointer-events-none" />
-            <div className="relative z-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            {/* Top-Left Specular Highlight Arc */}
+            <div className="absolute top-1 left-2 w-6 h-3 rounded-full bg-white/50 blur-[1px] -rotate-45 pointer-events-none" />
+            <div className="relative z-10 drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
               {getIcon()}
             </div>
           </motion.div>
@@ -151,7 +151,7 @@ export function CelestialPlanetNode({
             className="text-sm sm:text-base font-bold tracking-wide transition-colors"
             style={{
               color: isActive ? "#ffffff" : "#f8fafc",
-              textShadow: isActive ? `0 0 15px ${node.accentColor}` : "0 2px 8px rgba(0,0,0,0.8)",
+              textShadow: isActive ? `0 0 15px ${node.accentColor}` : "0 2px 10px rgba(0,0,0,0.85)",
             }}
           >
             {node.name[locale] || node.name.en}
@@ -165,9 +165,9 @@ export function CelestialPlanetNode({
             {getActionLabel()}
           </span>
 
-          {/* Latitude & Longitude Telemetry */}
+          {/* Latitude & Longitude Coordinates */}
           {node.geoCoordinates && (
-            <div className="flex flex-col font-mono text-[9px] sm:text-[10px] text-slate-400/80 leading-tight">
+            <div className="flex flex-col font-mono text-[9px] sm:text-[10px] text-slate-400/90 leading-tight">
               <span>{node.geoCoordinates.lat}</span>
               <span>{node.geoCoordinates.lng}</span>
             </div>

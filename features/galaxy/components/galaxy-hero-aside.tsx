@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Orbit } from "lucide-react";
+import { ChevronRight, Orbit } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
 
 export function GalaxyHeroAside() {
@@ -11,75 +11,55 @@ export function GalaxyHeroAside() {
   const isZh = locale === "zh";
 
   return (
-    <div className="flex flex-col items-start text-left z-20 pointer-events-auto max-w-xs sm:max-w-sm lg:max-w-md select-none">
+    <div className="flex flex-col items-start text-left z-20 pointer-events-auto max-w-[320px] sm:max-w-[360px] select-none">
       {/* 1. Small Uppercase Tracking Tag */}
       <motion.div
-        initial={{ opacity: 0, y: -8 }}
+        initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-[10px] sm:text-[11px] font-mono tracking-[0.25em] text-cyan-400/90 uppercase font-medium mb-3"
+        className="text-[10px] sm:text-[11px] font-mono tracking-[0.22em] text-slate-400 uppercase font-medium mb-2.5"
       >
         {isZh ? "欢迎来到 ROCKYOS" : "WELCOME TO ROCKYOS"}
       </motion.div>
 
-      {/* 2. Main Display Headline */}
+      {/* 2. Main Display Headline matching reference */}
       <motion.h1
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.12] mb-4"
+        className="text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-white leading-[1.12] mb-3.5"
       >
         {isZh ? (
           <>
-            你的第二大脑。
+            你的个人
             <br />
-            重构为一座{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">
-              宇宙。
+            数字{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-400 drop-shadow-[0_0_20px_rgba(56,189,248,0.5)]">
+              宇宙
             </span>
           </>
         ) : (
           <>
-            Your Second Brain.
+            Your Personal
             <br />
-            Reimagined as a{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">
-              Universe.
+            Digital{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-400 drop-shadow-[0_0_20px_rgba(56,189,248,0.5)]">
+              Universe
             </span>
           </>
         )}
       </motion.h1>
 
-      {/* 3. Subtitle Row with Highlighted Cyan Words */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
+      {/* 3. Elegant Explanatory Paragraph matching reference */}
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="text-xs sm:text-sm font-sans tracking-wide mb-3"
-      >
-        {isZh ? (
-          <p>
-            <span className="text-cyan-400 font-medium">知识 · 项目 · 成长。</span>{" "}
-            <span className="text-slate-200">万物互联。</span>
-          </p>
-        ) : (
-          <p>
-            <span className="text-cyan-400 font-medium">Knowledge. Projects. Growth.</span>{" "}
-            <span className="text-slate-200">Connected.</span>
-          </p>
-        )}
-      </motion.div>
-
-      {/* 4. Elegant Explanatory Paragraph */}
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.25 }}
-        className="text-xs text-slate-400 font-sans leading-relaxed mb-6 max-w-[320px]"
+        className="text-[11px] sm:text-xs text-slate-400 font-sans leading-relaxed mb-6"
       >
         {isZh ? (
           <>
-            六大平行世界。一个操作系统。无限可能。
+            六大世界。一个系统。无限可能。
             <br />
             探索你的数字宇宙，构筑更卓越的自我。
           </>
@@ -94,7 +74,7 @@ export function GalaxyHeroAside() {
         )}
       </motion.p>
 
-      {/* 5. Action Explore Pill CTA */}
+      {/* 4. Action Explore Pill CTA */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -102,13 +82,15 @@ export function GalaxyHeroAside() {
       >
         <Link
           href="/identity"
-          className="group inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-cyan-500/40 hover:border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.25)] text-white text-xs font-mono font-medium tracking-wide transition-all active:scale-95"
+          className="group inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 rounded-full bg-slate-950/60 hover:bg-slate-900/90 border border-white/20 hover:border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.2)] text-white text-xs font-mono font-medium tracking-wide transition-all backdrop-blur-md active:scale-95"
         >
-          <div className="w-4 h-4 rounded-full border border-cyan-400 flex items-center justify-center">
+          <div className="w-4 h-4 rounded-full border border-cyan-400/90 flex items-center justify-center">
             <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
           </div>
-          <span>{isZh ? "探索平行世界" : "Explore the Worlds"}</span>
-          <ArrowRight className="w-3.5 h-3.5 text-cyan-300 group-hover:translate-x-1 transition-transform" />
+          <span className="text-slate-200 group-hover:text-white transition-colors">
+            {isZh ? "探索平行世界" : "Explore the Worlds"}
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all" />
         </Link>
       </motion.div>
     </div>
